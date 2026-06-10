@@ -1,22 +1,24 @@
 // GoalRush mock 数据 · 与 web 端 data.js 对齐 · 加了「球迷社交」字段(动态流 / 球迷称号 / 讨论数)
 
+// 球队元数据 · 含母语应援口号(cheer)+ 球队色 banner(c1 + c2 渐变)
+// 应援口号有意保留各国母语,因为「VAMOS / FORZA / ALLEZ」是国际通用足球文化
 export const TEAMS = {
-  ARG: { code: 'ARG', name: '阿根廷', name_en: 'Argentina', flag: '🇦🇷', color: '#75AADB', fans: 412800 },
-  BRA: { code: 'BRA', name: '巴西',   name_en: 'Brazil',    flag: '🇧🇷', color: '#FFDF00', fans: 528400 },
-  MEX: { code: 'MEX', name: '墨西哥', name_en: 'Mexico',    flag: '🇲🇽', color: '#006847', fans: 215300 },
-  USA: { code: 'USA', name: '美国',   name_en: 'USA',       flag: '🇺🇸', color: '#B31942', fans: 89400 },
-  ESP: { code: 'ESP', name: '西班牙', name_en: 'Spain',     flag: '🇪🇸', color: '#AA151B', fans: 312500 },
-  FRA: { code: 'FRA', name: '法国',   name_en: 'France',    flag: '🇫🇷', color: '#0055A4', fans: 198200 },
-  GER: { code: 'GER', name: '德国',   name_en: 'Germany',   flag: '🇩🇪', color: '#000000', fans: 167800 },
-  ENG: { code: 'ENG', name: '英格兰', name_en: 'England',   flag: '🇬🇧', color: '#CE1124', fans: 245600 },
-  POR: { code: 'POR', name: '葡萄牙', name_en: 'Portugal',  flag: '🇵🇹', color: '#006600', fans: 178300 },
-  ITA: { code: 'ITA', name: '意大利', name_en: 'Italy',     flag: '🇮🇹', color: '#009246', fans: 154200 },
-  NED: { code: 'NED', name: '荷兰',   name_en: 'Netherlands', flag: '🇳🇱', color: '#FF4F00', fans: 132400 },
-  COL: { code: 'COL', name: '哥伦比亚', name_en: 'Colombia', flag: '🇨🇴', color: '#FCD116', fans: 178900 },
-  URU: { code: 'URU', name: '乌拉圭', name_en: 'Uruguay',   flag: '🇺🇾', color: '#7BA4DB', fans: 67200 },
-  CHI: { code: 'CHI', name: '智利',   name_en: 'Chile',     flag: '🇨🇱', color: '#D52B1E', fans: 54800 },
-  JPN: { code: 'JPN', name: '日本',   name_en: 'Japan',     flag: '🇯🇵', color: '#BC002D', fans: 124500 },
-  KOR: { code: 'KOR', name: '韩国',   name_en: 'Korea',     flag: '🇰🇷', color: '#003478', fans: 89700 },
+  ARG: { code: 'ARG', name: '阿根廷', name_en: 'Argentina', flag: '🇦🇷', color: '#75AADB', fans: 412800, cheer: 'VAMOS ARGENTINA',     c1: '#75AADB', c2: '#FFFFFF', textOn: '#0F1F3A' },
+  BRA: { code: 'BRA', name: '巴西',   name_en: 'Brazil',    flag: '🇧🇷', color: '#009E2A', fans: 528400, cheer: 'VAMOS BRASIL',         c1: '#FFDF00', c2: '#009E2A', textOn: '#0F1F0F' },
+  MEX: { code: 'MEX', name: '墨西哥', name_en: 'Mexico',    flag: '🇲🇽', color: '#006847', fans: 215300, cheer: 'VAMOS MÉXICO',         c1: '#006847', c2: '#CE1126', textOn: '#FFFFFF' },
+  USA: { code: 'USA', name: '美国',   name_en: 'USA',       flag: '🇺🇸', color: '#B31942', fans:  89400, cheer: 'USA · USA · USA',      c1: '#002868', c2: '#BF0A30', textOn: '#FFFFFF' },
+  ESP: { code: 'ESP', name: '西班牙', name_en: 'Spain',     flag: '🇪🇸', color: '#AA151B', fans: 312500, cheer: '¡VAMOS ESPAÑA!',       c1: '#AA151B', c2: '#F1BF00', textOn: '#1A0A0A' },
+  FRA: { code: 'FRA', name: '法国',   name_en: 'France',    flag: '🇫🇷', color: '#0055A4', fans: 198200, cheer: 'ALLEZ LES BLEUS',      c1: '#0055A4', c2: '#EF4135', textOn: '#FFFFFF' },
+  GER: { code: 'GER', name: '德国',   name_en: 'Germany',   flag: '🇩🇪', color: '#000000', fans: 167800, cheer: 'AUF GEHT\'S DEUTSCHLAND', c1: '#000000', c2: '#FFCE00', textOn: '#FFFFFF' },
+  ENG: { code: 'ENG', name: '英格兰', name_en: 'England',   flag: '🇬🇧', color: '#CE1124', fans: 245600, cheer: 'C\'MON ENGLAND',       c1: '#FFFFFF', c2: '#CE1124', textOn: '#0A0A1F' },
+  POR: { code: 'POR', name: '葡萄牙', name_en: 'Portugal',  flag: '🇵🇹', color: '#006600', fans: 178300, cheer: 'FORÇA PORTUGAL',       c1: '#006600', c2: '#D52B1E', textOn: '#FFFFFF' },
+  ITA: { code: 'ITA', name: '意大利', name_en: 'Italy',     flag: '🇮🇹', color: '#0066A2', fans: 154200, cheer: 'FORZA AZZURRI',        c1: '#0066A2', c2: '#FFFFFF', textOn: '#0A1F3A' },
+  NED: { code: 'NED', name: '荷兰',   name_en: 'Netherlands', flag: '🇳🇱', color: '#FF4F00', fans: 132400, cheer: 'HUP HOLLAND HUP',      c1: '#FF6900', c2: '#FFFFFF', textOn: '#2A1A0A' },
+  COL: { code: 'COL', name: '哥伦比亚', name_en: 'Colombia', flag: '🇨🇴', color: '#FCD116', fans: 178900, cheer: '¡VAMOS COLOMBIA!',     c1: '#FCD116', c2: '#003893', textOn: '#1A1500' },
+  URU: { code: 'URU', name: '乌拉圭', name_en: 'Uruguay',   flag: '🇺🇾', color: '#7BA4DB', fans:  67200, cheer: 'VAMOS URUGUAY',        c1: '#7BA4DB', c2: '#FFFFFF', textOn: '#0F1F3A' },
+  CHI: { code: 'CHI', name: '智利',   name_en: 'Chile',     flag: '🇨🇱', color: '#D52B1E', fans:  54800, cheer: '¡VAMOS CHILE!',        c1: '#D52B1E', c2: '#0033A0', textOn: '#FFFFFF' },
+  JPN: { code: 'JPN', name: '日本',   name_en: 'Japan',     flag: '🇯🇵', color: '#BC002D', fans: 124500, cheer: 'NIPPON CHA-CHA-CHA',   c1: '#FFFFFF', c2: '#BC002D', textOn: '#1A0000' },
+  KOR: { code: 'KOR', name: '韩国',   name_en: 'Korea',     flag: '🇰🇷', color: '#003478', fans:  89700, cheer: '대~한민국!',           c1: '#FFFFFF', c2: '#003478', textOn: '#0A0A1F' },
 };
 
 export const MATCHES = [

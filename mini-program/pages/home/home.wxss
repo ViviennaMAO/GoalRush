@@ -1,29 +1,150 @@
-/* === Hero · 球迷身份卡(白底 + emerald 重点)=== */
-.hero-card {
-  padding: 32rpx 28rpx;
-  margin-bottom: 28rpx;
+/* ============================================
+   FAN BANNER · 球迷应援(看台 vibe · 球队色)
+   ============================================ */
+.fan-banner {
+  position: relative;
+  border-radius: 28rpx;
+  padding: 40rpx 32rpx 36rpx;
+  margin-bottom: 24rpx;
+  overflow: hidden;
+  box-shadow: 0 8rpx 28rpx rgba(15, 23, 42, .12);
 }
-.hero-greet {
-  font-size: 36rpx; font-weight: 800; color: #111827; letter-spacing: -.5rpx;
-}
-.hero-sub {
-  font-size: 24rpx; color: #6B7280;
-}
-.hero-stat-row {
-  margin-top: 28rpx;
-  padding-top: 24rpx;
-  border-top: 2rpx solid #F4F6F5;
-}
-.hero-stat { display: flex; flex-direction: column; gap: 4rpx; align-items: flex-start; }
-.hero-stat-val {
-  font-size: 36rpx; font-weight: 800; color: #14B8A6;
-  font-family: 'Helvetica Neue', sans-serif; letter-spacing: -.5rpx;
-}
-.hero-stat-lbl { font-size: 20rpx; color: #9CA3AF; }
-.hero-cta { margin-top: 24rpx; }
-.hero-cta .btn { width: 100%; }
 
-/* === 比赛卡 === */
+/* 横向「球场条纹」叠加(若隐若现的 stadium 感)*/
+.fan-banner-stripe {
+  position: absolute; inset: 0;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(
+      135deg,
+      transparent 0,
+      transparent 24rpx,
+      rgba(255,255,255,.04) 24rpx,
+      rgba(255,255,255,.04) 48rpx
+    );
+}
+
+.fan-banner-row {
+  position: relative; z-index: 1;
+  display: flex; align-items: center; gap: 24rpx;
+}
+
+.fan-flag-big {
+  font-size: 96rpx;
+  width: 140rpx; height: 140rpx;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: rgba(255,255,255,.22);
+  border-radius: 50%;
+  border: 4rpx solid rgba(255,255,255,.4);
+  flex-shrink: 0;
+  box-shadow: 0 8rpx 20rpx rgba(0,0,0,.15);
+  line-height: 1;
+}
+
+/* === Cheer 应援大字 === */
+.fan-cheer {
+  display: block;
+  font-family: 'Helvetica Neue', 'Inter', sans-serif;
+  font-size: 48rpx;
+  font-weight: 900;
+  letter-spacing: -1rpx;
+  line-height: 1.05;
+  text-transform: uppercase;
+  text-shadow: 0 2rpx 8rpx rgba(0,0,0,.18);
+}
+.fan-cheer-empty {
+  font-size: 56rpx;
+  color: #14B8A6;
+  letter-spacing: -1.5rpx;
+  text-shadow: none;
+}
+
+.fan-sub {
+  display: block;
+  font-size: 24rpx;
+  font-weight: 500;
+  margin-top: 4rpx;
+  letter-spacing: .5rpx;
+}
+.fan-sub-dark {
+  color: #6B7280;
+  margin-top: 6rpx;
+}
+
+/* === 未选阵营 · 空状态 === */
+.banner-empty {
+  background: linear-gradient(135deg, #FFFFFF 0%, #F0FDFA 100%);
+  border: 2rpx solid rgba(20, 184, 166, .15);
+  text-align: left;
+}
+
+/* === 快速选阵营 === */
+.quick-pick-row {
+  display: flex; gap: 16rpx;
+  margin-top: 28rpx;
+  overflow-x: auto;
+  padding-bottom: 4rpx;
+}
+.quick-pick {
+  flex-shrink: 0;
+  display: flex; flex-direction: column; align-items: center; gap: 8rpx;
+  cursor: pointer;
+}
+.quick-pick-circle {
+  width: 88rpx; height: 88rpx;
+  border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  border: 3rpx solid rgba(255,255,255,.6);
+  box-shadow: 0 4rpx 14rpx rgba(15, 23, 42, .12);
+  transition: transform .15s;
+}
+.quick-pick:active .quick-pick-circle { transform: scale(.94); }
+.quick-pick-flag {
+  font-size: 44rpx;
+  line-height: 1;
+  filter: drop-shadow(0 2rpx 4rpx rgba(0,0,0,.15));
+}
+.quick-pick-more {
+  background: #ECFDF5;
+  border-color: rgba(20, 184, 166, .3);
+}
+.quick-pick-more-tx {
+  font-size: 48rpx; font-weight: 300; color: #14B8A6;
+}
+.quick-pick-code {
+  font-size: 20rpx; font-weight: 700; color: #4B5563;
+  letter-spacing: .5rpx;
+}
+
+/* ============================================
+   FAN STATS CARD(等级 / 已预测 / EDS / 关注)
+   ============================================ */
+.fan-stats-card {
+  padding: 24rpx 20rpx;
+  margin-bottom: 32rpx;
+}
+.fan-stat {
+  flex: 1;
+  display: flex; flex-direction: column; align-items: center; gap: 4rpx;
+}
+.fan-stat-val {
+  font-family: 'Helvetica Neue', sans-serif;
+  font-size: 38rpx; font-weight: 800;
+  color: #14B8A6;
+  letter-spacing: -.5rpx;
+  line-height: 1;
+}
+.fan-stat-lbl {
+  font-size: 20rpx; color: #9CA3AF;
+}
+.fan-stat-divider {
+  width: 2rpx; height: 36rpx;
+  background: #E5E7EB;
+}
+
+/* ============================================
+   比赛卡 + Feed 卡(同前)
+   ============================================ */
 .match-card { padding: 24rpx 24rpx 22rpx; }
 .match-top { margin-bottom: 16rpx; }
 .match-countdown {
@@ -53,7 +174,6 @@
   color: #9CA3AF;
 }
 
-/* === Feed item === */
 .feed-item { padding: 22rpx 24rpx; margin-bottom: 16rpx; }
 .feed-text {
   font-size: 28rpx;

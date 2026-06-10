@@ -1,41 +1,67 @@
 <view class="page">
 
-  <!-- ===== Hero · 球迷身份卡(白底)===== -->
-  <view class="card hero-card">
-    <view class="row-between">
-      <view class="col" style="gap: 8rpx;">
-        <text class="hero-greet">{{i18n.hp_greet}}{{wallet ? ', ' + wallet.nickname : ''}}</text>
-        <text class="hero-sub">{{i18n.hp_fan_of}} {{myTeamName ? myTeamName + ' ' + myTeamFlag : i18n.hp_fan_of_none}}</text>
-      </view>
-      <view class="avatar avatar-ring">
-        <text>{{myTeamFlag}}</text>
+  <!-- ============================================
+       Hero · 球迷应援 banner
+       两种状态:
+         1. 已选阵营 → 球队色渐变 + 母语应援口号大字
+         2. 未选阵营 → 「PICK YOUR SIDE」 + 6 队快速选取
+       ============================================ -->
+  <view wx:if="{{myTeam}}" class="fan-banner banner-team"
+        style="background: linear-gradient(135deg, {{myTeamData.c1}} 0%, {{myTeamData.c2}} 100%);">
+    <view class="fan-banner-stripe"></view>
+    <view class="fan-banner-row">
+      <view class="fan-flag-big">{{myTeamData.flag}}</view>
+      <view class="col" style="flex:1; gap: 8rpx;">
+        <text class="fan-cheer" style="color: {{myTeamData.textOn}};">{{myTeamData.cheer}}</text>
+        <text class="fan-sub" style="color: {{myTeamData.textOn}}; opacity: .8;">{{i18n.hp_your_team_fight}}</text>
       </view>
     </view>
+  </view>
 
-    <view class="row-between hero-stat-row">
-      <view class="hero-stat">
-        <text class="hero-stat-val">{{fanLevel}}</text>
-        <text class="hero-stat-lbl">{{i18n.hp_stat_level}}</text>
-      </view>
-      <view class="hero-stat">
-        <text class="hero-stat-val">{{predCount}}</text>
-        <text class="hero-stat-lbl">{{i18n.hp_stat_picks}}</text>
-      </view>
-      <view class="hero-stat">
-        <text class="hero-stat-val">{{eds}}</text>
-        <text class="hero-stat-lbl">{{i18n.hp_stat_eds}}</text>
-      </view>
-      <view class="hero-stat">
-        <text class="hero-stat-val">{{followCount}}</text>
-        <text class="hero-stat-lbl">{{i18n.hp_stat_follows}}</text>
-      </view>
-    </view>
+  <view wx:else class="fan-banner banner-empty">
+    <text class="fan-cheer fan-cheer-empty">{{i18n.hp_pick_side}}</text>
+    <text class="fan-sub fan-sub-dark">{{i18n.hp_which_flag}}</text>
 
-    <view wx:if="{{!wallet}}" class="hero-cta">
-      <button class="btn btn-primary btn-block" bindtap="onConnect">{{i18n.hp_cta_connect}}</button>
+    <view class="quick-pick-row">
+      <view wx:for="{{quickTeams}}" wx:key="code" class="quick-pick" bindtap="quickPick" data-code="{{item.code}}">
+        <view class="quick-pick-circle" style="background: linear-gradient(135deg, {{item.c1}}, {{item.c2}});">
+          <text class="quick-pick-flag">{{item.flag}}</text>
+        </view>
+        <text class="quick-pick-code">{{item.code}}</text>
+      </view>
+      <view class="quick-pick" bindtap="goAllTeams">
+        <view class="quick-pick-circle quick-pick-more">
+          <text class="quick-pick-more-tx">+</text>
+        </view>
+        <text class="quick-pick-code">{{i18n.cta_see_all}}</text>
+      </view>
     </view>
-    <view wx:elif="{{!myTeam}}" class="hero-cta">
-      <button class="btn btn-ghost btn-block" bindtap="onPickTeam">{{i18n.hp_cta_pick_camp}}</button>
+  </view>
+
+  <!-- ============================================
+       球迷状态卡 · 等级 / 已预测 / EDS / 关注
+       ============================================ -->
+  <view class="card fan-stats-card">
+    <view class="row-between" style="gap: 12rpx;">
+      <view class="fan-stat">
+        <text class="fan-stat-val">{{fanLevel}}</text>
+        <text class="fan-stat-lbl">{{i18n.hp_stat_level}}</text>
+      </view>
+      <view class="fan-stat-divider"></view>
+      <view class="fan-stat">
+        <text class="fan-stat-val">{{predCount}}</text>
+        <text class="fan-stat-lbl">{{i18n.hp_stat_picks}}</text>
+      </view>
+      <view class="fan-stat-divider"></view>
+      <view class="fan-stat">
+        <text class="fan-stat-val">{{eds}}</text>
+        <text class="fan-stat-lbl">{{i18n.hp_stat_eds}}</text>
+      </view>
+      <view class="fan-stat-divider"></view>
+      <view class="fan-stat">
+        <text class="fan-stat-val">{{followCount}}</text>
+        <text class="fan-stat-lbl">{{i18n.hp_stat_follows}}</text>
+      </view>
     </view>
   </view>
 
