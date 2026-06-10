@@ -11,6 +11,7 @@ App({
     predictions: {},     // { match_id: 'home' | 'draw' | 'away' } · v1 主预测
     halftimePredictions: {}, // F-P0-3 · { match_id: { pick, decided_in_ms, status, potential_eds } }
     advancedPredictions: {}, // F-P0-4 · { match_id: { isBold, score, firstScorer, cards, judgmentScore } }
+    duels: [],               // F-P0-5 · [{ id, match_id, friend, myPick, friendPick, forfeit, status, createdAt }]
     follows: [],         // 关注的 KOL ids
   },
 
@@ -71,6 +72,7 @@ App({
         predictions: this.globalData.predictions,
         halftimePredictions: this.globalData.halftimePredictions,
         advancedPredictions: this.globalData.advancedPredictions,
+        duels: this.globalData.duels,
         follows: this.globalData.follows,
       });
     } catch (e) {}

@@ -128,6 +128,13 @@ Page({
     gmOtherHits: [],
     gmHitsCount: 0,
     gmTotalMembers: 0,
+    // F-P0-5 duel state
+    showDuel: false,
+    duelFriends: [],
+    duelFriend: null,
+    duelFriendPickLabel: '',
+    duelForfeit: '',
+    duelForfeitOptions: [],
   },
 
   onLoad(opts) {
@@ -864,6 +871,102 @@ Page({
       totalMembers,
       groupName: group.name,
     });
+  },
+
+  // ============ F-P0-5 1v1 好友挑战 ============
+
+  openDuel() {
+    if (!this.data.userPick) {
+      wx.showToast({ title: 'Pick first', icon: 'none' });
+      return;
+    }
+    const { MOCK_FRIENDS } = require('../../utils/mock-data');
+    const i18n = this.data.i18n;
+    this.setData({
+      showDuel: true,
+      duelFriends: MOCK_FRIENDS,
+      duelFriend: null,
+      duelFriendPickLabel: '',
+      duelForfeit: '',
+      duelForfeitOptions: [
+        { key: 'sticker',  emoji: '🎭', label: i18n.duel_forfeit_sticker },
+        { key: 'coffee',   emoji: '☕', label: i18n.duel_forfeit_coffee },
+        { key: 'haircut',  emoji: '🎩', label: i18n.duel_forfeit_haircut },
+      ],
+    });
+  },
+
+  closeDuel() {
+    this.setData({ showDuel: false });
+  },
+
+  resetDuelFriend() {
+    this.setData({ duelFriend: null, duelForfeit: '' });
+  },
+
+  pickFriend(e) {
+    const id = e.currentTarget.dataset.id;
+    const friend = this.data.duelFriends.find(f => f.id === id);
+    if (!friend) return;
+
+    // 强制好友押反方 · 按规则不能押同侧
+    const myPick = this.data.userPick;
+    let friendPick;
+    if (myPick === 'home') friendPick = 'away';
+    else if (myPick === 'away') friendPick = 'home';
+    else friendPick = 'home'; // 我 draw → 好友 home
+
+    const home = this.data.homeTeam;
+    const away = this.data.awayTeam;
+    const i18n = this.data.i18n;
+    const friendPickLabel = friendPick === 'home' ? home.code + ' ' + i18n.pick_home_win
+                          : friendPick === 'draw' ? i18n.pick_draw
+                          : away.code + ' ' + i18n.pick_away_win;
+
+    this.setData({
+      duelFriend: { ...friend, pick: friendPick },
+      duelFriendPickLabel: friendPickLabel,
+    });
+    wx.vibrateShort && wx.vibrateShort({ type: 'light' });
+  },
+
+  pickForfeit(e) {
+    const key = e.currentTarget.dataset.key;
+    this.setData({ duelForfeit: key });
+    wx.vibrateShort && wx.vibrateShort({ type: 'light' });
+  },
+
+  sendDuel() {
+    if (!this.data.duelFriend || !this.data.duelForfeit) return;
+    const app = getApp();
+    const duel = {
+      id: 'duel_' + Date.now(),
+      match_id: this.matchId,
+      friend: this.data.duelFriend.handle,
+      friendId: this.data.duelFriend.id,
+      myPick: this.data.userPick,
+      friendPick: this.data.duelFriend.pick,
+      forfeit: this.data.duelForfeit,
+      status: 'pending',
+      createdAt: new Date().toISOString(),
+    };
+    app.globalData.duels = app.globalData.duels || [];
+    app.globalData.duels.push(duel);
+    if (app.persist) app.persist();
+
+    // 模拟通过 Luffa share API 发挑战卡到好友 IM
+    const { shareToIM } = require('../../utils/luffa');
+    shareToIM({
+      title: this.data.i18n.duel_sent_title,
+      content: `${this.data.duelFriend.handle} · ${this.data.duelFriend.pick}`,
+      path: `/pages/match-detail/match-detail?id=${this.matchId}`
+    }).catch(() => {}); // 不阻塞
+
+    wx.showToast({
+      title: this.data.i18n.duel_sent_title,
+      icon: 'success', duration: 2000
+    });
+    this.setData({ showDuel: false });
   },
 
   // DEMO 触发器 · 随机一种 type · 智能用本场参赛队 + 主预测

@@ -79,6 +79,17 @@ export const LEADERBOARD_LOYALTY = [
   { rank: 5, handle: '@DiegoSportsES', flag: '🇪🇸', kol: 'diego_es', team: 'ESP', cups: 3, days: 1280, title: '资深球迷' },
 ];
 
+// 好友 mock(F-P0-5)· 真实场景从 Luffa contacts API 拉
+// 给每位好友一个支持的球队 + 历史 1v1 战绩
+export const MOCK_FRIENDS = [
+  { id: 'fr_diego',   handle: '@diego_madrid', flag: '🇪🇸', team: 'ESP', win: 12, loss: 7 },
+  { id: 'fr_marco',   handle: '@marco_rio',    flag: '🇧🇷', team: 'BRA', win: 8,  loss: 11 },
+  { id: 'fr_lucas',   handle: '@lucas_buenos', flag: '🇦🇷', team: 'ARG', win: 9,  loss: 9 },
+  { id: 'fr_anita',   handle: '@anita_dortmund', flag: '🇩🇪', team: 'GER', win: 5, loss: 4 },
+  { id: 'fr_pierre',  handle: '@pierre_paris', flag: '🇫🇷', team: 'FRA', win: 6,  loss: 3 },
+  { id: 'fr_luis',    handle: '@luis_cdmx',    flag: '🇲🇽', team: 'MEX', win: 4,  loss: 7 },
+];
+
 // 实时聊天模拟池(F-P0-1)· 用于 mock 每 8-12s 推一条
 // 真实场景:Ken 后端 WebSocket 推送 · 这是开发期 + 演示用
 export const CHAT_MOCK_POOL = [

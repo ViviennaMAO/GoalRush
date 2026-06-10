@@ -67,6 +67,68 @@
   </view>
 
   <!-- ============================================
+       F-P0-5 1v1 好友挑战 overlay
+       Pick 好友 → 看自动反向押 → 选罚则 → 发送
+       ============================================ -->
+  <view wx:if="{{showDuel}}" class="card-overlay" catchtap="closeDuel">
+    <view class="duel-frame" catchtap="noop">
+      <view class="duel-frame-head">
+        <text class="duel-frame-title">⚔ {{i18n.duel_cta}}</text>
+        <text class="tx-small tx-muted">{{i18n.duel_cta_sub}}</text>
+      </view>
+
+      <!-- 我 vs 好友 比对预览 -->
+      <view wx:if="{{duelFriend}}" class="duel-preview">
+        <view class="duel-side">
+          <view class="avatar avatar-md"><text>{{myFlag || '⚽'}}</text></view>
+          <text class="duel-side-name">You</text>
+          <text class="duel-side-pick">{{i18n.duel_my_pick}}: {{pickLabel}}</text>
+        </view>
+        <text class="duel-vs">VS</text>
+        <view class="duel-side">
+          <view class="avatar avatar-md"><text>{{duelFriend.flag}}</text></view>
+          <text class="duel-side-name">{{duelFriend.handle}}</text>
+          <text class="duel-side-pick">{{i18n.duel_friend_picks}}: {{duelFriendPickLabel}}</text>
+        </view>
+      </view>
+
+      <!-- 步骤 1:选好友 -->
+      <view wx:if="{{!duelFriend}}" class="duel-step">
+        <text class="duel-step-title">1 · {{i18n.duel_choose_friend}}</text>
+        <view wx:for="{{duelFriends}}" wx:key="id" class="duel-friend-row" bindtap="pickFriend" data-id="{{item.id}}">
+          <view class="avatar avatar-sm"><text>{{item.flag}}</text></view>
+          <view class="col" style="flex:1; gap: 2rpx;">
+            <text class="duel-friend-handle">{{item.handle}}</text>
+            <text class="tx-small">{{item.team}} · {{item.win}}W {{item.loss}}L</text>
+          </view>
+          <text class="duel-friend-arrow">›</text>
+        </view>
+      </view>
+
+      <!-- 步骤 2:选罚则 -->
+      <view wx:if="{{duelFriend}}" class="duel-step">
+        <text class="duel-step-title">2 · {{i18n.duel_forfeit_label}}</text>
+        <view wx:for="{{duelForfeitOptions}}" wx:key="key"
+              class="duel-forfeit-row {{duelForfeit === item.key ? 'selected' : ''}}"
+              bindtap="pickForfeit" data-key="{{item.key}}">
+          <view class="duel-forfeit-emoji">{{item.emoji}}</view>
+          <text class="duel-forfeit-tx">{{item.label}}</text>
+          <text wx:if="{{duelForfeit === item.key}}" class="tx-teal tx-bold">✓</text>
+        </view>
+      </view>
+
+      <view class="vcard-actions" style="margin-top: 24rpx;">
+        <button wx:if="{{!duelFriend}}" class="btn btn-ghost" catchtap="closeDuel">{{i18n.goal_close}}</button>
+        <block wx:else>
+          <button class="btn btn-ghost" catchtap="resetDuelFriend">‹ Back</button>
+          <button class="btn btn-primary {{!duelForfeit ? 'is-disabled' : ''}}"
+                  disabled="{{!duelForfeit}}" catchtap="sendDuel">{{i18n.duel_confirm}}</button>
+        </block>
+      </view>
+    </view>
+  </view>
+
+  <!-- ============================================
        F-P0-7 群组每场冠军(Group MVP)overlay
        结算后 30s 内群组自动颁出 · MVP = 命中 + 最早决定 + Bold 加分
        触发:cron (真实) / demo 按钮(开发)
@@ -280,6 +342,16 @@
     <view wx:if="{{userPick}}" class="confirm-banner">
       <text class="tx-bold" style="color:#fff;">✓ {{pickLabel}}</text>
       <button class="btn btn-pill" style="background: #fff; color: #0F766E;" bindtap="onShare">{{i18n.cta_share_group}}</button>
+    </view>
+
+    <!-- F-P0-5 1v1 挑战入口 -->
+    <view wx:if="{{userPick}}" class="duel-cta" bindtap="openDuel">
+      <view class="duel-cta-icon">⚔</view>
+      <view class="col" style="flex:1; gap: 4rpx;">
+        <text class="duel-cta-title">{{i18n.duel_cta}}</text>
+        <text class="duel-cta-sub">{{i18n.duel_cta_sub}}</text>
+      </view>
+      <text class="duel-cta-chevron">›</text>
     </view>
 
     <!-- ============================================
