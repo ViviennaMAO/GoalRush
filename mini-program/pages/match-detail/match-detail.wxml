@@ -136,6 +136,89 @@
       <text class="tx-bold" style="color:#fff;">✓ {{pickLabel}}</text>
       <button class="btn btn-pill" style="background: #fff; color: #0F766E;" bindtap="onShare">{{i18n.cta_share_group}}</button>
     </view>
+
+    <!-- ============================================
+         F-P0-4 Bold Call 加倍开关
+         仅当用户选择的项分布 < 25%(冷门)时可勾
+         ============================================ -->
+    <view wx:if="{{userPick}}" class="bold-call {{boldEligible ? '' : 'is-disabled'}}">
+      <view class="row-between">
+        <view class="col" style="gap: 4rpx; flex: 1;">
+          <view class="row row-gap-sm">
+            <text class="bold-call-label">{{i18n.adv_toggle}}</text>
+            <text class="pill {{boldEligible ? 'pill-gold' : 'pill-light'}}">×5</text>
+          </view>
+          <text class="tx-small">{{boldEligible ? i18n.adv_sub : i18n.adv_toggle_off_hint}}</text>
+        </view>
+        <switch checked="{{isBold}}" disabled="{{!boldEligible}}" bindchange="toggleBold" color="#14B8A6"></switch>
+      </view>
+    </view>
+
+    <!-- 进阶预测折叠 -->
+    <view wx:if="{{userPick}}" class="adv-section">
+      <view class="adv-toggle-row" bindtap="toggleAdvShow">
+        <text class="tx-teal tx-bold">{{showAdv ? i18n.adv_hide_more : i18n.adv_show_more}}</text>
+        <text class="adv-chevron {{showAdv ? 'is-open' : ''}}">⌄</text>
+      </view>
+
+      <view wx:if="{{showAdv}}" class="adv-panel">
+
+        <!-- 1. 精确比分 -->
+        <view class="adv-block">
+          <text class="adv-block-title">{{i18n.adv_score_title}}</text>
+          <view class="adv-grid adv-grid-6">
+            <view wx:for="{{advScoreOptions}}" wx:key="key"
+                  class="adv-cell {{advScorePick === item.key ? 'selected' : ''}}"
+                  bindtap="pickAdvScore" data-key="{{item.key}}">
+              <text>{{item.key}}</text>
+            </view>
+          </view>
+        </view>
+
+        <!-- 2. 首球者 -->
+        <view class="adv-block">
+          <text class="adv-block-title">{{i18n.adv_first_scorer_title}}</text>
+          <view class="adv-grid adv-grid-3">
+            <view class="adv-cell {{advFirstScorer === 'home' ? 'selected' : ''}}"
+                  bindtap="pickAdvFirst" data-key="home">
+              <text>{{homeTeam.flag}} {{homeTeam.code}}</text>
+            </view>
+            <view class="adv-cell {{advFirstScorer === 'away' ? 'selected' : ''}}"
+                  bindtap="pickAdvFirst" data-key="away">
+              <text>{{awayTeam.flag}} {{awayTeam.code}}</text>
+            </view>
+            <view class="adv-cell {{advFirstScorer === 'none' ? 'selected' : ''}}"
+                  bindtap="pickAdvFirst" data-key="none">
+              <text>{{i18n.adv_no_first_scorer}}</text>
+            </view>
+          </view>
+        </view>
+
+        <!-- 3. 红牌数 -->
+        <view class="adv-block">
+          <text class="adv-block-title">{{i18n.adv_cards_title}}</text>
+          <view class="adv-grid adv-grid-3">
+            <view class="adv-cell {{advCards === '0' ? 'selected' : ''}}" bindtap="pickAdvCards" data-key="0">
+              <text>{{i18n.adv_cards_0}}</text>
+            </view>
+            <view class="adv-cell {{advCards === '1' ? 'selected' : ''}}" bindtap="pickAdvCards" data-key="1">
+              <text>{{i18n.adv_cards_1}}</text>
+            </view>
+            <view class="adv-cell {{advCards === '2+' ? 'selected' : ''}}" bindtap="pickAdvCards" data-key="2+">
+              <text>{{i18n.adv_cards_2plus}}</text>
+            </view>
+          </view>
+        </view>
+
+        <!-- Judgment Score 累计预览 -->
+        <view wx:if="{{judgmentScore}}" class="adv-judgment">
+          <text class="tx-small">{{i18n.adv_judgment_score}}</text>
+          <text class="adv-judgment-val">{{judgmentScore}}</text>
+        </view>
+
+      </view>
+    </view>
+
   </view>
 
   <!-- ===== KOL 在押 ===== -->

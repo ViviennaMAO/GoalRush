@@ -14,6 +14,16 @@ const RATE_LIMIT_MAX = 3;              // 窗口内最多发条数
 let _msgIdSeq = 0;
 function nextMsgId() { return 'm_' + Date.now() + '_' + (++_msgIdSeq); }
 
+// F-P0-4 进阶预测配置
+const BOLD_THRESHOLD = 25;             // 分布 % 阈值 · 低于即可勾 Bold Call
+const BOLD_MULTIPLIER = 5;
+const ADV_SCORE_OPTIONS = ['0-0', '1-0', '1-1', '2-0', '2-1', '2-2', '3-1', '3-2', '其他'];
+const ADV_EDS = {
+  score: 100 * 3,       // 比分 × 3
+  first_scorer: 50,
+  cards: 20,
+};
+
 // F-P0-3 半场重押配置
 const HT_WINDOW_MS = 60 * 1000;        // 60 秒决策窗口
 const HT_PROGRESS_TICK_MS = 1000;      // 进度条 tick
@@ -86,6 +96,15 @@ Page({
     htSocialText: '',
     _htCountdownTimer: null,
     _htAutoCloseTimer: null,
+    // F-P0-4 advanced prediction state
+    isBold: false,
+    boldEligible: false,
+    showAdv: false,
+    advScoreOptions: ADV_SCORE_OPTIONS.map(s => ({ key: s })),
+    advScorePick: '',
+    advFirstScorer: '',
+    advCards: '',
+    judgmentScore: 0,
   },
 
   onLoad(opts) {
@@ -145,6 +164,12 @@ Page({
       );
     }
 
+    // === F-P0-4 进阶预测 · 恢复状态 ===
+    const advAll = app.globalData.advancedPredictions || {};
+    const advStored = advAll[this.matchId] || {};
+    const boldEligible = this._computeBoldEligibility(userPick, match);
+    const judgmentScore = this._computeJudgmentScore(advStored, !!advStored.isBold);
+
     this.setData({
       i18n,
       matchId: this.matchId,
@@ -161,10 +186,108 @@ Page({
       myCampCode: myCamp || '',
       myFlag: myCampData ? myCampData.flag : '',
       chatMessages,
-      // mock 在线观众数 + 随机波动
       watching: 8000 + Math.floor(Math.random() * 6000),
       lastMessageId: chatMessages.length ? chatMessages[chatMessages.length - 1].scrollAnchor : '',
+      // F-P0-4 advanced state restore
+      isBold: !!advStored.isBold,
+      boldEligible,
+      advScorePick: advStored.score || '',
+      advFirstScorer: advStored.firstScorer || '',
+      advCards: advStored.cards || '',
+      judgmentScore,
     });
+  },
+
+  // ============ F-P0-4 进阶预测助手 ============
+
+  // Bold Call 资格:用户的主预测项在当前分布 < 25%(冷门)
+  _computeBoldEligibility(userPick, match) {
+    if (!userPick || !match) return false;
+    const dist = match.distribution || {};
+    const pct = dist[userPick];
+    return typeof pct === 'number' && pct < BOLD_THRESHOLD;
+  },
+
+  // 判断力分数:进阶预测每命中一项加分(显示用 · 真实结算后端计算)
+  _computeJudgmentScore(adv, isBold) {
+    let score = 0;
+    if (adv.score) score += 30;
+    if (adv.firstScorer) score += 15;
+    if (adv.cards) score += 10;
+    if (isBold) score = Math.round(score * 1.5);
+    return score;
+  },
+
+  _persistAdv() {
+    const app = getApp();
+    app.globalData.advancedPredictions = app.globalData.advancedPredictions || {};
+    app.globalData.advancedPredictions[this.matchId] = {
+      isBold: this.data.isBold,
+      score: this.data.advScorePick,
+      firstScorer: this.data.advFirstScorer,
+      cards: this.data.advCards,
+      judgmentScore: this.data.judgmentScore,
+    };
+    app.persist && app.persist();
+  },
+
+  toggleBold(e) {
+    if (!this.data.boldEligible) {
+      wx.showToast({ title: this.data.i18n.adv_bold_not_eligible, icon: 'none' });
+      return;
+    }
+    const isBold = e.detail.value;
+    const judgmentScore = this._computeJudgmentScore({
+      score: this.data.advScorePick,
+      firstScorer: this.data.advFirstScorer,
+      cards: this.data.advCards,
+    }, isBold);
+    this.setData({ isBold, judgmentScore });
+    if (isBold) wx.showToast({ title: this.data.i18n.adv_bold_ok, icon: 'success', duration: 1500 });
+    setTimeout(() => this._persistAdv(), 0);
+  },
+
+  toggleAdvShow() {
+    this.setData({ showAdv: !this.data.showAdv });
+  },
+
+  pickAdvScore(e) {
+    const key = e.currentTarget.dataset.key;
+    const next = this.data.advScorePick === key ? '' : key;  // 二次点击取消
+    const judgmentScore = this._computeJudgmentScore({
+      score: next,
+      firstScorer: this.data.advFirstScorer,
+      cards: this.data.advCards,
+    }, this.data.isBold);
+    this.setData({ advScorePick: next, judgmentScore });
+    wx.vibrateShort && wx.vibrateShort({ type: 'light' });
+    setTimeout(() => this._persistAdv(), 0);
+  },
+
+  pickAdvFirst(e) {
+    const key = e.currentTarget.dataset.key;
+    const next = this.data.advFirstScorer === key ? '' : key;
+    const judgmentScore = this._computeJudgmentScore({
+      score: this.data.advScorePick,
+      firstScorer: next,
+      cards: this.data.advCards,
+    }, this.data.isBold);
+    this.setData({ advFirstScorer: next, judgmentScore });
+    wx.vibrateShort && wx.vibrateShort({ type: 'light' });
+    setTimeout(() => this._persistAdv(), 0);
+  },
+
+  pickAdvCards(e) {
+    const key = e.currentTarget.dataset.key;
+    const next = this.data.advCards === key ? '' : key;
+    const judgmentScore = this._computeJudgmentScore({
+      score: this.data.advScorePick,
+      firstScorer: this.data.advFirstScorer,
+      cards: next,
+    }, this.data.isBold);
+    this.setData({ advCards: next, judgmentScore });
+    wx.vibrateShort && wx.vibrateShort({ type: 'light' });
+    setTimeout(() => this._persistAdv(), 0);
   },
 
   async onPick(e) {
@@ -172,6 +295,14 @@ Page({
     const matchId = this.matchId;
     app.globalData.predictions = app.globalData.predictions || {};
     app.globalData.predictions[matchId] = pick;
+
+    // F-P0-4:换主预测后重新评估 Bold Call 资格 · 若不再 eligible 自动取消
+    const eligible = this._computeBoldEligibility(pick, this.data.match);
+    if (!eligible && this.data.isBold) {
+      this.setData({ isBold: false });
+      this._persistAdv();
+    }
+
     app.persist();
     const userId = (app.globalData.wallet && app.globalData.wallet.address) || 'mp_local';
     submitPrediction(userId, matchId, pick).catch(() => {});

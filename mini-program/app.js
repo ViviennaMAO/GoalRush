@@ -10,6 +10,7 @@ App({
     eds: 0,              // EDS 余额(显示用,真值在 Luffa 钱包)
     predictions: {},     // { match_id: 'home' | 'draw' | 'away' } · v1 主预测
     halftimePredictions: {}, // F-P0-3 · { match_id: { pick, decided_in_ms, status, potential_eds } }
+    advancedPredictions: {}, // F-P0-4 · { match_id: { isBold, score, firstScorer, cards, judgmentScore } }
     follows: [],         // 关注的 KOL ids
   },
 
@@ -69,6 +70,7 @@ App({
         eds: this.globalData.eds,
         predictions: this.globalData.predictions,
         halftimePredictions: this.globalData.halftimePredictions,
+        advancedPredictions: this.globalData.advancedPredictions,
         follows: this.globalData.follows,
       });
     } catch (e) {}

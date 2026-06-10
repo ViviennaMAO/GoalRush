@@ -332,6 +332,99 @@
 }
 
 /* ============================================
+   F-P0-4 Bold Call + 进阶预测
+   ============================================ */
+.bold-call {
+  margin-top: 20rpx;
+  background: linear-gradient(135deg, #FFFBEB, #FFFFFF);
+  border: 2rpx solid rgba(255, 213, 74, .4);
+  border-radius: 20rpx;
+  padding: 22rpx 24rpx;
+  transition: all .2s;
+}
+.bold-call.is-disabled {
+  background: #F9FAFB;
+  border-color: #E5E7EB;
+  opacity: .65;
+}
+.bold-call-label {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 30rpx;
+  font-weight: 800;
+  color: #92400E;
+  letter-spacing: 1rpx;
+}
+.bold-call.is-disabled .bold-call-label { color: #6B7280; }
+
+.adv-section {
+  margin-top: 20rpx;
+}
+.adv-toggle-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18rpx 4rpx;
+}
+.adv-chevron {
+  font-size: 36rpx;
+  color: #14B8A6;
+  transition: transform .2s;
+}
+.adv-chevron.is-open { transform: rotate(180deg); }
+
+.adv-panel {
+  background: #FFFFFF;
+  border-radius: 20rpx;
+  padding: 24rpx 22rpx;
+  box-shadow: 0 2rpx 12rpx rgba(15, 23, 42, .04);
+  animation: bubbleIn .25s ease-out;
+}
+
+.adv-block { margin-bottom: 24rpx; }
+.adv-block:last-of-type { margin-bottom: 0; }
+.adv-block-title {
+  display: block;
+  font-size: 22rpx; color: #6B7280; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 1rpx;
+  margin-bottom: 12rpx;
+}
+
+.adv-grid { display: grid; gap: 10rpx; }
+.adv-grid-3 { grid-template-columns: repeat(3, 1fr); }
+.adv-grid-6 { grid-template-columns: repeat(3, 1fr); }
+@media (min-width: 480px) {
+  .adv-grid-6 { grid-template-columns: repeat(6, 1fr); }
+}
+
+.adv-cell {
+  background: #F4F6F5;
+  border: 3rpx solid transparent;
+  border-radius: 14rpx;
+  padding: 18rpx 8rpx;
+  text-align: center;
+  font-size: 24rpx; font-weight: 700;
+  color: #1F2937;
+  font-family: 'Helvetica Neue', sans-serif;
+  transition: all .15s;
+}
+.adv-cell.selected {
+  background: #ECFDF5;
+  border-color: #14B8A6;
+  color: #0F766E;
+}
+
+.adv-judgment {
+  margin-top: 24rpx;
+  padding-top: 20rpx;
+  border-top: 2rpx dashed #E5E7EB;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.adv-judgment-val {
+  font-family: 'JetBrains Mono', ui-monospace, Menlo, monospace;
+  font-size: 32rpx; font-weight: 800;
+  color: #14B8A6;
+  letter-spacing: -.5rpx;
+}
+
+/* ============================================
    F-P0-1 实时聊天室
    ============================================ */
 .chat-section { margin-top: 36rpx; }
