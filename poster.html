@@ -1,219 +1,103 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>海报生成器 · GoalRush 内容工具</title>
-<link rel="stylesheet" href="assets/css/style.css">
-<style>
+<!DOCTYPE html> <html lang="zh-CN"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>海报生成器 · GoalRush 内容工具</title> <link rel="stylesheet" href="assets/css/style.css"> <style>
 .studio {
-  display: grid;
-  grid-template-columns: 380px 1fr;
-  gap: 24px;
-  align-items: flex-start;
+ display: grid;
+ grid-template-columns: 380px 1fr;
+ gap: 24px;
+ align-items: flex-start;
 }
 @media (max-width: 980px) {
-  .studio { grid-template-columns: 1fr; }
+ .studio { grid-template-columns: 1fr; }
 }
 .panel {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--r);
-  padding: 20px;
-  position: sticky;
-  top: 80px;
+ background: var(--bg-card);
+ border: 1px solid var(--border);
+ border-radius: var(--r);
+ padding: 20px;
+ position: sticky;
+ top: 80px;
 }
 .panel h3 {
-  font-family: Inter;
-  font-size: 16px;
-  font-weight: 800;
-  margin-bottom: 12px;
-  color: var(--ink);
+ font-family: Inter;
+ font-size: 16px;
+ font-weight: 800;
+ margin-bottom: 12px;
+ color: var(--ink);
 }
 .panel-row {
-  display: flex; flex-direction: column;
-  gap: 6px;
-  margin-bottom: 14px;
+ display: flex; flex-direction: column;
+ gap: 6px;
+ margin-bottom: 14px;
 }
 .panel-row label {
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: .06em;
-  color: var(--ink-3);
-  font-weight: 600;
+ font-size: 11px;
+ text-transform: uppercase;
+ letter-spacing: .06em;
+ color: var(--ink-3);
+ font-weight: 600;
 }
 .panel-row select, .panel-row input, .panel-row textarea {
-  background: rgba(0,0,0,.4);
-  border: 1px solid var(--border);
-  color: var(--ink);
-  padding: 10px 12px;
-  border-radius: 10px;
-  font-family: Inter;
-  font-size: 13px;
-  width: 100%;
+ background: rgba(0,0,0,.4);
+ border: 1px solid var(--border);
+ color: var(--ink);
+ padding: 10px 12px;
+ border-radius: 10px;
+ font-family: Inter;
+ font-size: 13px;
+ width: 100%;
 }
 .panel-row select:focus, .panel-row input:focus, .panel-row textarea:focus {
-  border-color: var(--accent);
-  outline: none;
+ border-color: var(--accent);
+ outline: none;
 }
 .panel-row textarea { min-height: 64px; resize: vertical; }
 .template-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  margin-bottom: 16px;
+ display: grid;
+ grid-template-columns: 1fr 1fr;
+ gap: 8px;
+ margin-bottom: 16px;
 }
 .template-card {
-  border: 2px solid var(--border);
-  border-radius: 10px;
-  padding: 12px 10px;
-  text-align: center;
-  cursor: pointer;
-  background: rgba(0,0,0,.2);
-  transition: all .15s;
+ border: 2px solid var(--border);
+ border-radius: 10px;
+ padding: 12px 10px;
+ text-align: center;
+ cursor: pointer;
+ background: rgba(0,0,0,.2);
+ transition: all .15s;
 }
 .template-card:hover { border-color: var(--accent); }
 .template-card.selected {
-  border-color: var(--accent);
-  background: rgba(0,255,136,.08);
+ border-color: var(--accent);
+ background: rgba(0,255,136,.08);
 }
 .template-card .ico { font-size: 24px; }
 .template-card .name { font-size: 11px; font-weight: 700; margin-top: 4px; }
 .template-card .ratio { font-size: 10px; color: var(--ink-3); font-family: 'JetBrains Mono'; }
 
 .preview {
-  background: rgba(0,0,0,.4);
-  border: 1px solid var(--border);
-  border-radius: var(--r);
-  padding: 24px;
-  display: flex; align-items: center; justify-content: center;
-  min-height: 600px;
+ background: rgba(0,0,0,.4);
+ border: 1px solid var(--border);
+ border-radius: var(--r);
+ padding: 24px;
+ display: flex; align-items: center; justify-content: center;
+ min-height: 600px;
 }
 .preview canvas {
-  max-width: 100%;
-  max-height: 70vh;
-  border-radius: 16px;
-  box-shadow: 0 16px 64px rgba(0,0,0,.6);
+ max-width: 100%;
+ max-height: 70vh;
+ border-radius: 16px;
+ box-shadow: 0 16px 64px rgba(0,0,0,.6);
 }
 .action-row {
-  display: flex; gap: 8px; margin-top: 16px;
+ display: flex; gap: 8px; margin-top: 16px;
 }
 .action-row button { flex: 1; }
-</style>
-</head>
-<body>
-
-<div id="header-slot"></div>
-
-<section class="page-header">
-  <div class="container">
-    <h1>海报生成器</h1>
-    <p>内容团队工具 · 一键出 X / TikTok / Reel 投放素材 · 多语种 / 多模板</p>
-  </div>
-</section>
-
-<section class="page-section">
-  <div class="container">
-    <div class="studio">
-
-      <!-- ====== 左侧配置面板 ====== -->
-      <div class="panel">
-        <h3>1 · 选模板</h3>
-        <div class="template-grid">
-          <div class="template-card selected" data-tpl="kol" onclick="setTpl('kol', this)">
-            <div class="ico">⭐</div>
-            <div class="name">KOL 战绩</div>
-            <div class="ratio">1:1</div>
-          </div>
-          <div class="template-card" data-tpl="prematch" onclick="setTpl('prematch', this)">
-            <div class="ico">🎯</div>
-            <div class="name">赛前预测</div>
-            <div class="ratio">1:1</div>
-          </div>
-          <div class="template-card" data-tpl="result" onclick="setTpl('result', this)">
-            <div class="ico">🏆</div>
-            <div class="name">赛后战报</div>
-            <div class="ratio">1:1</div>
-          </div>
-          <div class="template-card" data-tpl="reel" onclick="setTpl('reel', this)">
-            <div class="ico">📱</div>
-            <div class="name">TikTok / Reel</div>
-            <div class="ratio">9:16</div>
-          </div>
-        </div>
-
-        <h3>2 · 选数据</h3>
-        <div class="panel-row" id="row-kol">
-          <label>KOL</label>
-          <select id="sel-kol" onchange="render()"></select>
-        </div>
-        <div class="panel-row" id="row-match" style="display:none;">
-          <label>比赛</label>
-          <select id="sel-match" onchange="render()"></select>
-        </div>
-
-        <h3>3 · 文案与语言</h3>
-        <div class="panel-row">
-          <label>Language / 语言</label>
-          <select id="sel-lang" onchange="render()">
-            <option value="en">🇬🇧 English</option>
-            <option value="es">🇪🇸 Español</option>
-            <option value="pt">🇧🇷 Português</option>
-            <option value="de">🇩🇪 Deutsch</option>
-            <option value="fr">🇫🇷 Français</option>
-            <option value="zh-Hant">🇭🇰 繁體中文</option>
-          </select>
-        </div>
-        <div class="panel-row">
-          <label>自定义副标题(可选)</label>
-          <input id="custom-sub" type="text" placeholder="留空使用默认" oninput="render()">
-        </div>
-        <div class="panel-row">
-          <label>URL / Handle</label>
-          <input id="custom-url" type="text" value="goalrush.app" oninput="render()">
-        </div>
-
-        <div class="action-row">
-          <button class="btn-primary" onclick="downloadPoster()">⬇ 下载 PNG</button>
-        </div>
-        <div class="action-row">
-          <button class="btn-secondary" onclick="copyPoster()">📋 复制图片</button>
-        </div>
-        <div class="action-row">
-          <button class="btn-ghost" onclick="randomize()">🎲 随机示例</button>
-        </div>
-      </div>
-
-      <!-- ====== 右侧预览 ====== -->
-      <div>
-        <div class="preview">
-          <canvas id="poster-canvas"></canvas>
-        </div>
-        <div class="info-strip" style="margin-top: 16px;">
-          <div class="info-strip-icon">🎬</div>
-          <div class="info-strip-text">
-            <strong>用法建议</strong>
-            <small>
-              KOL 战绩卡 → 给 KOL 在 X / IG 个人主页晒(weekly 节奏) ·
-              赛前预测 → 群发 + KOL 转发(开赛前 4h)·
-              赛后战报 → 决出胜负 30 分钟内推 ·
-              TikTok / Reel → 9:16 vertical 用于短视频 cover
-            </small>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<div id="footer-slot"></div>
-
-<script src="assets/js/data.js"></script>
-<script src="assets/js/i18n.js"></script>
-<script src="assets/js/app.js"></script>
-<script src="assets/js/poster.js"></script>
-<script>
+</style> </head> <body> <div id="header-slot"></div> <section class="page-header"> <div class="container"> <h1>海报生成器</h1> <p>内容团队工具 · 一键出 X / TikTok / Reel 投放素材 · 多语种 / 多模板</p> </div> </section> <section class="page-section"> <div class="container"> <div class="studio"> <!-- ====== 左侧配置面板 ====== --> <div class="panel"> <h3>1 · 选模板</h3> <div class="template-grid"> <div class="template-card selected" data-tpl="kol" onclick="setTpl('kol', this)"> <div class="ico">⭐</div> <div class="name">KOL 战绩</div> <div class="ratio">1:1</div> </div> <div class="template-card" data-tpl="prematch" onclick="setTpl('prematch', this)"> <div class="ico"></div> <div class="name">赛前预测</div> <div class="ratio">1:1</div> </div> <div class="template-card" data-tpl="result" onclick="setTpl('result', this)"> <div class="ico"></div> <div class="name">赛后战报</div> <div class="ratio">1:1</div> </div> <div class="template-card" data-tpl="reel" onclick="setTpl('reel', this)"> <div class="ico"></div> <div class="name">TikTok / Reel</div> <div class="ratio">9:16</div> </div> </div> <h3>2 · 选数据</h3> <div class="panel-row" id="row-kol"> <label>KOL</label> <select id="sel-kol" onchange="render()"></select> </div> <div class="panel-row" id="row-match" style="display:none;"> <label>比赛</label> <select id="sel-match" onchange="render()"></select> </div> <h3>3 · 文案与语言</h3> <div class="panel-row"> <label>Language / 语言</label> <select id="sel-lang" onchange="render()"> <option value="en">🇬🇧 English</option> <option value="es">🇪🇸 Español</option> <option value="pt">🇧🇷 Português</option> <option value="de">🇩🇪 Deutsch</option> <option value="fr">🇫🇷 Français</option> <option value="zh-Hant">🇭🇰 繁體中文</option> </select> </div> <div class="panel-row"> <label>自定义副标题(可选)</label> <input id="custom-sub" type="text" placeholder="留空使用默认" oninput="render()"> </div> <div class="panel-row"> <label>URL / Handle</label> <input id="custom-url" type="text" value="goalrush.app" oninput="render()"> </div> <div class="action-row"> <button class="btn-primary" onclick="downloadPoster()">⬇ 下载 PNG</button> </div> <div class="action-row"> <button class="btn-secondary" onclick="copyPoster()"> 复制图片</button> </div> <div class="action-row"> <button class="btn-ghost" onclick="randomize()"> 随机示例</button> </div> </div> <!-- ====== 右侧预览 ====== --> <div> <div class="preview"> <canvas id="poster-canvas"></canvas> </div> <div class="info-strip" style="margin-top: 16px;"> <div class="info-strip-icon"></div> <div class="info-strip-text"> <strong>用法建议</strong> <small>
+ KOL 战绩卡 → 给 KOL 在 X / IG 个人主页晒(weekly 节奏) ·
+ 赛前预测 → 群发 + KOL 转发(开赛前 4h)·
+ 赛后战报 → 决出胜负 30 分钟内推 ·
+ TikTok / Reel → 9:16 vertical 用于短视频 cover
+ </small> </div> </div> </div> </div> </div> </section> <div id="footer-slot"></div> <script src="assets/js/data.js"></script> <script src="assets/js/i18n.js"></script> <script src="assets/js/app.js"></script> <script src="assets/js/poster.js"></script> <script>
 bootstrap('poster');
 
 const selKol = document.getElementById('sel-kol');
@@ -223,75 +107,72 @@ const customSub = document.getElementById('custom-sub');
 const customUrl = document.getElementById('custom-url');
 
 KOLS.forEach(k => {
-  const opt = document.createElement('option');
-  opt.value = k.id;
-  opt.textContent = `${k.flag} ${k.name} (${k.handle})`;
-  selKol.appendChild(opt);
+ const opt = document.createElement('option');
+ opt.value = k.id;
+ opt.textContent = `${k.flag} ${k.name} (${k.handle})`;
+ selKol.appendChild(opt);
 });
 MATCHES.forEach(m => {
-  const opt = document.createElement('option');
-  opt.value = m.id;
-  const h = getTeam(m.home), a = getTeam(m.away);
-  opt.textContent = `${h.flag} ${h.code} vs ${a.code} ${a.flag} · ${m.competition}`;
-  selMatch.appendChild(opt);
+ const opt = document.createElement('option');
+ opt.value = m.id;
+ const h = getTeam(m.home), a = getTeam(m.away);
+ opt.textContent = `${h.flag} ${h.code} vs ${a.code} ${a.flag} · ${m.competition}`;
+ selMatch.appendChild(opt);
 });
 
 let currentTpl = 'kol';
 
 function setTpl(t, el) {
-  currentTpl = t;
-  document.querySelectorAll('.template-card').forEach(c => c.classList.remove('selected'));
-  el.classList.add('selected');
-  trackEvent('poster_template', { tpl: t });
-  document.getElementById('row-kol').style.display = (t === 'kol' || t === 'reel') ? '' : 'none';
-  document.getElementById('row-match').style.display = (t === 'prematch' || t === 'result' || t === 'reel') ? '' : 'none';
-  render();
+ currentTpl = t;
+ document.querySelectorAll('.template-card').forEach(c => c.classList.remove('selected'));
+ el.classList.add('selected');
+ trackEvent('poster_template', { tpl: t });
+ document.getElementById('row-kol').style.display = (t === 'kol' || t === 'reel') ? '' : 'none';
+ document.getElementById('row-match').style.display = (t === 'prematch' || t === 'result' || t === 'reel') ? '' : 'none';
+ render();
 }
 
 function render() {
-  const opts = {
-    tpl: currentTpl,
-    kol: getKOL(selKol.value),
-    match: getMatch(selMatch.value),
-    lang: selLang.value,
-    sub: customSub.value,
-    url: customUrl.value,
-  };
-  PosterEngine.draw(document.getElementById('poster-canvas'), opts);
+ const opts = {
+ tpl: currentTpl,
+ kol: getKOL(selKol.value),
+ match: getMatch(selMatch.value),
+ lang: selLang.value,
+ sub: customSub.value,
+ url: customUrl.value,
+ };
+ PosterEngine.draw(document.getElementById('poster-canvas'), opts);
 }
 
 function downloadPoster() {
-  trackEvent('poster_download', { tpl: currentTpl, lang: selLang.value });
-  const canvas = document.getElementById('poster-canvas');
-  const link = document.createElement('a');
-  link.download = `goalrush-${currentTpl}-${Date.now()}.png`;
-  link.href = canvas.toDataURL('image/png');
-  link.click();
+ trackEvent('poster_download', { tpl: currentTpl, lang: selLang.value });
+ const canvas = document.getElementById('poster-canvas');
+ const link = document.createElement('a');
+ link.download = `goalrush-${currentTpl}-${Date.now()}.png`;
+ link.href = canvas.toDataURL('image/png');
+ link.click();
 }
 
 async function copyPoster() {
-  trackEvent('poster_copy', { tpl: currentTpl });
-  const canvas = document.getElementById('poster-canvas');
-  try {
-    const blob = await new Promise(res => canvas.toBlob(res, 'image/png'));
-    await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
-    alert('✓ 图片已复制 · 粘贴到 IM / X / IG 即可');
-  } catch (e) {
-    alert('当前浏览器不支持直接复制图片,请用「下载 PNG」');
-  }
+ trackEvent('poster_copy', { tpl: currentTpl });
+ const canvas = document.getElementById('poster-canvas');
+ try {
+ const blob = await new Promise(res => canvas.toBlob(res, 'image/png'));
+ await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+ alert('✓ 图片已复制 · 粘贴到 IM / X / IG 即可');
+ } catch (e) {
+ alert('当前浏览器不支持直接复制图片,请用「下载 PNG」');
+ }
 }
 
 function randomize() {
-  const rk = KOLS[Math.floor(KOLS.length * 0.999 * Math.random())];
-  const rm = MATCHES[Math.floor(MATCHES.length * 0.999 * Math.random())];
-  selKol.value = rk.id;
-  selMatch.value = rm.id;
-  trackEvent('poster_randomize');
-  render();
+ const rk = KOLS[Math.floor(KOLS.length * 0.999 * Math.random())];
+ const rm = MATCHES[Math.floor(MATCHES.length * 0.999 * Math.random())];
+ selKol.value = rk.id;
+ selMatch.value = rm.id;
+ trackEvent('poster_randomize');
+ render();
 }
 
 render();
-</script>
-
-</body>
-</html>
+</script> </body> </html>

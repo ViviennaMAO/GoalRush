@@ -1,56 +1,11 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>比赛预测 · GoalRush</title>
-<link rel="stylesheet" href="assets/css/style.css">
-</head>
-<body>
-
-<div id="header-slot"></div>
-
-<section class="page-section">
-  <div class="container" style="max-width: 720px;">
-    <a href="matches.html" class="btn-ghost" style="margin-bottom: 24px; display: inline-block;">← 返回比赛列表</a>
-
-    <div id="match-detail-mount"></div>
-
-    <!-- 已预测分享 -->
-    <div id="share-card" style="display: none; margin-top: 24px;" class="kol-hero">
-      <h3 style="font-family: Inter; font-size: 20px; font-weight: 800; margin-bottom: 12px;">
-        <span class="text-accent">✓</span> 预测已提交
-      </h3>
-      <p style="color: var(--ink-2); font-size: 14px;">
-        比赛结束 <strong>5 分钟内</strong>自动结算,命中即得 EDS。
-        下载 Luffa,EDS 真金直接进你的钱包。
-      </p>
-      <div style="display: flex; gap: 12px; margin-top: 16px; flex-wrap: wrap;">
-        <button class="btn-primary" onclick="triggerLuffaDownload('after_predict')">📲 下载 Luffa 真领 EDS</button>
-        <button class="btn-secondary" onclick="sharePrediction()">📤 分享到群</button>
-      </div>
-    </div>
-
-    <!-- 法律说明 -->
-    <div class="info-strip" style="margin-top: 32px;">
-      <div class="info-strip-icon">ℹ️</div>
-      <div class="info-strip-text">
-        <strong>关于结算</strong>
-        <small>
-          比赛结束后,系统从 SofaScore / API-Football / ESPN 三个权威数据源拉取结果,三方对账一致后自动发放 EDS。
-          整个过程 5 分钟内完成 · 不存在主观判断 · 不涉及押注本金。
-        </small>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div id="footer-slot"></div>
-
-<script src="assets/js/data.js"></script>
-<script src="assets/js/i18n.js"></script>
-<script src="assets/js/app.js"></script>
-<script>
+<!DOCTYPE html> <html lang="zh-CN"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>比赛预测 · GoalRush</title> <link rel="stylesheet" href="assets/css/style.css"> </head> <body> <div id="header-slot"></div> <section class="page-section"> <div class="container" style="max-width: 720px;"> <a href="matches.html" class="btn-ghost" style="margin-bottom: 24px; display: inline-block;">← 返回比赛列表</a> <div id="match-detail-mount"></div> <!-- 已预测分享 --> <div id="share-card" style="display: none; margin-top: 24px;" class="kol-hero"> <h3 style="font-family: Inter; font-size: 20px; font-weight: 800; margin-bottom: 12px;"> <span class="text-accent">✓</span> 预测已提交
+ </h3> <p style="color: var(--ink-2); font-size: 14px;">
+ 比赛结束 <strong>5 分钟内</strong>自动结算,命中即得 EDS。
+ 下载 Luffa,EDS 真金直接进你的钱包。
+ </p> <div style="display: flex; gap: 12px; margin-top: 16px; flex-wrap: wrap;"> <button class="btn-primary" onclick="triggerLuffaDownload('after_predict')"> 下载 Luffa 真领 EDS</button> <button class="btn-secondary" onclick="sharePrediction()"> 分享到群</button> </div> </div> <!-- 法律说明 --> <div class="info-strip" style="margin-top: 32px;"> <div class="info-strip-icon">ℹ️</div> <div class="info-strip-text"> <strong>关于结算</strong> <small>
+ 比赛结束后,系统从 SofaScore / API-Football / ESPN 三个权威数据源拉取结果,三方对账一致后自动发放 EDS。
+ 整个过程 5 分钟内完成 · 不存在主观判断 · 不涉及押注本金。
+ </small> </div> </div> </div> </section> <div id="footer-slot"></div> <script src="assets/js/data.js"></script> <script src="assets/js/i18n.js"></script> <script src="assets/js/app.js"></script> <script>
 bootstrap('matches');
 
 const params = new URLSearchParams(location.search);
@@ -58,104 +13,57 @@ const matchId = params.get('id') || 'm003';
 const match = getMatch(matchId);
 
 if (!match) {
-  document.getElementById('match-detail-mount').innerHTML = `
-    <div class="match-detail text-center">
-      <h2>比赛未找到</h2>
-      <a href="matches.html" class="btn-primary mt-16">看其他比赛</a>
-    </div>
-  `;
+ document.getElementById('match-detail-mount').innerHTML = `
+ <div class="match-detail text-center"> <h2>比赛未找到</h2> <a href="matches.html" class="btn-primary mt-16">看其他比赛</a> </div>
+ `;
 } else {
-  renderMatchDetail();
+ renderMatchDetail();
 }
 
 function renderMatchDetail() {
-  const home = getTeam(match.home);
-  const away = getTeam(match.away);
-  const userPick = getPrediction(match.id);
+ const home = getTeam(match.home);
+ const away = getTeam(match.away);
+ const userPick = getPrediction(match.id);
 
-  document.getElementById('match-detail-mount').innerHTML = `
-    <div class="match-detail">
-      <div class="match-detail-meta">
-        ${match.competition} · ${match.venue}
-      </div>
+ document.getElementById('match-detail-mount').innerHTML = `
+ <div class="match-detail"> <div class="match-detail-meta">
+ ${match.competition} · ${match.venue}
+ </div> <div class="match-detail-teams"> <div class="match-detail-team"> <div class="flag">${home.flag}</div> <div class="name">${home.name}</div> </div> <div class="match-detail-vs">VS</div> <div class="match-detail-team"> <div class="flag">${away.flag}</div> <div class="name">${away.name}</div> </div> </div> <div class="match-detail-cd"> <div class="lbl">距开赛</div> <div class="val">${timeUntilKickoff(match.kickoff)}</div> <div style="font-size: 11px; color: var(--ink-3); margin-top: 6px;">${formatKickoff(match.kickoff)} · 预测锁定于开赛前 5 分钟</div> </div> <h3 style="font-family: Inter; font-size: 16px; font-weight: 700; text-align: center; color: var(--ink-2); margin: 24px 0 4px;">你的预测</h3> <p style="font-size: 12px; color: var(--ink-3); text-align: center; margin-bottom: 16px;">
+ 当前玩家分布 · 不构成赔率
+ </p> <div class="pick-row"> <button class="pick-big ${userPick==='home'?'selected':''}" onclick="pick('home')"> <span class="pick-flag">${home.flag}</span> <span class="pick-name">${home.code} 赢</span> <span class="pick-pct">${match.distribution.home}% 玩家选</span> </button> <button class="pick-big ${userPick==='draw'?'selected':''}" onclick="pick('draw')"> <span class="pick-flag"></span> <span class="pick-name">平局</span> <span class="pick-pct">${match.distribution.draw}% 玩家选</span> </button> <button class="pick-big ${userPick==='away'?'selected':''}" onclick="pick('away')"> <span class="pick-flag">${away.flag}</span> <span class="pick-name">${away.code} 赢</span> <span class="pick-pct">${match.distribution.away}% 玩家选</span> </button> </div>
 
-      <div class="match-detail-teams">
-        <div class="match-detail-team">
-          <div class="flag">${home.flag}</div>
-          <div class="name">${home.name}</div>
-        </div>
-        <div class="match-detail-vs">VS</div>
-        <div class="match-detail-team">
-          <div class="flag">${away.flag}</div>
-          <div class="name">${away.name}</div>
-        </div>
-      </div>
+ ${userPick ? `
+ <div class="confirm-banner"> <div class="confirm-banner-text">
+ ✓ 已选「${userPick==='home'?home.code+' 赢':userPick==='draw'?'平局':away.code+' 赢'}」 · 可在锁定前更改
+ </div> </div>
+ ` : ''}
+ </div>
+ `;
 
-      <div class="match-detail-cd">
-        <div class="lbl">距开赛</div>
-        <div class="val">${timeUntilKickoff(match.kickoff)}</div>
-        <div style="font-size: 11px; color: var(--ink-3); margin-top: 6px;">${formatKickoff(match.kickoff)} · 预测锁定于开赛前 5 分钟</div>
-      </div>
-
-      <h3 style="font-family: Inter; font-size: 16px; font-weight: 700; text-align: center; color: var(--ink-2); margin: 24px 0 4px;">你的预测</h3>
-      <p style="font-size: 12px; color: var(--ink-3); text-align: center; margin-bottom: 16px;">
-        当前玩家分布 · 不构成赔率
-      </p>
-      <div class="pick-row">
-        <button class="pick-big ${userPick==='home'?'selected':''}" onclick="pick('home')">
-          <span class="pick-flag">${home.flag}</span>
-          <span class="pick-name">${home.code} 赢</span>
-          <span class="pick-pct">${match.distribution.home}% 玩家选</span>
-        </button>
-        <button class="pick-big ${userPick==='draw'?'selected':''}" onclick="pick('draw')">
-          <span class="pick-flag">🤝</span>
-          <span class="pick-name">平局</span>
-          <span class="pick-pct">${match.distribution.draw}% 玩家选</span>
-        </button>
-        <button class="pick-big ${userPick==='away'?'selected':''}" onclick="pick('away')">
-          <span class="pick-flag">${away.flag}</span>
-          <span class="pick-name">${away.code} 赢</span>
-          <span class="pick-pct">${match.distribution.away}% 玩家选</span>
-        </button>
-      </div>
-
-      ${userPick ? `
-        <div class="confirm-banner">
-          <div class="confirm-banner-text">
-            ✓ 已选「${userPick==='home'?home.code+' 赢':userPick==='draw'?'平局':away.code+' 赢'}」 · 可在锁定前更改
-          </div>
-        </div>
-      ` : ''}
-    </div>
-  `;
-
-  if (userPick) document.getElementById('share-card').style.display = 'block';
+ if (userPick) document.getElementById('share-card').style.display = 'block';
 }
 
 function pick(choice) {
-  submitPrediction(match.id, choice);
-  renderMatchDetail();
-  document.getElementById('share-card').style.display = 'block';
-  // 滚动到 share card
-  setTimeout(() => {
-    document.getElementById('share-card').scrollIntoView({ behavior: 'smooth', block: 'center' });
-  }, 200);
+ submitPrediction(match.id, choice);
+ renderMatchDetail();
+ document.getElementById('share-card').style.display = 'block';
+ // 滚动到 share card
+ setTimeout(() => {
+ document.getElementById('share-card').scrollIntoView({ behavior: 'smooth', block: 'center' });
+ }, 200);
 }
 
 function sharePrediction() {
-  trackEvent('share_prediction', { match_id: match.id });
-  const home = getTeam(match.home), away = getTeam(match.away);
-  const pick = getPrediction(match.id);
-  const txt = `我在 GoalRush 押 ${pick==='home'?home.code:pick==='draw'?'平':away.code} 赢 ${home.code} vs ${away.code} ⚽\n免费预测 · 真金 EDS 奖励 · 你也来:`;
-  const url = location.href;
-  if (navigator.share) {
-    navigator.share({ title: 'GoalRush', text: txt, url });
-  } else {
-    navigator.clipboard.writeText(txt + '\n' + url);
-    alert('已复制分享文案到剪贴板!');
-  }
+ trackEvent('share_prediction', { match_id: match.id });
+ const home = getTeam(match.home), away = getTeam(match.away);
+ const pick = getPrediction(match.id);
+ const txt = `我在 GoalRush 押 ${pick==='home'?home.code:pick==='draw'?'平':away.code} 赢 ${home.code} vs ${away.code} \n免费预测 · 真金 EDS 奖励 · 你也来:`;
+ const url = location.href;
+ if (navigator.share) {
+ navigator.share({ title: 'GoalRush', text: txt, url });
+ } else {
+ navigator.clipboard.writeText(txt + '\n' + url);
+ alert('已复制分享文案到剪贴板!');
+ }
 }
-</script>
-
-</body>
-</html>
+</script> </body> </html>

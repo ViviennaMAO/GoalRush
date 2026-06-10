@@ -1,29 +1,4 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KOL 战绩页 · GoalRush</title>
-<meta property="og:title" content="KOL 战绩页 · GoalRush">
-<meta property="og:description" content="跟着这位 KOL 一起预测世界杯,赢真金 EDS">
-<link rel="stylesheet" href="assets/css/style.css">
-</head>
-<body>
-
-<div id="header-slot"></div>
-
-<section class="page-section">
-  <div class="container" style="max-width: 880px;">
-    <div id="kol-mount"></div>
-  </div>
-</section>
-
-<div id="footer-slot"></div>
-
-<script src="assets/js/data.js"></script>
-<script src="assets/js/i18n.js"></script>
-<script src="assets/js/app.js"></script>
-<script>
+<!DOCTYPE html> <html lang="zh-CN"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>KOL 战绩页 · GoalRush</title> <meta property="og:title" content="KOL 战绩页 · GoalRush"> <meta property="og:description" content="跟着这位 KOL 一起预测世界杯,赢真金 EDS"> <link rel="stylesheet" href="assets/css/style.css"> </head> <body> <div id="header-slot"></div> <section class="page-section"> <div class="container" style="max-width: 880px;"> <div id="kol-mount"></div> </div> </section> <div id="footer-slot"></div> <script src="assets/js/data.js"></script> <script src="assets/js/i18n.js"></script> <script src="assets/js/app.js"></script> <script>
 bootstrap('kol');
 
 const params = new URLSearchParams(location.search);
@@ -31,162 +6,73 @@ const kolId = params.get('id') || 'lucas_br';
 const kol = getKOL(kolId);
 
 if (!kol) {
-  document.getElementById('kol-mount').innerHTML = `
-    <div class="match-detail text-center">
-      <h2>KOL 未找到</h2>
-      <a href="index.html" class="btn-primary mt-16">回首页</a>
-    </div>
-  `;
+ document.getElementById('kol-mount').innerHTML = `
+ <div class="match-detail text-center"> <h2>KOL 未找到</h2> <a href="index.html" class="btn-primary mt-16">回首页</a> </div>
+ `;
 } else {
-  renderKOL();
+ renderKOL();
 }
 
 function renderKOL() {
-  const totalFollowers = kol.followers_x + kol.followers_tiktok;
-  const followerText = totalFollowers >= 1_000_000
-    ? `${(totalFollowers/1_000_000).toFixed(1)}M`
-    : `${(totalFollowers/1_000).toFixed(0)}K`;
+ const totalFollowers = kol.followers_x + kol.followers_tiktok;
+ const followerText = totalFollowers >= 1_000_000
+ ? `${(totalFollowers/1_000_000).toFixed(1)}M`
+ : `${(totalFollowers/1_000).toFixed(0)}K`;
 
-  document.getElementById('kol-mount').innerHTML = `
-    <div class="kol-hero">
-      <div class="kol-head">
-        <div class="kol-avatar">${kol.flag}</div>
-        <div class="kol-info" style="flex:1;">
-          <h1>
-            ${kol.name}
-            <span class="kol-tier">${kol.tier} 档 KOL</span>
-          </h1>
-          <div class="handle">${kol.handle}</div>
-          <div class="bio">${kol.bio}</div>
-          <div style="margin-top: 10px; display: flex; gap: 16px; font-size: 12px; color: var(--ink-3);">
-            <span><strong style="color:var(--ink);">${followerText}</strong> 全平台粉丝</span>
-            <span>·</span>
-            <span><strong style="color:var(--ink);">${kol.stats.total_predictions}</strong> 场预测</span>
-            <span>·</span>
-            <span>🔥 ${kol.stats.streak} 连胜</span>
-          </div>
-        </div>
-      </div>
+ document.getElementById('kol-mount').innerHTML = `
+ <div class="kol-hero"> <div class="kol-head"> <div class="kol-avatar">${kol.flag}</div> <div class="kol-info" style="flex:1;"> <h1>
+ ${kol.name}
+ <span class="kol-tier">${kol.tier} 档 KOL</span> </h1> <div class="handle">${kol.handle}</div> <div class="bio">${kol.bio}</div> <div style="margin-top: 10px; display: flex; gap: 16px; font-size: 12px; color: var(--ink-3);"> <span><strong style="color:var(--ink);">${followerText}</strong> 全平台粉丝</span> <span>·</span> <span><strong style="color:var(--ink);">${kol.stats.total_predictions}</strong> 场预测</span> <span>·</span> <span> ${kol.stats.streak} 连胜</span> </div> </div> </div> <div class="kol-stats"> <div class="kol-stat"> <div class="lbl">命中率</div> <div class="val accent">${kol.stats.hit_rate}%</div> </div> <div class="kol-stat"> <div class="lbl">EDS 累计</div> <div class="val gold">${kol.stats.eds_earned.toLocaleString()}</div> </div> <div class="kol-stat"> <div class="lbl">当前排名</div> <div class="val">#${kol.stats.current_rank}</div> </div> <div class="kol-stat"> <div class="lbl">命中场次</div> <div class="val">${kol.stats.hits} / ${kol.stats.total_predictions}</div> </div> </div> <div class="kol-actions"> <button class="btn-primary" onclick="followAll()">
+ 跟随 ${kol.name} 的当日预测
+ </button> <button class="btn-secondary" onclick="triggerLuffaDownload('kol_page')">
+ 下载 Luffa
+ </button> <button class="btn-ghost" onclick="shareKOL()"> 分享战绩</button> </div> </div> <!-- KOL 今日预测 --> <div style="margin-top: 32px;"> <div class="sec-head"> <div> <h2 class="sec-title">${kol.name} 今日预测 <span class="text-accent">·</span></h2> <p class="sec-sub">下面是这位 KOL 当前已锁定的预测 · 一键跟随</p> </div> </div> <div class="matches-grid" id="kol-picks"></div> </div> <!-- 怎么样可信 --> <div class="info-strip" style="margin-top: 32px;"> <div class="info-strip-icon"></div> <div class="info-strip-text"> <strong>这些战绩为什么可信</strong> <small>
+ ${kol.name} 的每条预测在比赛开赛前 5 分钟<strong>系统级锁定</strong>,不可修改。
+ 比赛结束后由 SofaScore + API-Football + ESPN 三方对账自动结算。
+ KOL 本人无法操作或编辑这个页面 · 数据 100% 来自链上行为。
+ </small> </div> </div>
+ `;
 
-      <div class="kol-stats">
-        <div class="kol-stat">
-          <div class="lbl">命中率</div>
-          <div class="val accent">${kol.stats.hit_rate}%</div>
-        </div>
-        <div class="kol-stat">
-          <div class="lbl">EDS 累计</div>
-          <div class="val gold">${kol.stats.eds_earned.toLocaleString()}</div>
-        </div>
-        <div class="kol-stat">
-          <div class="lbl">当前排名</div>
-          <div class="val">#${kol.stats.current_rank}</div>
-        </div>
-        <div class="kol-stat">
-          <div class="lbl">命中场次</div>
-          <div class="val">${kol.stats.hits} / ${kol.stats.total_predictions}</div>
-        </div>
-      </div>
-
-      <div class="kol-actions">
-        <button class="btn-primary" onclick="followAll()">
-          🎯 跟随 ${kol.name} 的当日预测
-        </button>
-        <button class="btn-secondary" onclick="triggerLuffaDownload('kol_page')">
-          📲 下载 Luffa
-        </button>
-        <button class="btn-ghost" onclick="shareKOL()">📤 分享战绩</button>
-      </div>
-    </div>
-
-    <!-- KOL 今日预测 -->
-    <div style="margin-top: 32px;">
-      <div class="sec-head">
-        <div>
-          <h2 class="sec-title">${kol.name} 今日预测 <span class="text-accent">·</span></h2>
-          <p class="sec-sub">下面是这位 KOL 当前已锁定的预测 · 一键跟随</p>
-        </div>
-      </div>
-      <div class="matches-grid" id="kol-picks"></div>
-    </div>
-
-    <!-- 怎么样可信 -->
-    <div class="info-strip" style="margin-top: 32px;">
-      <div class="info-strip-icon">🛡</div>
-      <div class="info-strip-text">
-        <strong>这些战绩为什么可信</strong>
-        <small>
-          ${kol.name} 的每条预测在比赛开赛前 5 分钟<strong>系统级锁定</strong>,不可修改。
-          比赛结束后由 SofaScore + API-Football + ESPN 三方对账自动结算。
-          KOL 本人无法操作或编辑这个页面 · 数据 100% 来自链上行为。
-        </small>
-      </div>
-    </div>
-  `;
-
-  renderKOLPicks();
+ renderKOLPicks();
 }
 
 function renderKOLPicks() {
-  const picks = kol.recent_picks.map(p => {
-    const m = getMatch(p.match_id);
-    if (!m) return null;
-    const home = getTeam(m.home), away = getTeam(m.away);
-    const userPick = getPrediction(m.id);
-    const kolTeam = getTeam(p.team);
-    return `
-      <div class="match-card">
-        <div class="match-meta">
-          <span>${m.competition}</span>
-          <span class="match-countdown">⏱ ${timeUntilKickoff(m.kickoff)}</span>
-        </div>
-        <div class="match-teams">
-          <div class="team">
-            <div class="team-flag">${home.flag}</div>
-            <div class="team-code">${home.code}</div>
-          </div>
-          <div class="match-vs">VS</div>
-          <div class="team">
-            <div class="team-flag">${away.flag}</div>
-            <div class="team-code">${away.code}</div>
-          </div>
-        </div>
-        <div style="margin-top:12px; padding:10px; background:rgba(255,210,74,.08); border:1px solid rgba(255,210,74,.3); border-radius:10px; text-align:center;">
-          <span style="font-size: 11px; color: var(--ink-3); text-transform: uppercase; letter-spacing: .06em;">${kol.name} 选</span>
-          <div style="font-family:'Bebas Neue'; font-size: 22px; color: var(--gold); margin-top: 4px;">
-            ${p.pick === 'home' ? home.code + ' 赢' : p.pick === 'draw' ? '平局' : away.code + ' 赢'}
-          </div>
-        </div>
-        <a href="match.html?id=${m.id}" class="btn-secondary" style="display:block;text-align:center;margin-top:12px;padding:10px;font-size:13px;" onclick="trackEvent('kol_pick_match_click',{kol_id:'${kol.id}',match_id:'${m.id}'})">
-          查看比赛 / 提交自己的预测 →
-        </a>
-      </div>
-    `;
-  }).filter(Boolean);
-  document.getElementById('kol-picks').innerHTML = picks.join('') || '<p style="color:var(--ink-3);">KOL 当日暂无预测</p>';
+ const picks = kol.recent_picks.map(p => {
+ const m = getMatch(p.match_id);
+ if (!m) return null;
+ const home = getTeam(m.home), away = getTeam(m.away);
+ const userPick = getPrediction(m.id);
+ const kolTeam = getTeam(p.team);
+ return `
+ <div class="match-card"> <div class="match-meta"> <span>${m.competition}</span> <span class="match-countdown">⏱ ${timeUntilKickoff(m.kickoff)}</span> </div> <div class="match-teams"> <div class="team"> <div class="team-flag">${home.flag}</div> <div class="team-code">${home.code}</div> </div> <div class="match-vs">VS</div> <div class="team"> <div class="team-flag">${away.flag}</div> <div class="team-code">${away.code}</div> </div> </div> <div style="margin-top:12px; padding:10px; background:rgba(255,210,74,.08); border:1px solid rgba(255,210,74,.3); border-radius:10px; text-align:center;"> <span style="font-size: 11px; color: var(--ink-3); text-transform: uppercase; letter-spacing: .06em;">${kol.name} 选</span> <div style="font-family:'Bebas Neue'; font-size: 22px; color: var(--gold); margin-top: 4px;">
+ ${p.pick === 'home' ? home.code + ' 赢' : p.pick === 'draw' ? '平局' : away.code + ' 赢'}
+ </div> </div> <a href="match.html?id=${m.id}" class="btn-secondary" style="display:block;text-align:center;margin-top:12px;padding:10px;font-size:13px;" onclick="trackEvent('kol_pick_match_click',{kol_id:'${kol.id}',match_id:'${m.id}'})">
+ 查看比赛 / 提交自己的预测 →
+ </a> </div>
+ `;
+ }).filter(Boolean);
+ document.getElementById('kol-picks').innerHTML = picks.join('') || '<p style="color:var(--ink-3);">KOL 当日暂无预测</p>';
 }
 
 function followAll() {
-  const n = followKOLPicks(kolId);
-  if (n > 0) {
-    alert(`已跟随 ${kol.name} 的 ${n} 个预测 ✓\n比赛结束后自动结算 + EDS 到账。`);
-    renderKOLPicks();
-  } else {
-    alert(`你已跟随了 ${kol.name} 的所有当前预测 ✓`);
-  }
+ const n = followKOLPicks(kolId);
+ if (n > 0) {
+ alert(`已跟随 ${kol.name} 的 ${n} 个预测 ✓\n比赛结束后自动结算 + EDS 到账。`);
+ renderKOLPicks();
+ } else {
+ alert(`你已跟随了 ${kol.name} 的所有当前预测 ✓`);
+ }
 }
 
 function shareKOL() {
-  trackEvent('kol_share', { kol_id: kolId });
-  const txt = `${kol.name}(${kol.handle})世界杯命中率 ${kol.stats.hit_rate}%,排名 #${kol.stats.current_rank} ⚽\n跟着他/她的判断免费玩,赢真金 EDS:`;
-  const url = location.href;
-  if (navigator.share) {
-    navigator.share({ title: `${kol.name} · GoalRush`, text: txt, url });
-  } else {
-    navigator.clipboard.writeText(txt + '\n' + url);
-    alert('已复制分享文案 · 粘贴到 X / TG / IG 即可!');
-  }
+ trackEvent('kol_share', { kol_id: kolId });
+ const txt = `${kol.name}(${kol.handle})世界杯命中率 ${kol.stats.hit_rate}%,排名 #${kol.stats.current_rank} \n跟着他/她的判断免费玩,赢真金 EDS:`;
+ const url = location.href;
+ if (navigator.share) {
+ navigator.share({ title: `${kol.name} · GoalRush`, text: txt, url });
+ } else {
+ navigator.clipboard.writeText(txt + '\n' + url);
+ alert('已复制分享文案 · 粘贴到 X / TG / IG 即可!');
+ }
 }
-</script>
-
-</body>
-</html>
+</script> </body> </html>

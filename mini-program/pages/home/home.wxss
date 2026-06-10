@@ -1,80 +1,85 @@
-/* === Hero · 球迷身份卡 === */
+/* === Hero · 球迷身份卡(白底 + emerald 重点)=== */
 .hero-card {
-  padding: 40rpx 36rpx 32rpx;
-  border-radius: 32rpx;
-  margin-bottom: 32rpx;
-  box-shadow: 0 12rpx 36rpx rgba(109,91,255,0.2);
+  padding: 32rpx 28rpx;
+  margin-bottom: 28rpx;
 }
 .hero-greet {
-  font-size: 40rpx; font-weight: 800; color: #fff; letter-spacing: -.5rpx;
+  font-size: 36rpx; font-weight: 800; color: #111827; letter-spacing: -.5rpx;
 }
 .hero-sub {
-  font-size: 24rpx; color: rgba(255,255,255,0.85);
+  font-size: 24rpx; color: #6B7280;
 }
 .hero-stat-row {
-  margin-top: 32rpx;
+  margin-top: 28rpx;
   padding-top: 24rpx;
-  border-top: 2rpx solid rgba(255,255,255,0.15);
+  border-top: 2rpx solid #F4F6F5;
 }
 .hero-stat { display: flex; flex-direction: column; gap: 4rpx; align-items: flex-start; }
-.hero-stat-val { font-size: 36rpx; font-weight: 800; color: #fff; }
-.hero-stat-lbl { font-size: 20rpx; color: rgba(255,255,255,0.7); }
+.hero-stat-val {
+  font-size: 36rpx; font-weight: 800; color: #14B8A6;
+  font-family: 'Helvetica Neue', sans-serif; letter-spacing: -.5rpx;
+}
+.hero-stat-lbl { font-size: 20rpx; color: #9CA3AF; }
 .hero-cta { margin-top: 24rpx; }
-.hero-cta .btn { width: 100%; box-shadow: 0 6rpx 18rpx rgba(0,0,0,0.12); }
+.hero-cta .btn { width: 100%; }
 
 /* === 比赛卡 === */
-.match-card { padding: 28rpx; }
+.match-card { padding: 24rpx 24rpx 22rpx; }
 .match-top { margin-bottom: 16rpx; }
-.match-countdown { font-size: 22rpx; color: #6D5BFF; font-weight: 700; }
+.match-countdown {
+  font-size: 22rpx; color: #14B8A6; font-weight: 700;
+  background: #ECFDF5;
+  padding: 4rpx 12rpx; border-radius: 12rpx;
+}
 .match-teams {
-  padding: 16rpx 32rpx;
-  background: #FAFAFC;
-  border-radius: 20rpx;
-  margin-bottom: 20rpx;
+  display: grid; grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 12rpx 0 16rpx;
+  gap: 16rpx;
 }
 .team-name {
-  margin-top: 8rpx;
-  font-size: 28rpx; font-weight: 800;
-  color: #1A1A2E;
+  margin-top: 10rpx;
+  font-size: 26rpx; font-weight: 700;
+  color: #111827;
   letter-spacing: .5rpx;
 }
 .match-vs {
-  font-size: 28rpx; font-weight: 800;
-  color: #6D5BFF; letter-spacing: 2rpx;
+  font-size: 24rpx; font-weight: 700;
+  color: #9CA3AF; letter-spacing: 2rpx;
 }
-.match-bar { margin: 8rpx 0 16rpx; }
+.match-bar { margin: 8rpx 0 14rpx; }
 .match-foot {
   font-size: 22rpx;
   color: #9CA3AF;
 }
 
 /* === Feed item === */
-.feed-item { padding: 24rpx 28rpx; }
+.feed-item { padding: 22rpx 24rpx; margin-bottom: 16rpx; }
 .feed-text {
   font-size: 28rpx;
-  color: #4B5563;
+  color: #1F2937;
   line-height: 1.55;
   margin-bottom: 12rpx;
 }
 .feed-pick {
   display: flex; align-items: center; gap: 12rpx;
-  padding: 16rpx 20rpx;
-  background: #F4F5F7;
-  border-radius: 16rpx;
+  padding: 14rpx 18rpx;
+  background: #F9FAFB;
+  border-radius: 14rpx;
   margin: 12rpx 0;
   flex-wrap: wrap;
 }
 .feed-actions {
   padding-top: 12rpx;
-  border-top: 2rpx solid #F4F5F7;
+  border-top: 2rpx solid #F4F6F5;
 }
 .feed-action {
   font-size: 22rpx; color: #9CA3AF;
 }
-.feed-action.tx-purple { color: #6D5BFF; }
+.feed-action.tx-teal { color: #14B8A6; }
 
 .empty-cta {
   text-align: center;
-  padding: 28rpx;
+  padding: 24rpx;
   margin-top: 8rpx;
 }

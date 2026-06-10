@@ -46,7 +46,7 @@
         <text class="tx-small">·</text>
         <text class="tx-small">{{item.venue}}</text>
       </view>
-      <text wx:if="{{item.userPick}}" class="pill pill-purple">{{i18n.match_locked_in}}</text>
+      <text wx:if="{{item.userPick}}" class="pill pill-teal">{{i18n.match_locked_in}}</text>
     </view>
   </view>
 

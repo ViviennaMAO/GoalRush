@@ -1,102 +1,32 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>所有比赛 · GoalRush</title>
-<link rel="stylesheet" href="assets/css/style.css">
-</head>
-<body>
-
-<div id="header-slot"></div>
-
-<section class="page-header">
-  <div class="container">
-    <h1>所有比赛</h1>
-    <p>2026 FIFA World Cup · 6/11 - 7/19 · 48 场小组赛 + 淘汰赛</p>
-  </div>
-</section>
-
-<section class="page-section">
-  <div class="container">
-    <div class="tabs">
-      <button class="tab active" data-filter="all" onclick="filterMatches('all', this)">全部</button>
-      <button class="tab" data-filter="highlight" onclick="filterMatches('highlight', this)">🔥 重磅</button>
-      <button class="tab" data-filter="d1" onclick="filterMatches('d1', this)">6/11 - 6/12</button>
-      <button class="tab" data-filter="d2" onclick="filterMatches('d2', this)">6/13 - 6/14</button>
-      <button class="tab" data-filter="d3" onclick="filterMatches('d3', this)">6/15 - 6/17</button>
-    </div>
-    <div class="matches-grid" id="all-matches"></div>
-  </div>
-</section>
-
-<div id="footer-slot"></div>
-
-<script src="assets/js/data.js"></script>
-<script src="assets/js/i18n.js"></script>
-<script src="assets/js/app.js"></script>
-<script>
+<!DOCTYPE html> <html lang="zh-CN"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>所有比赛 · GoalRush</title> <link rel="stylesheet" href="assets/css/style.css"> </head> <body> <div id="header-slot"></div> <section class="page-header"> <div class="container"> <h1>所有比赛</h1> <p>2026 FIFA World Cup · 6/11 - 7/19 · 48 场小组赛 + 淘汰赛</p> </div> </section> <section class="page-section"> <div class="container"> <div class="tabs"> <button class="tab active" data-filter="all" onclick="filterMatches('all', this)">全部</button> <button class="tab" data-filter="highlight" onclick="filterMatches('highlight', this)"> 重磅</button> <button class="tab" data-filter="d1" onclick="filterMatches('d1', this)">6/11 - 6/12</button> <button class="tab" data-filter="d2" onclick="filterMatches('d2', this)">6/13 - 6/14</button> <button class="tab" data-filter="d3" onclick="filterMatches('d3', this)">6/15 - 6/17</button> </div> <div class="matches-grid" id="all-matches"></div> </div> </section> <div id="footer-slot"></div> <script src="assets/js/data.js"></script> <script src="assets/js/i18n.js"></script> <script src="assets/js/app.js"></script> <script>
 bootstrap('matches');
 
 function renderMatches(list) {
-  const grid = document.getElementById('all-matches');
-  grid.innerHTML = list.map(m => {
-    const home = getTeam(m.home), away = getTeam(m.away);
-    const userPick = getPrediction(m.id);
-    return `
-      <a href="match.html?id=${m.id}" class="match-card ${m.highlight ? 'highlight' : ''}">
-        <div class="match-meta">
-          <span>${m.competition}</span>
-          <span class="match-countdown">⏱ ${timeUntilKickoff(m.kickoff)}</span>
-        </div>
-        <div class="match-teams">
-          <div class="team">
-            <div class="team-flag">${home.flag}</div>
-            <div class="team-code">${home.code}</div>
-          </div>
-          <div class="match-vs">VS</div>
-          <div class="team">
-            <div class="team-flag">${away.flag}</div>
-            <div class="team-code">${away.code}</div>
-          </div>
-        </div>
-        <div style="font-size: 11px; color: var(--ink-3); text-align: center; margin-top: 8px;">
-          ${formatKickoff(m.kickoff)} · ${m.venue}
-        </div>
-        <div class="match-actions">
-          <div class="pick-btn ${userPick==='home'?'selected':''}">
-            <span class="lbl">${home.code}</span>
-            <span class="pct">${m.distribution.home}%</span>
-          </div>
-          <div class="pick-btn ${userPick==='draw'?'selected':''}">
-            <span class="lbl">平</span>
-            <span class="pct">${m.distribution.draw}%</span>
-          </div>
-          <div class="pick-btn ${userPick==='away'?'selected':''}">
-            <span class="lbl">${away.code}</span>
-            <span class="pct">${m.distribution.away}%</span>
-          </div>
-        </div>
-        ${userPick ? `<div class="match-locked-banner">✓ 已预测 · 等待结算</div>` : ''}
-      </a>
-    `;
-  }).join('');
+ const grid = document.getElementById('all-matches');
+ grid.innerHTML = list.map(m => {
+ const home = getTeam(m.home), away = getTeam(m.away);
+ const userPick = getPrediction(m.id);
+ return `
+ <a href="match.html?id=${m.id}" class="match-card ${m.highlight ? 'highlight' : ''}"> <div class="match-meta"> <span>${m.competition}</span> <span class="match-countdown">⏱ ${timeUntilKickoff(m.kickoff)}</span> </div> <div class="match-teams"> <div class="team"> <div class="team-flag">${home.flag}</div> <div class="team-code">${home.code}</div> </div> <div class="match-vs">VS</div> <div class="team"> <div class="team-flag">${away.flag}</div> <div class="team-code">${away.code}</div> </div> </div> <div style="font-size: 11px; color: var(--ink-3); text-align: center; margin-top: 8px;">
+ ${formatKickoff(m.kickoff)} · ${m.venue}
+ </div> <div class="match-actions"> <div class="pick-btn ${userPick==='home'?'selected':''}"> <span class="lbl">${home.code}</span> <span class="pct">${m.distribution.home}%</span> </div> <div class="pick-btn ${userPick==='draw'?'selected':''}"> <span class="lbl">平</span> <span class="pct">${m.distribution.draw}%</span> </div> <div class="pick-btn ${userPick==='away'?'selected':''}"> <span class="lbl">${away.code}</span> <span class="pct">${m.distribution.away}%</span> </div> </div>
+ ${userPick ? `<div class="match-locked-banner">✓ 已预测 · 等待结算</div>` : ''}
+ </a>
+ `;
+ }).join('');
 }
 
 function filterMatches(filter, btn) {
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  btn.classList.add('active');
-  trackEvent('matches_filter', { filter });
-  let list = MATCHES;
-  if (filter === 'highlight') list = MATCHES.filter(m => m.highlight);
-  if (filter === 'd1') list = MATCHES.filter(m => m.kickoff.startsWith('2026-06-11') || m.kickoff.startsWith('2026-06-12'));
-  if (filter === 'd2') list = MATCHES.filter(m => m.kickoff.startsWith('2026-06-13') || m.kickoff.startsWith('2026-06-14'));
-  if (filter === 'd3') list = MATCHES.filter(m => m.kickoff.startsWith('2026-06-15') || m.kickoff.startsWith('2026-06-16') || m.kickoff.startsWith('2026-06-17'));
-  renderMatches(list);
+ document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+ btn.classList.add('active');
+ trackEvent('matches_filter', { filter });
+ let list = MATCHES;
+ if (filter === 'highlight') list = MATCHES.filter(m => m.highlight);
+ if (filter === 'd1') list = MATCHES.filter(m => m.kickoff.startsWith('2026-06-11') || m.kickoff.startsWith('2026-06-12'));
+ if (filter === 'd2') list = MATCHES.filter(m => m.kickoff.startsWith('2026-06-13') || m.kickoff.startsWith('2026-06-14'));
+ if (filter === 'd3') list = MATCHES.filter(m => m.kickoff.startsWith('2026-06-15') || m.kickoff.startsWith('2026-06-16') || m.kickoff.startsWith('2026-06-17'));
+ renderMatches(list);
 }
 
 renderMatches(MATCHES);
-</script>
-
-</body>
-</html>
+</script> </body> </html>

@@ -8,7 +8,7 @@
       <text class="tx-h1" style="margin-top: 8rpx;">{{team.name}}</text>
       <text class="tx-small">{{team.name_en}} · {{team.fans}} {{i18n.team_fans}}</text>
 
-      <button wx:if="{{isMyTeam}}" class="btn btn-pill pill-purple" style="margin-top: 16rpx;">✓ {{i18n.team_tag_mine}}</button>
+      <button wx:if="{{isMyTeam}}" class="btn btn-pill pill-teal" style="margin-top: 16rpx;">✓ {{i18n.team_tag_mine}}</button>
       <button wx:else class="btn btn-primary" style="margin-top: 16rpx;" bindtap="onJoin">{{i18n.cta_join_camp}}</button>
     </view>
   </view>
@@ -26,7 +26,7 @@
       <view class="col" style="flex: 1; gap: 4rpx;">
         <view class="row row-gap-sm">
           <text class="tx-bold">{{item.name}}</text>
-          <text class="pill pill-purple">{{item.tier}}</text>
+          <text class="pill pill-teal">{{item.tier}}</text>
         </view>
         <text class="tx-small">{{item.handle}} · {{item.followers}} · {{item.hit_rate}}%</text>
       </view>
@@ -48,7 +48,7 @@
     <view wx:for="{{teamMatches}}" wx:key="id" class="card team-match" bindtap="goMatch" data-id="{{item.id}}">
       <view class="row-between">
         <text class="pill pill-light">{{item.competition}}</text>
-        <text class="tx-small tx-purple">⏱ {{item.countdown}}</text>
+        <text class="tx-small tx-teal">⏱ {{item.countdown}}</text>
       </view>
       <view class="row-between team-match-row">
         <view class="row row-gap-sm">

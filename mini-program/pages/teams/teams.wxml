@@ -1,8 +1,8 @@
 <view class="page">
 
-  <view class="card card-deep" style="padding: 36rpx 32rpx;">
+  <view class="card card-accent" style="padding: 32rpx 28rpx;">
     <text class="tx-h2" style="color: #fff; display: block;">{{i18n.team_choose_title}}</text>
-    <text style="color: rgba(255,255,255,.85); display: block; margin-top: 8rpx; font-size: 26rpx;">
+    <text style="color: rgba(255,255,255,.9); display: block; margin-top: 8rpx; font-size: 24rpx;">
       {{i18n.team_choose_sub}}
     </text>
   </view>
@@ -32,7 +32,7 @@
         <view class="avatar avatar-lg"><text>{{item.flag}}</text></view>
         <text class="team-card-name">{{item.name}}</text>
         <text class="tx-small">{{item.fans}} {{i18n.team_fans}}</text>
-        <text wx:if="{{item.code === myTeam}}" class="pill pill-purple" style="margin-top: 8rpx;">{{i18n.team_tag_mine}}</text>
+        <text wx:if="{{item.code === myTeam}}" class="pill pill-solid" style="margin-top: 8rpx;">{{i18n.team_tag_mine}}</text>
       </view>
     </view>
   </view>

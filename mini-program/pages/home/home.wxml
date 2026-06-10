@@ -1,16 +1,14 @@
 <view class="page">
 
-  <!-- ===== Hero · 球迷身份卡 ===== -->
-  <view class="card card-deep hero-card">
+  <!-- ===== Hero · 球迷身份卡(白底)===== -->
+  <view class="card hero-card">
     <view class="row-between">
-      <view class="col" style="gap: 6rpx;">
-        <text class="hero-greet">{{i18n.hp_greet}}{{wallet ? ' · ' + wallet.nickname : ''}} 👋</text>
+      <view class="col" style="gap: 8rpx;">
+        <text class="hero-greet">{{i18n.hp_greet}}{{wallet ? ', ' + wallet.nickname : ''}}</text>
         <text class="hero-sub">{{i18n.hp_fan_of}} {{myTeamName ? myTeamName + ' ' + myTeamFlag : i18n.hp_fan_of_none}}</text>
       </view>
-      <view class="row row-gap-sm">
-        <view class="avatar avatar-ring" style="background: rgba(255,255,255,.25);">
-          <text style="color: #fff;">{{myTeamFlag || '⚽'}}</text>
-        </view>
+      <view class="avatar avatar-ring">
+        <text>{{myTeamFlag}}</text>
       </view>
     </view>
 
@@ -34,29 +32,29 @@
     </view>
 
     <view wx:if="{{!wallet}}" class="hero-cta">
-      <button class="btn btn-ghost" style="background: #fff; color: #6D5BFF;" bindtap="onConnect">{{i18n.hp_cta_connect}}</button>
+      <button class="btn btn-primary btn-block" bindtap="onConnect">{{i18n.hp_cta_connect}}</button>
     </view>
     <view wx:elif="{{!myTeam}}" class="hero-cta">
-      <button class="btn btn-ghost" style="background: #fff; color: #6D5BFF;" bindtap="onPickTeam">{{i18n.hp_cta_pick_camp}}</button>
+      <button class="btn btn-ghost btn-block" bindtap="onPickTeam">{{i18n.hp_cta_pick_camp}}</button>
     </view>
   </view>
 
-  <!-- ===== 今日重磅比赛 ===== -->
+  <!-- ===== 今日比赛 ===== -->
   <view class="section">
     <view class="section-head">
       <view>
         <text class="section-title">{{i18n.hp_sec_today}}</text>
         <view class="section-sub">{{i18n.hp_sec_today_sub}}</view>
       </view>
-      <text class="section-link" bindtap="goMatches">{{i18n.cta_see_all}} →</text>
+      <text class="section-link" bindtap="goMatches">{{i18n.cta_see_all}} ›</text>
     </view>
 
     <view wx:for="{{todayMatches}}" wx:key="id" class="card match-card" bindtap="goMatch" data-id="{{item.id}}">
       <view class="row-between match-top">
         <text class="pill pill-light">{{item.competition}}</text>
-        <text class="match-countdown">⏱ {{item.countdown}}</text>
+        <text class="match-countdown">{{item.countdown}}</text>
       </view>
-      <view class="row-between match-teams">
+      <view class="match-teams">
         <view class="col-center">
           <view class="avatar avatar-lg"><text>{{item.homeTeam.flag}}</text></view>
           <text class="team-name">{{item.homeTeam.code}}</text>
@@ -73,13 +71,13 @@
         <view class="bar-seg away" style="width: {{item.distribution.away}}%;"></view>
       </view>
       <view class="row-between match-foot">
-        <text class="tx-small">💬 {{item.discussions}} {{i18n.mp_discussions_count}}</text>
+        <text class="tx-small">{{item.discussions}} {{i18n.mp_discussions_count}}</text>
         <text class="tx-small">{{i18n.pick_no_odds}}</text>
       </view>
     </view>
   </view>
 
-  <!-- ===== 球迷动态流 · 社交向核心 ===== -->
+  <!-- ===== 球迷动态流 ===== -->
   <view class="section">
     <view class="section-head">
       <view>
@@ -90,22 +88,21 @@
 
     <view wx:for="{{feed}}" wx:key="id" class="card feed-item">
 
-      <!-- 1. KOL pick -->
       <block wx:if="{{item.type === 'kol_pick'}}">
-        <view class="row row-gap-md" style="margin-bottom: 16rpx;">
-          <view class="avatar"><text>{{item.kolData.flag}}</text></view>
+        <view class="row row-gap-md" style="margin-bottom: 14rpx;">
+          <view class="avatar avatar-md"><text>{{item.kolData.flag}}</text></view>
           <view class="col" style="flex: 1; gap: 4rpx;">
             <view class="row row-gap-sm">
               <text class="tx-bold">{{item.kolData.name}}</text>
-              <text class="pill pill-purple">{{item.kolData.tier}}</text>
+              <text class="pill pill-teal">{{item.kolData.tier}}</text>
             </view>
             <text class="tx-small">{{item.kolData.handle}} · {{item.timeAgo}}</text>
           </view>
         </view>
         <view class="feed-text">{{item.text}}</view>
         <view class="feed-pick" bindtap="goMatch" data-id="{{item.match}}">
-          <text class="tx-small">→</text>
-          <text class="tx-bold tx-purple">
+          <text class="tx-small">›</text>
+          <text class="tx-bold tx-teal">
             {{item.matchData.homeTeam.flag}} {{item.matchData.homeTeam.code}}
             <text class="tx-mid"> vs </text>
             {{item.matchData.awayTeam.flag}} {{item.matchData.awayTeam.code}}
@@ -113,16 +110,15 @@
           <text class="pill pill-light">{{item.pickLabel}}</text>
         </view>
         <view class="row row-gap-lg feed-actions">
-          <text class="feed-action">❤ {{item.likes}}</text>
-          <text class="feed-action">💬 {{item.replies}}</text>
-          <text class="feed-action" bindtap="goMatch" data-id="{{item.match}}">{{i18n.feed_follow_pick_cta}}</text>
+          <text class="feed-action">{{i18n.feed_like}} {{item.likes}}</text>
+          <text class="feed-action">{{i18n.feed_reply}} {{item.replies}}</text>
+          <text class="feed-action tx-teal" bindtap="goMatch" data-id="{{item.match}}">{{i18n.feed_follow_pick_cta}}</text>
         </view>
       </block>
 
-      <!-- 2. group_buzz -->
       <block wx:elif="{{item.type === 'group_buzz'}}">
         <view class="row row-gap-md" style="margin-bottom: 12rpx;">
-          <view class="avatar" style="background: #F0EDFF;"><text>👥</text></view>
+          <view class="avatar avatar-md" style="background: #ECFDF5;"><text style="font-size:28rpx;color:#0F766E;">G</text></view>
           <view class="col" style="flex: 1; gap: 4rpx;">
             <text class="tx-bold">{{item.group}}</text>
             <text class="tx-small">{{item.members}} · {{item.timeAgo}}</text>
@@ -131,15 +127,14 @@
         </view>
         <view class="feed-text">{{item.text}}</view>
         <view class="row row-gap-lg feed-actions">
-          <text class="feed-action">❤ {{item.likes || 0}}</text>
-          <text class="feed-action" bindtap="goMatch" data-id="{{item.match}}">{{i18n.feed_enter_group_cta}}</text>
+          <text class="feed-action">{{i18n.feed_like}} {{item.likes || 0}}</text>
+          <text class="feed-action tx-teal" bindtap="goMatch" data-id="{{item.match}}">{{i18n.feed_enter_group_cta}}</text>
         </view>
       </block>
 
-      <!-- 3. team_event -->
       <block wx:elif="{{item.type === 'team_event'}}">
         <view class="row row-gap-md" style="margin-bottom: 12rpx;">
-          <view class="avatar"><text>{{item.teamData.flag}}</text></view>
+          <view class="avatar avatar-md"><text>{{item.teamData.flag}}</text></view>
           <view class="col" style="flex: 1; gap: 4rpx;">
             <text class="tx-bold">{{item.teamData.name}}</text>
             <text class="tx-small">{{item.timeAgo}}</text>
@@ -147,14 +142,13 @@
         </view>
         <view class="feed-text">{{item.text}}</view>
         <view class="row row-gap-lg feed-actions">
-          <text class="feed-action" bindtap="goTeam" data-code="{{item.team}}">{{i18n.feed_enter_camp_cta}}</text>
+          <text class="feed-action tx-teal" bindtap="goTeam" data-code="{{item.team}}">{{i18n.feed_enter_camp_cta}}</text>
         </view>
       </block>
 
-      <!-- 4. milestone -->
       <block wx:elif="{{item.type === 'milestone'}}">
         <view class="row row-gap-md" style="margin-bottom: 0;">
-          <view class="avatar" style="background: #FFF4D6;"><text>🏆</text></view>
+          <view class="avatar avatar-md" style="background: #FEF3C7;"><text style="font-size: 28rpx; color: #92400E;">★</text></view>
           <view class="col" style="flex: 1; gap: 4rpx;">
             <text class="tx-bold">{{i18n.feed_milestone}}</text>
             <text class="tx-small">{{item.timeAgo}}</text>
@@ -166,11 +160,10 @@
     </view>
 
     <view class="card-flat card empty-cta" bindtap="goMatches" wx:if="{{feed.length}}">
-      <text class="tx-purple tx-bold">{{i18n.hp_see_more}}</text>
+      <text class="tx-teal tx-bold">{{i18n.hp_see_more}}</text>
     </view>
   </view>
 
-  <!-- ===== Legal footer ===== -->
   <view class="legal">
     <text>{{i18n.prof_legal_1}}</text>
     <text>{{i18n.prof_legal_2}}</text>

@@ -34,7 +34,7 @@
       <view class="col" style="flex: 1; gap: 4rpx; min-width: 0;">
         <view class="row row-gap-sm">
           <text class="tx-bold list-handle">{{item.handle}}</text>
-          <text wx:if="{{item.kol}}" class="pill pill-purple" style="font-size: 18rpx; height: 32rpx; padding: 0 12rpx;">KOL</text>
+          <text wx:if="{{item.kol}}" class="pill pill-teal" style="font-size: 18rpx; height: 32rpx; padding: 0 12rpx;">KOL</text>
           <text wx:if="{{item.title}}" class="pill pill-gold" style="font-size: 18rpx; height: 32rpx; padding: 0 12rpx;">{{item.title}}</text>
         </view>
         <text class="tx-small">{{item.sub}}</text>

@@ -1,10 +1,10 @@
-/* GoalRush · 全局设计系统
-   米白 + 紫色 + 浮动卡 · 真球迷社交向 */
+/* GoalRush · 全局设计系统 v2(清爽 emerald 风 · 参考截图 3)
+   背景 米白 · 主色 emerald green · 卡片纯白浮动 · 简约球迷 app */
 
 page {
-  background: #F7F7F9;
-  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "PingFang SC", "Microsoft YaHei", sans-serif;
-  color: #1A1A2E;
+  background: #F4F6F5;
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "PingFang TC", "Microsoft JhengHei", sans-serif;
+  color: #1F2937;
   font-size: 28rpx;
   line-height: 1.5;
 }
@@ -12,33 +12,40 @@ page {
 /* === 通用容器 === */
 .page {
   min-height: 100vh;
-  padding: 24rpx 32rpx 120rpx;
+  padding: 24rpx 28rpx 120rpx;
   box-sizing: border-box;
 }
 
-.section { margin: 40rpx 0 24rpx; }
+.section { margin: 36rpx 0 24rpx; }
 .section-head {
   display: flex; align-items: center; justify-content: space-between;
-  margin-bottom: 20rpx; padding: 0 8rpx;
+  margin-bottom: 20rpx; padding: 0 4rpx;
 }
-.section-title { font-size: 36rpx; font-weight: 700; color: #1A1A2E; letter-spacing: -.5rpx; }
+.section-title {
+  font-size: 34rpx; font-weight: 700; color: #1F2937;
+  letter-spacing: -.3rpx;
+}
 .section-sub { font-size: 22rpx; color: #9CA3AF; margin-top: 4rpx; }
-.section-link { font-size: 24rpx; color: #6D5BFF; font-weight: 600; }
+.section-link { font-size: 24rpx; color: #14B8A6; font-weight: 600; }
 
-/* === 浮动卡片(无边框 · 软阴影)=== */
+/* === 浮动卡片 === */
 .card {
   background: #FFFFFF;
-  border-radius: 28rpx;
-  padding: 32rpx;
-  margin-bottom: 24rpx;
-  box-shadow: 0 4rpx 20rpx rgba(109,91,255,0.06), 0 1rpx 0 rgba(255,255,255,0.5) inset;
+  border-radius: 24rpx;
+  padding: 28rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 2rpx 12rpx rgba(15, 23, 42, .04);
   position: relative;
 }
-.card-tight { padding: 24rpx; border-radius: 24rpx; }
-.card-flat { background: #F0EDFF; }
-.card-deep {
-  background: linear-gradient(135deg, #6D5BFF 0%, #8B7AFF 100%);
+.card-tight { padding: 22rpx; border-radius: 20rpx; }
+.card-flat {
+  background: #ECFDF5;
+  box-shadow: none;
+}
+.card-accent {
+  background: #14B8A6;
   color: #FFFFFF;
+  box-shadow: 0 8rpx 24rpx rgba(20, 184, 166, .25);
 }
 
 /* === 按钮 === */
@@ -50,14 +57,19 @@ page {
   transition: opacity .15s;
 }
 .btn-primary {
-  background: linear-gradient(135deg, #6D5BFF, #8B7AFF);
+  background: #14B8A6;
   color: #FFFFFF;
-  box-shadow: 0 8rpx 24rpx rgba(109,91,255,0.3);
+  box-shadow: 0 6rpx 18rpx rgba(20, 184, 166, .3);
 }
 .btn-primary[disabled] { opacity: 0.4; box-shadow: none; }
 .btn-ghost {
-  background: #F0EDFF;
-  color: #6D5BFF;
+  background: #ECFDF5;
+  color: #0F766E;
+}
+.btn-outline {
+  background: transparent;
+  color: #14B8A6;
+  border: 2rpx solid #14B8A6;
 }
 .btn-pill {
   height: 56rpx; padding: 0 24rpx;
@@ -66,44 +78,67 @@ page {
 }
 .btn-block { width: 100%; }
 
-/* === Avatar(圆形球员头像 / 国旗)=== */
+/* === Avatar(圆形 · 国旗 / 队徽)=== */
 .avatar {
   width: 88rpx; height: 88rpx;
   border-radius: 50%;
-  background: linear-gradient(135deg, #F0EDFF, #FFFFFF);
+  background: #F4F6F5;
   display: inline-flex; align-items: center; justify-content: center;
   font-size: 44rpx;
   flex-shrink: 0;
-  box-shadow: 0 4rpx 12rpx rgba(109,91,255,0.1);
+  border: 2rpx solid #E5E7EB;
 }
-.avatar-sm { width: 64rpx; height: 64rpx; font-size: 32rpx; }
-.avatar-lg { width: 128rpx; height: 128rpx; font-size: 64rpx; }
+.avatar-sm { width: 60rpx; height: 60rpx; font-size: 32rpx; }
+.avatar-md { width: 76rpx; height: 76rpx; font-size: 40rpx; }
+.avatar-lg { width: 120rpx; height: 120rpx; font-size: 64rpx; }
 .avatar-xl { width: 160rpx; height: 160rpx; font-size: 80rpx; }
-.avatar-ring { border: 4rpx solid #6D5BFF; padding: 4rpx; box-sizing: border-box; }
+.avatar-ring {
+  border: 4rpx solid #14B8A6;
+  box-shadow: 0 0 0 4rpx rgba(20, 184, 166, .12);
+}
 
-/* === Pills · 国家旗帜小框 / 称号 === */
+/* === Pills · 标签 === */
 .pill {
   display: inline-flex; align-items: center;
-  height: 44rpx; padding: 0 18rpx;
-  border-radius: 22rpx;
-  font-size: 22rpx; font-weight: 600;
-  background: #F0EDFF; color: #6D5BFF;
+  height: 40rpx; padding: 0 16rpx;
+  border-radius: 20rpx;
+  font-size: 20rpx; font-weight: 600;
+  background: #F3F4F6; color: #6B7280;
 }
-.pill-light { background: #F4F5F7; color: #6B7280; }
-.pill-gold { background: #FFF4D6; color: #B8860B; }
-.pill-purple { background: #6D5BFF; color: #FFFFFF; }
+.pill-light { background: #F3F4F6; color: #6B7280; }
+.pill-teal  { background: #ECFDF5; color: #0F766E; }
+.pill-gold  { background: #FEF3C7; color: #92400E; }
+.pill-solid { background: #14B8A6; color: #FFFFFF; }
 
 /* === Text utils === */
-.tx-h1 { font-size: 52rpx; font-weight: 800; letter-spacing: -1rpx; line-height: 1.2; }
-.tx-h2 { font-size: 40rpx; font-weight: 700; letter-spacing: -.5rpx; }
-.tx-h3 { font-size: 32rpx; font-weight: 700; }
+.tx-h1 { font-size: 52rpx; font-weight: 800; letter-spacing: -1rpx; line-height: 1.15; color: #111827; }
+.tx-h2 { font-size: 40rpx; font-weight: 700; letter-spacing: -.5rpx; color: #111827; }
+.tx-h3 { font-size: 32rpx; font-weight: 700; color: #1F2937; }
 .tx-body { font-size: 28rpx; color: #4B5563; }
 .tx-small { font-size: 22rpx; color: #9CA3AF; }
 .tx-mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
-.tx-purple { color: #6D5BFF; }
+.tx-teal { color: #14B8A6; }
 .tx-bold { font-weight: 700; }
 .tx-muted { color: #9CA3AF; }
 .tx-mid { color: #6B7280; }
+.tx-ink { color: #1F2937; }
+
+/* === Score 大显示(比分 / 数字)=== */
+.score-big {
+  font-size: 80rpx;
+  font-weight: 800;
+  font-family: 'Helvetica Neue', sans-serif;
+  letter-spacing: -2rpx;
+  color: #111827;
+  line-height: 1;
+}
+.score-sep {
+  font-size: 56rpx;
+  font-weight: 300;
+  color: #9CA3AF;
+  margin: 0 12rpx;
+  vertical-align: 8rpx;
+}
 
 /* === Flex helpers === */
 .row { display: flex; align-items: center; }
@@ -114,28 +149,65 @@ page {
 .col { display: flex; flex-direction: column; gap: 12rpx; }
 .col-center { display: flex; flex-direction: column; align-items: center; }
 
-/* === Progress bar(社交分布,不构成赔率)=== */
+/* === Progress bar(社交分布 · 干净线性)=== */
 .bar-track {
-  width: 100%; height: 16rpx;
-  background: #F4F5F7;
-  border-radius: 8rpx; overflow: hidden;
+  width: 100%; height: 12rpx;
+  background: #F3F4F6;
+  border-radius: 6rpx; overflow: hidden;
   display: flex;
 }
 .bar-seg { height: 100%; transition: width .3s; }
-.bar-seg.home { background: linear-gradient(90deg, #6D5BFF, #8B7AFF); }
-.bar-seg.draw { background: #FFD54A; }
-.bar-seg.away { background: #FF8FA3; }
+.bar-seg.home { background: #14B8A6; }
+.bar-seg.draw { background: #FCD34D; }
+.bar-seg.away { background: #F472B6; }
 
-/* === Stat block === */
+/* 横向 stat 比较条(参考截图:Brazil 49 ── 53 Italy)*/
+.stat-bar {
+  display: flex; align-items: center; gap: 16rpx;
+  padding: 14rpx 4rpx;
+  border-bottom: 2rpx solid #F4F6F5;
+}
+.stat-bar:last-child { border-bottom: 0; }
+.stat-bar-val {
+  font-family: ui-monospace, Menlo, monospace;
+  font-size: 26rpx; font-weight: 700;
+  color: #1F2937;
+  min-width: 48rpx; text-align: center;
+}
+.stat-bar-lbl {
+  font-size: 22rpx; color: #9CA3AF;
+  text-align: center;
+  min-width: 140rpx;
+  flex-shrink: 0;
+}
+.stat-bar-track {
+  flex: 1; height: 8rpx;
+  background: #F3F4F6;
+  border-radius: 4rpx;
+  position: relative;
+  overflow: hidden;
+}
+.stat-bar-fill-l {
+  position: absolute; top: 0; right: 50%; height: 100%;
+  background: #14B8A6;
+  border-radius: 4rpx 0 0 4rpx;
+}
+.stat-bar-fill-r {
+  position: absolute; top: 0; left: 50%; height: 100%;
+  background: #F472B6;
+  border-radius: 0 4rpx 4rpx 0;
+}
+
+/* === Stat block(单独大数字)=== */
 .stat { display: flex; flex-direction: column; gap: 6rpx; }
-.stat .val { font-size: 40rpx; font-weight: 800; color: #1A1A2E; }
+.stat .val { font-size: 40rpx; font-weight: 800; color: #1F2937; font-family: 'Helvetica Neue', sans-serif; letter-spacing: -.5rpx; }
 .stat .lbl { font-size: 20rpx; color: #9CA3AF; text-transform: uppercase; letter-spacing: 1rpx; }
-.stat .val.tx-purple { color: #6D5BFF; }
+.stat .val.tx-teal { color: #14B8A6; }
 
-/* === Legal footer(每页 fix on bottom safe area)=== */
+/* === Legal footer === */
 .legal {
-  margin: 40rpx 0 20rpx;
-  padding: 24rpx 32rpx;
+  margin: 36rpx 0 16rpx;
+  padding: 20rpx 24rpx;
   background: transparent;
   font-size: 20rpx;
   color: #9CA3AF;
@@ -143,3 +215,23 @@ page {
   text-align: center;
 }
 .legal text { display: block; }
+
+/* === Football pitch line drawing(细节背景)=== */
+.pitch-mini {
+  width: 100%; height: 96rpx;
+  margin: 20rpx 0;
+  background:
+    linear-gradient(90deg, transparent calc(50% - 1rpx), #E5E7EB 50%, transparent calc(50% + 1rpx)),
+    radial-gradient(circle at 50% 50%, transparent 31rpx, #E5E7EB 32rpx, #E5E7EB 34rpx, transparent 35rpx);
+  border: 2rpx solid #E5E7EB;
+  border-radius: 12rpx;
+  position: relative;
+}
+.pitch-mini::before, .pitch-mini::after {
+  content: '';
+  position: absolute; top: 50%; transform: translateY(-50%);
+  width: 24rpx; height: 56rpx;
+  border: 2rpx solid #E5E7EB;
+}
+.pitch-mini::before { left: 0; border-left: 0; border-radius: 0 8rpx 8rpx 0; }
+.pitch-mini::after  { right: 0; border-right: 0; border-radius: 8rpx 0 0 8rpx; }

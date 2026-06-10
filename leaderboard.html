@@ -1,165 +1,61 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>排行榜 · GoalRush</title>
-<link rel="stylesheet" href="assets/css/style.css">
-</head>
-<body>
-
-<div id="header-slot"></div>
-
-<section class="page-header">
-  <div class="container">
-    <h1>战绩榜</h1>
-    <p>7 天滚动榜 · 每场比赛结算后实时刷新 · 反作弊熔断常态化</p>
-  </div>
-</section>
-
-<section class="page-section">
-  <div class="container">
-
-    <!-- 自己的卡片 -->
-    <div id="my-card" class="kol-hero" style="margin-bottom: 24px;">
-      <div style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap;">
-        <div class="kol-avatar" style="width:64px;height:64px;font-size:28px;">🎯</div>
-        <div style="flex: 1; min-width: 200px;">
-          <h2 style="font-family: Inter; font-size: 22px; font-weight: 800;">你的战绩</h2>
-          <div style="font-family: 'JetBrains Mono'; color: var(--accent); font-size: 14px;" id="my-handle">@Guest</div>
-        </div>
-        <div style="display: flex; gap: 20px; flex-wrap: wrap;">
-          <div><strong style="display:block;font-family:'JetBrains Mono';font-size:24px;color:var(--accent);" id="my-pred">0</strong><span style="font-size:11px;color:var(--ink-3);text-transform:uppercase;">预测数</span></div>
-          <div><strong style="display:block;font-family:'JetBrains Mono';font-size:24px;color:var(--gold);" id="my-eds">0</strong><span style="font-size:11px;color:var(--ink-3);text-transform:uppercase;">EDS</span></div>
-          <div><strong style="display:block;font-family:'JetBrains Mono';font-size:24px;" id="my-rate">—</strong><span style="font-size:11px;color:var(--ink-3);text-transform:uppercase;">命中率</span></div>
-        </div>
-        <button class="btn-primary" onclick="triggerLuffaDownload('my_card')">📲 下载 Luffa 进榜</button>
-      </div>
-    </div>
-
-    <!-- 标签切换 -->
-    <div class="tabs">
-      <button class="tab active" data-board="global" onclick="switchBoard('global', this)">🌍 全网榜</button>
-      <button class="tab" data-board="groups" onclick="switchBoard('groups', this)">👥 群组榜</button>
-      <button class="tab" data-board="kol" onclick="switchBoard('kol', this)">⭐ KOL 榜</button>
-    </div>
-
-    <div id="board-mount"></div>
-
-  </div>
-</section>
-
-<div id="footer-slot"></div>
-
-<script src="assets/js/data.js"></script>
-<script src="assets/js/i18n.js"></script>
-<script src="assets/js/app.js"></script>
-<script>
+<!DOCTYPE html> <html lang="zh-CN"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>排行榜 · GoalRush</title> <link rel="stylesheet" href="assets/css/style.css"> </head> <body> <div id="header-slot"></div> <section class="page-header"> <div class="container"> <h1>战绩榜</h1> <p>7 天滚动榜 · 每场比赛结算后实时刷新 · 反作弊熔断常态化</p> </div> </section> <section class="page-section"> <div class="container"> <!-- 自己的卡片 --> <div id="my-card" class="kol-hero" style="margin-bottom: 24px;"> <div style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap;"> <div class="kol-avatar" style="width:64px;height:64px;font-size:28px;"></div> <div style="flex: 1; min-width: 200px;"> <h2 style="font-family: Inter; font-size: 22px; font-weight: 800;">你的战绩</h2> <div style="font-family: 'JetBrains Mono'; color: var(--accent); font-size: 14px;" id="my-handle">@Guest</div> </div> <div style="display: flex; gap: 20px; flex-wrap: wrap;"> <div><strong style="display:block;font-family:'JetBrains Mono';font-size:24px;color:var(--accent);" id="my-pred">0</strong><span style="font-size:11px;color:var(--ink-3);text-transform:uppercase;">预测数</span></div> <div><strong style="display:block;font-family:'JetBrains Mono';font-size:24px;color:var(--gold);" id="my-eds">0</strong><span style="font-size:11px;color:var(--ink-3);text-transform:uppercase;">EDS</span></div> <div><strong style="display:block;font-family:'JetBrains Mono';font-size:24px;" id="my-rate">—</strong><span style="font-size:11px;color:var(--ink-3);text-transform:uppercase;">命中率</span></div> </div> <button class="btn-primary" onclick="triggerLuffaDownload('my_card')"> 下载 Luffa 进榜</button> </div> </div> <!-- 标签切换 --> <div class="tabs"> <button class="tab active" data-board="global" onclick="switchBoard('global', this)"> 全网榜</button> <button class="tab" data-board="groups" onclick="switchBoard('groups', this)"> 群组榜</button> <button class="tab" data-board="kol" onclick="switchBoard('kol', this)">⭐ KOL 榜</button> </div> <div id="board-mount"></div> </div> </section> <div id="footer-slot"></div> <script src="assets/js/data.js"></script> <script src="assets/js/i18n.js"></script> <script src="assets/js/app.js"></script> <script>
 bootstrap('leaderboard');
 
 // 渲染我的卡片
 function renderMyCard() {
-  const me = getMyStats();
-  document.getElementById('my-handle').textContent = me.handle;
-  document.getElementById('my-pred').textContent = me.total_predictions;
-  document.getElementById('my-eds').textContent = me.eds.toLocaleString();
-  document.getElementById('my-rate').textContent = me.total_predictions > 0 ? me.hit_rate + '%' : '—';
+ const me = getMyStats();
+ document.getElementById('my-handle').textContent = me.handle;
+ document.getElementById('my-pred').textContent = me.total_predictions;
+ document.getElementById('my-eds').textContent = me.eds.toLocaleString();
+ document.getElementById('my-rate').textContent = me.total_predictions > 0 ? me.hit_rate + '%' : '—';
 }
 
 function renderGlobal() {
-  document.getElementById('board-mount').innerHTML = `
-    <div class="leaderboard-table">
-      <div class="lb-row head">
-        <div>排名</div><div>玩家</div><div>命中率</div><div>EDS</div><div>连胜</div>
-      </div>
-      ${LEADERBOARD.map(u => {
-        const rankClass = u.rank===1?'top1':u.rank===2?'top2':u.rank===3?'top3':'';
-        const isKol = !!u.kol;
-        return `
-          <a href="${isKol?`kol.html?id=${u.kol}`:'#'}" class="lb-row" onclick="trackEvent('lb_row_click',{rank:${u.rank}})">
-            <div class="lb-rank ${rankClass}">#${u.rank}</div>
-            <div class="lb-user">
-              <div class="ava">${u.flag}</div>
-              <div class="lb-handle">${u.handle}${isKol?'<span class="lb-kol-badge">KOL</span>':''}</div>
-            </div>
-            <div class="lb-rate">${u.hit_rate}%</div>
-            <div class="lb-eds">${u.eds.toLocaleString()}</div>
-            <div class="lb-streak">${u.streak>0?`🔥 ${u.streak}`:'—'}</div>
-          </a>
-        `;
-      }).join('')}
-    </div>
-  `;
+ document.getElementById('board-mount').innerHTML = `
+ <div class="leaderboard-table"> <div class="lb-row head"> <div>排名</div><div>玩家</div><div>命中率</div><div>EDS</div><div>连胜</div> </div>
+ ${LEADERBOARD.map(u => {
+ const rankClass = u.rank===1?'top1':u.rank===2?'top2':u.rank===3?'top3':'';
+ const isKol = !!u.kol;
+ return `
+ <a href="${isKol?`kol.html?id=${u.kol}`:'#'}" class="lb-row" onclick="trackEvent('lb_row_click',{rank:${u.rank}})"> <div class="lb-rank ${rankClass}">#${u.rank}</div> <div class="lb-user"> <div class="ava">${u.flag}</div> <div class="lb-handle">${u.handle}${isKol?'<span class="lb-kol-badge">KOL</span>':''}</div> </div> <div class="lb-rate">${u.hit_rate}%</div> <div class="lb-eds">${u.eds.toLocaleString()}</div> <div class="lb-streak">${u.streak>0?` ${u.streak}`:'—'}</div> </a>
+ `;
+ }).join('')}
+ </div>
+ `;
 }
 
 function renderGroups() {
-  document.getElementById('board-mount').innerHTML = `
-    <div class="info-strip" style="margin-bottom: 24px;">
-      <div class="info-strip-icon">👥</div>
-      <div class="info-strip-text">
-        <strong>开群挑战 · K-factor 引擎</strong>
-        <small>邀请 5 位群友进 Luffa 一起预测 = 立即领 500 EDS + 群主皮肤。下载 Luffa 后在群里点「开群挑战」启动。</small>
-      </div>
-    </div>
-    <div class="group-grid">
-      ${GROUPS.map((g, i) => `
-        <div class="group-card">
-          <div class="group-name">${g.name}</div>
-          <div class="group-meta">
-            <span>${g.members} 位成员</span>
-            <span>第 ${i+1} 名</span>
-          </div>
-          <div class="group-eds">${g.total_eds.toLocaleString()} EDS</div>
-          <div style="font-size: 11px; color: var(--ink-3); margin-top: 6px;">领头羊:${g.top_handle}</div>
-        </div>
-      `).join('')}
-      <div class="group-card" style="border-style:dashed;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;">
-        <div style="font-size:36px;margin-bottom:8px;">➕</div>
-        <div style="font-weight:700;margin-bottom:4px;">开你自己的群</div>
-        <div style="font-size:12px;color:var(--ink-3);margin-bottom:12px;">邀 5 友 = 500 EDS + 群主皮肤</div>
-        <button class="btn-ghost" onclick="triggerLuffaDownload('group_card')">下载 Luffa 开群</button>
-      </div>
-    </div>
-  `;
+ document.getElementById('board-mount').innerHTML = `
+ <div class="info-strip" style="margin-bottom: 24px;"> <div class="info-strip-icon"></div> <div class="info-strip-text"> <strong>开群挑战 · K-factor 引擎</strong> <small>邀请 5 位群友进 Luffa 一起预测 = 立即领 500 EDS + 群主皮肤。下载 Luffa 后在群里点「开群挑战」启动。</small> </div> </div> <div class="group-grid">
+ ${GROUPS.map((g, i) => `
+ <div class="group-card"> <div class="group-name">${g.name}</div> <div class="group-meta"> <span>${g.members} 位成员</span> <span>第 ${i+1} 名</span> </div> <div class="group-eds">${g.total_eds.toLocaleString()} EDS</div> <div style="font-size: 11px; color: var(--ink-3); margin-top: 6px;">领头羊:${g.top_handle}</div> </div>
+ `).join('')}
+ <div class="group-card" style="border-style:dashed;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;"> <div style="font-size:36px;margin-bottom:8px;"></div> <div style="font-weight:700;margin-bottom:4px;">开你自己的群</div> <div style="font-size:12px;color:var(--ink-3);margin-bottom:12px;">邀 5 友 = 500 EDS + 群主皮肤</div> <button class="btn-ghost" onclick="triggerLuffaDownload('group_card')">下载 Luffa 开群</button> </div> </div>
+ `;
 }
 
 function renderKOLBoard() {
-  document.getElementById('board-mount').innerHTML = `
-    <div class="leaderboard-table">
-      <div class="lb-row head">
-        <div>排名</div><div>KOL</div><div>命中率</div><div>EDS</div><div>连胜</div>
-      </div>
-      ${KOLS.sort((a,b)=>a.stats.current_rank-b.stats.current_rank).map(k => {
-        const rankClass = k.stats.current_rank===1?'top1':k.stats.current_rank===2?'top2':k.stats.current_rank===3?'top3':'';
-        return `
-          <a href="kol.html?id=${k.id}" class="lb-row" onclick="trackEvent('lb_kol_click',{kol_id:'${k.id}'})">
-            <div class="lb-rank ${rankClass}">#${k.stats.current_rank}</div>
-            <div class="lb-user">
-              <div class="ava">${k.flag}</div>
-              <div class="lb-handle">${k.name}<span class="lb-kol-badge">${k.tier}</span><div style="font-family:'JetBrains Mono';font-size:11px;color:var(--ink-3);">${k.handle}</div></div>
-            </div>
-            <div class="lb-rate">${k.stats.hit_rate}%</div>
-            <div class="lb-eds">${k.stats.eds_earned.toLocaleString()}</div>
-            <div class="lb-streak">${k.stats.streak>0?`🔥 ${k.stats.streak}`:'—'}</div>
-          </a>
-        `;
-      }).join('')}
-    </div>
-  `;
+ document.getElementById('board-mount').innerHTML = `
+ <div class="leaderboard-table"> <div class="lb-row head"> <div>排名</div><div>KOL</div><div>命中率</div><div>EDS</div><div>连胜</div> </div>
+ ${KOLS.sort((a,b)=>a.stats.current_rank-b.stats.current_rank).map(k => {
+ const rankClass = k.stats.current_rank===1?'top1':k.stats.current_rank===2?'top2':k.stats.current_rank===3?'top3':'';
+ return `
+ <a href="kol.html?id=${k.id}" class="lb-row" onclick="trackEvent('lb_kol_click',{kol_id:'${k.id}'})"> <div class="lb-rank ${rankClass}">#${k.stats.current_rank}</div> <div class="lb-user"> <div class="ava">${k.flag}</div> <div class="lb-handle">${k.name}<span class="lb-kol-badge">${k.tier}</span><div style="font-family:'JetBrains Mono';font-size:11px;color:var(--ink-3);">${k.handle}</div></div> </div> <div class="lb-rate">${k.stats.hit_rate}%</div> <div class="lb-eds">${k.stats.eds_earned.toLocaleString()}</div> <div class="lb-streak">${k.stats.streak>0?` ${k.stats.streak}`:'—'}</div> </a>
+ `;
+ }).join('')}
+ </div>
+ `;
 }
 
 function switchBoard(b, btn) {
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  btn.classList.add('active');
-  trackEvent('board_switch', { board: b });
-  if (b === 'global') renderGlobal();
-  if (b === 'groups') renderGroups();
-  if (b === 'kol') renderKOLBoard();
+ document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+ btn.classList.add('active');
+ trackEvent('board_switch', { board: b });
+ if (b === 'global') renderGlobal();
+ if (b === 'groups') renderGroups();
+ if (b === 'kol') renderKOLBoard();
 }
 
 renderMyCard();
 renderGlobal();
-</script>
-
-</body>
-</html>
+</script> </body> </html>

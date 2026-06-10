@@ -18,15 +18,15 @@
   },
   "tabBar": {
     "color": "#9CA3AF",
-    "selectedColor": "#6D5BFF",
+    "selectedColor": "#14B8A6",
     "backgroundColor": "#FFFFFF",
     "borderStyle": "white",
     "list": [
-      { "pagePath": "pages/home/home",        "text": "动态", "iconPath": "images/tab-home.png",        "selectedIconPath": "images/tab-home-active.png" },
-      { "pagePath": "pages/match/match",      "text": "比赛", "iconPath": "images/tab-match.png",       "selectedIconPath": "images/tab-match-active.png" },
-      { "pagePath": "pages/teams/teams",      "text": "阵营", "iconPath": "images/tab-team.png",        "selectedIconPath": "images/tab-team-active.png" },
-      { "pagePath": "pages/leaderboard/leaderboard", "text": "榜单", "iconPath": "images/tab-rank.png", "selectedIconPath": "images/tab-rank-active.png" },
-      { "pagePath": "pages/profile/profile",  "text": "我的", "iconPath": "images/tab-me.png",          "selectedIconPath": "images/tab-me-active.png" }
+      { "pagePath": "pages/home/home",               "text": "Home",  "iconPath": "images/tab-home.png",  "selectedIconPath": "images/tab-home-active.png" },
+      { "pagePath": "pages/match/match",             "text": "Match", "iconPath": "images/tab-match.png", "selectedIconPath": "images/tab-match-active.png" },
+      { "pagePath": "pages/teams/teams",             "text": "Camp",  "iconPath": "images/tab-team.png",  "selectedIconPath": "images/tab-team-active.png" },
+      { "pagePath": "pages/leaderboard/leaderboard", "text": "Rank",  "iconPath": "images/tab-rank.png",  "selectedIconPath": "images/tab-rank-active.png" },
+      { "pagePath": "pages/profile/profile",         "text": "Me",    "iconPath": "images/tab-me.png",    "selectedIconPath": "images/tab-me-active.png" }
     ]
   },
   "networkTimeout": {

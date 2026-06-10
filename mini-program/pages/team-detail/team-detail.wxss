@@ -1,6 +1,6 @@
 .team-hero {
   padding: 48rpx 32rpx 40rpx;
-  background: linear-gradient(180deg, #FFFFFF, #F5F2FF);
+  background: linear-gradient(180deg, #FFFFFF, #F0FDFA);
   text-align: center;
 }
 .kol-row {

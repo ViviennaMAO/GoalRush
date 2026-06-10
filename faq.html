@@ -1,260 +1,122 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FAQ · 玩法 / 结算 / 法律分类 · GoalRush</title>
-<link rel="stylesheet" href="assets/css/style.css">
-<style>
+<!DOCTYPE html> <html lang="zh-CN"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>FAQ · 玩法 / 结算 / 法律分类 · GoalRush</title> <link rel="stylesheet" href="assets/css/style.css"> <style>
 .faq-item {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--r);
-  margin-bottom: 12px;
-  overflow: hidden;
+ background: var(--bg-card);
+ border: 1px solid var(--border);
+ border-radius: var(--r);
+ margin-bottom: 12px;
+ overflow: hidden;
 }
 .faq-q {
-  padding: 18px 22px;
-  cursor: pointer;
-  display: flex; justify-content: space-between; align-items: center;
-  gap: 16px;
-  font-weight: 600;
-  font-size: 15px;
+ padding: 18px 22px;
+ cursor: pointer;
+ display: flex; justify-content: space-between; align-items: center;
+ gap: 16px;
+ font-weight: 600;
+ font-size: 15px;
 }
 .faq-q:hover { background: rgba(255,255,255,.03); }
 .faq-icon { color: var(--accent); transition: transform .2s; font-family: 'JetBrains Mono'; }
 .faq-item.open .faq-icon { transform: rotate(45deg); }
 .faq-a {
-  padding: 0 22px;
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height .25s, padding .25s;
-  color: var(--ink-2);
-  font-size: 14px;
-  line-height: 1.7;
+ padding: 0 22px;
+ max-height: 0;
+ overflow: hidden;
+ transition: max-height .25s, padding .25s;
+ color: var(--ink-2);
+ font-size: 14px;
+ line-height: 1.7;
 }
 .faq-item.open .faq-a { max-height: 800px; padding: 0 22px 22px; }
 .faq-a strong { color: var(--ink); }
 .faq-a code {
-  background: rgba(0,0,0,.4);
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-size: 12px;
-  font-family: 'JetBrains Mono';
-  color: var(--accent);
+ background: rgba(0,0,0,.4);
+ padding: 2px 6px;
+ border-radius: 4px;
+ font-size: 12px;
+ font-family: 'JetBrains Mono';
+ color: var(--accent);
 }
 .faq-section-title {
-  font-size: 18px;
-  font-weight: 800;
-  color: var(--accent);
-  text-transform: uppercase;
-  letter-spacing: .06em;
-  margin: 40px 0 16px;
+ font-size: 18px;
+ font-weight: 800;
+ color: var(--accent);
+ text-transform: uppercase;
+ letter-spacing: .06em;
+ margin: 40px 0 16px;
 }
 .compare-table {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
-  border-radius: var(--r);
-  overflow: hidden;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  margin: 16px 0;
+ width: 100%;
+ border-collapse: separate;
+ border-spacing: 0;
+ border-radius: var(--r);
+ overflow: hidden;
+ background: var(--bg-card);
+ border: 1px solid var(--border);
+ margin: 16px 0;
 }
 .compare-table th, .compare-table td {
-  padding: 12px 16px;
-  text-align: left;
-  border-bottom: 1px solid var(--border);
-  font-size: 13px;
+ padding: 12px 16px;
+ text-align: left;
+ border-bottom: 1px solid var(--border);
+ font-size: 13px;
 }
 .compare-table th {
-  background: rgba(255,255,255,.04);
-  font-weight: 600;
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: .04em;
-  color: var(--ink-3);
+ background: rgba(255,255,255,.04);
+ font-weight: 600;
+ font-size: 12px;
+ text-transform: uppercase;
+ letter-spacing: .04em;
+ color: var(--ink-3);
 }
 .compare-table tr:last-child td { border-bottom: 0; }
 .compare-table .check { color: var(--accent); }
 .compare-table .cross { color: var(--red); }
-</style>
-</head>
-<body>
-
-<div id="header-slot"></div>
-
-<section class="page-header">
-  <div class="container">
-    <h1>FAQ · 玩法 / 结算 / 法律</h1>
-    <p>读完这一页,你会清楚 GoalRush 和 Polymarket / bet365 的本质区别</p>
-  </div>
-</section>
-
-<section class="page-section">
-  <div class="container" style="max-width: 820px;">
-
-    <div class="faq-section-title">怎么玩</div>
-
-    <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)"><span>GoalRush 要花钱吗?</span><span class="faq-icon">+</span></div>
-      <div class="faq-a">
-        <strong>不要。</strong>这是 play-money 预测玩法 —— 你不需要充值、不需要押任何本金、不需要绑卡、不需要 KYC。你「选一个结果」就完成预测,比赛结束自动结算。<br/><br/>
-        EDS 是 Luffa 生态的 utility token,作为玩家奖励发放,不是「赔付」,不是赌博彩金。
-      </div>
-    </div>
-
-    <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)"><span>预测什么时候锁定?</span><span class="faq-icon">+</span></div>
-      <div class="faq-a">
-        <strong>开赛前 5 分钟</strong>。在此之前你可以随时修改预测。锁定后系统不再接受任何改动,确保结算公平。
-      </div>
-    </div>
-
-    <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)"><span>命中能赢多少 EDS?</span><span class="faq-icon">+</span></div>
-      <div class="faq-a">
-        命中基础 EDS = 比赛权重 × 排名乘数。<br/>
-        <strong>比赛权重</strong>:小组赛 <code>1.0×</code> / 淘汰赛 <code>1.5×</code> / 决赛 <code>2.0×</code><br/>
-        <strong>排名乘数</strong>:全网 Top 10% 玩家 <code>5×</code> / 10-50% <code>1×</code> / 后 50% <code>0.5×</code><br/><br/>
-        单账号每日最多 200 EDS,每周 1000 EDS — 防作弊设计,任何人都不能靠数量碾压。
-      </div>
-    </div>
-
-    <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)"><span>开群挑战是什么?</span><span class="faq-icon">+</span></div>
-      <div class="faq-a">
-        在 Luffa IM 里建一个群组,邀请群友一起预测。每 5 位新群友进群 = 立即 <strong>500 EDS</strong> + 群主头像挂件。<br/><br/>
-        群组人数 ≥ 10 → 进入群组周排行榜,Top 3 群组拿 <code>5000 / 2500 / 1000</code> EDS 大奖。<br/><br/>
-        反作弊:被邀请的群友必须独立设备 + 独立手机号,同 IP / 同设备不计入。
-      </div>
-    </div>
-
-    <div class="faq-section-title">结算 & 数据可信度</div>
-
-    <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)"><span>比赛结果谁说了算?</span><span class="faq-icon">+</span></div>
-      <div class="faq-a">
-        我们不说了算。系统从三个权威体育数据源拉取结果:<br/>
-        - <strong>SofaScore</strong>(主源 · 5 分钟内 final)<br/>
-        - <strong>API-Football</strong>(副源 · 5-10 分钟)<br/>
-        - <strong>ESPN</strong>(校验源 · 10-15 分钟,权威)<br/><br/>
-        <strong>三方对账规则</strong>:三源一致 → 直接发放;2:1 多数 → 取多数 + 标记 review(仍发放);全不一致 → 延迟到次日 12:00 强制人工 review。
-      </div>
-    </div>
-
-    <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)"><span>EDS 多久到账?</span><span class="faq-icon">+</span></div>
-      <div class="faq-a">
-        <strong>结算后 5 分钟内</strong>。整个流程:比赛终场 → 5 分钟内三源拉取 → 5-10 分钟对账 → 10-15 分钟 EDS 入账 + SA 推送通知。<br/><br/>
-        服务等级:正确率 ≥ 99.5% / 延迟均值 &lt; 5 分钟(7 天观察期后)。
-      </div>
-    </div>
-
-    <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)"><span>我赢了为什么没到账?</span><span class="faq-icon">+</span></div>
-      <div class="faq-a">
-        最常见三种情况:<br/>
-        <strong>1. 三方对账冲突</strong> → 状态会显示「review 中」,12-24 小时内运营复核。<br/>
-        <strong>2. 反作弊触发</strong> → 同 IP / 多账号 / 高度异常预测,EDS 会暂停发放,人工 review。<br/>
-        <strong>3. 你还没下载 Luffa</strong> → 网页版预测保存在本地,要下载 Luffa App 才能同步到链上钱包真领。<br/><br/>
-        4 小时内首响应、24 小时内闭环。
-      </div>
-    </div>
-
-    <div class="faq-section-title">法律分类(很关键)</div>
-
-    <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)"><span>这是不是 prediction market?是不是博彩?</span><span class="faq-icon">+</span></div>
-      <div class="faq-a">
-        <strong>不是。</strong>GoalRush 是 play-money 预测 + utility token 奖励。和 Polymarket / Kalshi / bet365 的法律分类完全不同。<br/>
-        <table class="compare-table">
-          <tr><th>维度</th><th>Polymarket / Kalshi</th><th>bet365</th><th>GoalRush</th></tr>
-          <tr><td>用户押本金</td><td class="check">✓ USDC</td><td class="check">✓ 法币</td><td class="cross">✗ 不押</td></tr>
-          <tr><td>结算靠 oracle</td><td class="check">✓ Chainlink</td><td>—</td><td class="cross">✗ 三源对账</td></tr>
-          <tr><td>赔率</td><td class="check">✓ 浮动</td><td class="check">✓ 固定</td><td class="cross">✗ 不存在</td></tr>
-          <tr><td>赔付</td><td class="check">✓ Payout</td><td class="check">✓ Payout</td><td class="cross">✗ 平台 EDS 奖励</td></tr>
-          <tr><td>MiCA / CFTC 管辖</td><td class="check">✓</td><td class="check">✓</td><td class="cross">✗</td></tr>
-        </table>
-        简单说:你<strong>不押本金</strong>,所以这就不是 betting / sportsbook / prediction market。
-      </div>
-    </div>
-
-    <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)"><span>Luffa 是 SFC 持牌的吗?</span><span class="faq-icon">+</span></div>
-      <div class="faq-a">
-        准确表述是:<strong>Operated within a group holding HK SFC licenses</strong>(集团内 SFC 持牌主体协作运营)。<br/><br/>
-        GoalRush 本身不是受 SFC 监管的金融产品(也不需要 — 它不是 prediction market)。
-        我们的 SFC 背书来自集团合规架构,不直接背书本产品。
-      </div>
-    </div>
-
-    <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)"><span>哪些地区不能玩?</span><span class="faq-icon">+</span></div>
-      <div class="faq-a">
-        因合规审查,以下地区暂不开放:<br/>
-        - <strong>美国零售用户</strong>(CFTC 限制)<br/>
-        - <strong>中国大陆</strong>(完全 hidden,不展示入口)<br/>
-        - <strong>欧盟部分国家</strong>(MiCA review 中,逐案放开)<br/><br/>
-        西班牙、拉美、英国、日韩、东南亚等地区正常开放。
-      </div>
-    </div>
-
-    <div class="faq-section-title">反作弊</div>
-
-    <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)"><span>怎么防机器人 / 多账号 farming?</span><span class="faq-icon">+</span></div>
-      <div class="faq-a">
-        五层防护:<br/>
-        <strong>L1 账号成熟度</strong>:Luffa 账号 ≥ 7 天 + 至少 1 个非系统群 + 5 个真实社交连接<br/>
-        <strong>L2 设备 / IP 指纹</strong>:同手机号 / IP / 设备一日最多 1 个账号<br/>
-        <strong>L3 EDS 日上限</strong>:200 EDS / 日 · 1000 / 周<br/>
-        <strong>L4 社交图加权</strong>:真实好友互动 ×2,孤狼账号 ×0.3<br/>
-        <strong>L5 决赛前 30% 池保留</strong>:行为图谱再决定尾部分发<br/><br/>
-        触发熔断:单日新账号 ≥ 20K · Top 100 EDS 占比 > 25% · 任一群组 3 天命中率高出全网 1.5×。
-      </div>
-    </div>
-
-    <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)"><span>KOL 战绩页是真的吗?</span><span class="faq-icon">+</span></div>
-      <div class="faq-a">
-        是真的。KOL 的每条预测在开赛前 5 分钟<strong>系统级锁定</strong>,数据库不可修改。结算靠三源对账,KOL 本人无法影响。<br/><br/>
-        你看到的命中率、EDS 累计、排名,100% 来自链上行为,不是 KOL 自己填的数字。
-      </div>
-    </div>
-
-    <!-- 还有问题 -->
-    <div class="info-strip" style="margin-top: 40px;">
-      <div class="info-strip-icon">💬</div>
-      <div class="info-strip-text">
-        <strong>还有问题?</strong>
-        <small>在 Luffa App 里联系客服(Discord / TG / IM 内置)· 多语言 24/7 · 首响应 4 小时 / 闭环 24 小时</small>
-      </div>
-    </div>
-
-    <div style="text-align: center; margin-top: 32px;">
-      <button class="btn-primary" onclick="triggerLuffaDownload('faq_bottom')">📲 下载 Luffa 开玩</button>
-    </div>
-
-  </div>
-</section>
-
-<div id="footer-slot"></div>
-
-<script src="assets/js/data.js"></script>
-<script src="assets/js/i18n.js"></script>
-<script src="assets/js/app.js"></script>
-<script>
+</style> </head> <body> <div id="header-slot"></div> <section class="page-header"> <div class="container"> <h1>FAQ · 玩法 / 结算 / 法律</h1> <p>读完这一页,你会清楚 GoalRush 和 Polymarket / bet365 的本质区别</p> </div> </section> <section class="page-section"> <div class="container" style="max-width: 820px;"> <div class="faq-section-title">怎么玩</div> <div class="faq-item"> <div class="faq-q" onclick="toggleFaq(this)"><span>GoalRush 要花钱吗?</span><span class="faq-icon">+</span></div> <div class="faq-a"> <strong>不要。</strong>这是 play-money 预测玩法 —— 你不需要充值、不需要押任何本金、不需要绑卡、不需要 KYC。你「选一个结果」就完成预测,比赛结束自动结算。<br/><br/>
+ EDS 是 Luffa 生态的 utility token,作为玩家奖励发放,不是「赔付」,不是赌博彩金。
+ </div> </div> <div class="faq-item"> <div class="faq-q" onclick="toggleFaq(this)"><span>预测什么时候锁定?</span><span class="faq-icon">+</span></div> <div class="faq-a"> <strong>开赛前 5 分钟</strong>。在此之前你可以随时修改预测。锁定后系统不再接受任何改动,确保结算公平。
+ </div> </div> <div class="faq-item"> <div class="faq-q" onclick="toggleFaq(this)"><span>命中能赢多少 EDS?</span><span class="faq-icon">+</span></div> <div class="faq-a">
+ 命中基础 EDS = 比赛权重 × 排名乘数。<br/> <strong>比赛权重</strong>:小组赛 <code>1.0×</code> / 淘汰赛 <code>1.5×</code> / 决赛 <code>2.0×</code><br/> <strong>排名乘数</strong>:全网 Top 10% 玩家 <code>5×</code> / 10-50% <code>1×</code> / 后 50% <code>0.5×</code><br/><br/>
+ 单账号每日最多 200 EDS,每周 1000 EDS — 防作弊设计,任何人都不能靠数量碾压。
+ </div> </div> <div class="faq-item"> <div class="faq-q" onclick="toggleFaq(this)"><span>开群挑战是什么?</span><span class="faq-icon">+</span></div> <div class="faq-a">
+ 在 Luffa IM 里建一个群组,邀请群友一起预测。每 5 位新群友进群 = 立即 <strong>500 EDS</strong> + 群主头像挂件。<br/><br/>
+ 群组人数 ≥ 10 → 进入群组周排行榜,Top 3 群组拿 <code>5000 / 2500 / 1000</code> EDS 大奖。<br/><br/>
+ 反作弊:被邀请的群友必须独立设备 + 独立手机号,同 IP / 同设备不计入。
+ </div> </div> <div class="faq-section-title">结算 & 数据可信度</div> <div class="faq-item"> <div class="faq-q" onclick="toggleFaq(this)"><span>比赛结果谁说了算?</span><span class="faq-icon">+</span></div> <div class="faq-a">
+ 我们不说了算。系统从三个权威体育数据源拉取结果:<br/>
+ - <strong>SofaScore</strong>(主源 · 5 分钟内 final)<br/>
+ - <strong>API-Football</strong>(副源 · 5-10 分钟)<br/>
+ - <strong>ESPN</strong>(校验源 · 10-15 分钟,权威)<br/><br/> <strong>三方对账规则</strong>:三源一致 → 直接发放;2:1 多数 → 取多数 + 标记 review(仍发放);全不一致 → 延迟到次日 12:00 强制人工 review。
+ </div> </div> <div class="faq-item"> <div class="faq-q" onclick="toggleFaq(this)"><span>EDS 多久到账?</span><span class="faq-icon">+</span></div> <div class="faq-a"> <strong>结算后 5 分钟内</strong>。整个流程:比赛终场 → 5 分钟内三源拉取 → 5-10 分钟对账 → 10-15 分钟 EDS 入账 + SA 推送通知。<br/><br/>
+ 服务等级:正确率 ≥ 99.5% / 延迟均值 &lt; 5 分钟(7 天观察期后)。
+ </div> </div> <div class="faq-item"> <div class="faq-q" onclick="toggleFaq(this)"><span>我赢了为什么没到账?</span><span class="faq-icon">+</span></div> <div class="faq-a">
+ 最常见三种情况:<br/> <strong>1. 三方对账冲突</strong> → 状态会显示「review 中」,12-24 小时内运营复核。<br/> <strong>2. 反作弊触发</strong> → 同 IP / 多账号 / 高度异常预测,EDS 会暂停发放,人工 review。<br/> <strong>3. 你还没下载 Luffa</strong> → 网页版预测保存在本地,要下载 Luffa App 才能同步到链上钱包真领。<br/><br/>
+ 4 小时内首响应、24 小时内闭环。
+ </div> </div> <div class="faq-section-title">法律分类(很关键)</div> <div class="faq-item"> <div class="faq-q" onclick="toggleFaq(this)"><span>这是不是 prediction market?是不是博彩?</span><span class="faq-icon">+</span></div> <div class="faq-a"> <strong>不是。</strong>GoalRush 是 play-money 预测 + utility token 奖励。和 Polymarket / Kalshi / bet365 的法律分类完全不同。<br/> <table class="compare-table"> <tr><th>维度</th><th>Polymarket / Kalshi</th><th>bet365</th><th>GoalRush</th></tr> <tr><td>用户押本金</td><td class="check">✓ USDC</td><td class="check">✓ 法币</td><td class="cross">✗ 不押</td></tr> <tr><td>结算靠 oracle</td><td class="check">✓ Chainlink</td><td>—</td><td class="cross">✗ 三源对账</td></tr> <tr><td>赔率</td><td class="check">✓ 浮动</td><td class="check">✓ 固定</td><td class="cross">✗ 不存在</td></tr> <tr><td>赔付</td><td class="check">✓ Payout</td><td class="check">✓ Payout</td><td class="cross">✗ 平台 EDS 奖励</td></tr> <tr><td>MiCA / CFTC 管辖</td><td class="check">✓</td><td class="check">✓</td><td class="cross">✗</td></tr> </table>
+ 简单说:你<strong>不押本金</strong>,所以这就不是 betting / sportsbook / prediction market。
+ </div> </div> <div class="faq-item"> <div class="faq-q" onclick="toggleFaq(this)"><span>Luffa 是 SFC 持牌的吗?</span><span class="faq-icon">+</span></div> <div class="faq-a">
+ 准确表述是:<strong>Operated within a group holding HK SFC licenses</strong>(集团内 SFC 持牌主体协作运营)。<br/><br/>
+ GoalRush 本身不是受 SFC 监管的金融产品(也不需要 — 它不是 prediction market)。
+ 我们的 SFC 背书来自集团合规架构,不直接背书本产品。
+ </div> </div> <div class="faq-item"> <div class="faq-q" onclick="toggleFaq(this)"><span>哪些地区不能玩?</span><span class="faq-icon">+</span></div> <div class="faq-a">
+ 因合规审查,以下地区暂不开放:<br/>
+ - <strong>美国零售用户</strong>(CFTC 限制)<br/>
+ - <strong>中国大陆</strong>(完全 hidden,不展示入口)<br/>
+ - <strong>欧盟部分国家</strong>(MiCA review 中,逐案放开)<br/><br/>
+ 西班牙、拉美、英国、日韩、东南亚等地区正常开放。
+ </div> </div> <div class="faq-section-title">反作弊</div> <div class="faq-item"> <div class="faq-q" onclick="toggleFaq(this)"><span>怎么防机器人 / 多账号 farming?</span><span class="faq-icon">+</span></div> <div class="faq-a">
+ 五层防护:<br/> <strong>L1 账号成熟度</strong>:Luffa 账号 ≥ 7 天 + 至少 1 个非系统群 + 5 个真实社交连接<br/> <strong>L2 设备 / IP 指纹</strong>:同手机号 / IP / 设备一日最多 1 个账号<br/> <strong>L3 EDS 日上限</strong>:200 EDS / 日 · 1000 / 周<br/> <strong>L4 社交图加权</strong>:真实好友互动 ×2,孤狼账号 ×0.3<br/> <strong>L5 决赛前 30% 池保留</strong>:行为图谱再决定尾部分发<br/><br/>
+ 触发熔断:单日新账号 ≥ 20K · Top 100 EDS 占比 > 25% · 任一群组 3 天命中率高出全网 1.5×。
+ </div> </div> <div class="faq-item"> <div class="faq-q" onclick="toggleFaq(this)"><span>KOL 战绩页是真的吗?</span><span class="faq-icon">+</span></div> <div class="faq-a">
+ 是真的。KOL 的每条预测在开赛前 5 分钟<strong>系统级锁定</strong>,数据库不可修改。结算靠三源对账,KOL 本人无法影响。<br/><br/>
+ 你看到的命中率、EDS 累计、排名,100% 来自链上行为,不是 KOL 自己填的数字。
+ </div> </div> <!-- 还有问题 --> <div class="info-strip" style="margin-top: 40px;"> <div class="info-strip-icon"></div> <div class="info-strip-text"> <strong>还有问题?</strong> <small>在 Luffa App 里联系客服(Discord / TG / IM 内置)· 多语言 24/7 · 首响应 4 小时 / 闭环 24 小时</small> </div> </div> <div style="text-align: center; margin-top: 32px;"> <button class="btn-primary" onclick="triggerLuffaDownload('faq_bottom')"> 下载 Luffa 开玩</button> </div> </div> </section> <div id="footer-slot"></div> <script src="assets/js/data.js"></script> <script src="assets/js/i18n.js"></script> <script src="assets/js/app.js"></script> <script>
 bootstrap('faq');
 
 function toggleFaq(el) {
-  const item = el.closest('.faq-item');
-  item.classList.toggle('open');
-  if (item.classList.contains('open')) {
-    trackEvent('faq_open', { q: el.querySelector('span').textContent });
-  }
+ const item = el.closest('.faq-item');
+ item.classList.toggle('open');
+ if (item.classList.contains('open')) {
+ trackEvent('faq_open', { q: el.querySelector('span').textContent });
+ }
 }
-</script>
-
-</body>
-</html>
+</script> </body> </html>

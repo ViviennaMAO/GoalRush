@@ -1,11 +1,11 @@
 <view class="page">
 
-  <!-- ===== 顶部 vs ===== -->
-  <view class="card card-deep detail-hero">
-    <text class="pill" style="background: rgba(255,255,255,.2); color: #fff;">{{match.competition}}</text>
+  <!-- ===== 顶部 vs(白底 · 大比分式 hero) ===== -->
+  <view class="card detail-hero">
+    <view class="detail-comp">{{match.competition}}</view>
     <view class="hero-vs-row">
       <view class="hero-team">
-        <view class="avatar avatar-xl" style="background: rgba(255,255,255,.2);"><text>{{homeTeam.flag}}</text></view>
+        <view class="avatar avatar-xl avatar-ring"><text>{{homeTeam.flag}}</text></view>
         <text class="hero-team-name">{{homeTeam.name}}</text>
         <text class="hero-team-code">{{homeTeam.code}}</text>
       </view>
@@ -15,12 +15,13 @@
         <text class="hero-kickoff">{{kickoffTxt}}</text>
       </view>
       <view class="hero-team">
-        <view class="avatar avatar-xl" style="background: rgba(255,255,255,.2);"><text>{{awayTeam.flag}}</text></view>
+        <view class="avatar avatar-xl avatar-ring"><text>{{awayTeam.flag}}</text></view>
         <text class="hero-team-name">{{awayTeam.name}}</text>
         <text class="hero-team-code">{{awayTeam.code}}</text>
       </view>
     </view>
-    <view class="hero-venue">📍 {{match.venue}}</view>
+    <view class="pitch-mini"></view>
+    <view class="hero-venue">{{match.venue}}</view>
   </view>
 
   <!-- ===== 我的预测 ===== -->
@@ -50,9 +51,9 @@
       </view>
     </view>
 
-    <view wx:if="{{userPick}}" class="card card-flat confirm-banner">
-      <text class="tx-purple tx-bold">✓ {{pickLabel}}</text>
-      <button class="btn btn-pill" style="background: #fff; color: #6D5BFF;" bindtap="onShare">{{i18n.cta_share_group}}</button>
+    <view wx:if="{{userPick}}" class="confirm-banner">
+      <text class="tx-bold" style="color:#fff;">✓ {{pickLabel}}</text>
+      <button class="btn btn-pill" style="background: #fff; color: #0F766E;" bindtap="onShare">{{i18n.cta_share_group}}</button>
     </view>
   </view>
 
@@ -70,12 +71,12 @@
       <view class="col" style="flex: 1; gap: 4rpx;">
         <view class="row row-gap-sm">
           <text class="tx-bold">{{item.name}}</text>
-          <text class="pill pill-purple">{{item.tier}}</text>
+          <text class="pill pill-teal">{{item.tier}}</text>
         </view>
         <text class="tx-small">{{item.handle}} · {{item.hit_rate}}%</text>
       </view>
       <view class="kol-pick-pill" data-id="{{item.id}}" catchtap="followKol">
-        <text class="tx-purple tx-bold">{{i18n.md_kol_follow_pick}} {{item.pickLabel}}</text>
+        <text class="tx-teal tx-bold">{{i18n.md_kol_follow_pick}} {{item.pickLabel}}</text>
       </view>
     </view>
   </view>
@@ -84,7 +85,7 @@
   <view class="section">
     <view class="section-head">
       <view>
-        <text class="section-title">{{i18n.md_chat_title}} 💬</text>
+        <text class="section-title">{{i18n.md_chat_title}}</text>
         <view class="section-sub">{{match.discussions}} {{i18n.md_chat_sub_n}}</view>
       </view>
       <text class="section-link" bindtap="onShare">{{i18n.cta_share}}</text>
@@ -95,15 +96,15 @@
       <view class="col" style="flex: 1; gap: 6rpx;">
         <view class="row row-gap-sm">
           <text class="tx-bold" style="font-size: 26rpx;">{{item.user}}</text>
-          <text wx:if="{{item.kol}}" class="pill pill-purple" style="font-size: 18rpx; height: 32rpx; padding: 0 12rpx;">KOL</text>
+          <text wx:if="{{item.kol}}" class="pill pill-teal" style="font-size: 18rpx; height: 32rpx; padding: 0 12rpx;">KOL</text>
           <text class="tx-small">· {{item.ago}}</text>
         </view>
         <text class="discuss-text">{{item.text}}</text>
       </view>
     </view>
 
-    <view class="card empty-discuss" bindtap="onShare">
-      <text class="tx-purple tx-bold">{{i18n.md_chat_join_cta}}</text>
+    <view class="empty-discuss" bindtap="onShare">
+      <text class="tx-teal tx-bold">{{i18n.md_chat_join_cta}}</text>
       <text class="tx-small" style="margin-top: 8rpx;">{{i18n.md_chat_join_sub}}</text>
     </view>
   </view>

@@ -1,23 +1,23 @@
 .my-team-card {
-  background: linear-gradient(135deg, #FFFFFF, #F5F2FF);
-  margin-bottom: 32rpx;
+  background: linear-gradient(180deg, #FFFFFF, #F0FDFA);
+  margin-bottom: 28rpx;
 }
 .team-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 20rpx;
+  gap: 16rpx;
 }
 .team-card {
   display: flex; flex-direction: column; align-items: center;
-  padding: 28rpx 20rpx;
+  padding: 24rpx 16rpx;
   margin: 0;
   text-align: center;
 }
 .team-card.is-mine {
-  background: linear-gradient(180deg, #FFFFFF, #F0EDFF);
-  box-shadow: 0 8rpx 24rpx rgba(109,91,255,.18);
+  background: linear-gradient(180deg, #FFFFFF, #F0FDFA);
+  box-shadow: 0 6rpx 20rpx rgba(20, 184, 166, .15);
 }
 .team-card-name {
   margin-top: 14rpx;
-  font-size: 28rpx; font-weight: 700; color: #1A1A2E;
+  font-size: 26rpx; font-weight: 700; color: #1F2937;
 }

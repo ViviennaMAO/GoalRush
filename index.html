@@ -1,265 +1,49 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GoalRush · 2026 World Cup · Predict for free. Earn for real.</title>
-<meta name="description" content="免费预测 2026 世界杯,赢真金 EDS 奖励。无需本金、无需 KYC,跟你的朋友 + KOL 一起玩。">
-<meta property="og:title" content="GoalRush · 2026 World Cup">
-<meta property="og:description" content="Predict for free. Earn for real. — 免费预测世界杯,赢真金 EDS。">
-<meta property="og:type" content="website">
-<meta property="og:image" content="og-image.png">
-<meta property="og:url" content="https://goalrush.app">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="GoalRush · 2026 World Cup">
-<meta name="twitter:description" content="Predict for free. Earn for real.">
-<meta name="twitter:image" content="og-image.png">
-<link rel="stylesheet" href="assets/css/style.css">
-</head>
-<body>
-
-<div id="header-slot"></div>
-
-<!-- ====== Hero ====== -->
-<section class="hero">
-  <div class="container">
-    <div class="hero-tag">
-      <span class="dot"></span>
-      <span data-i18n="hero.tag">LIVE · 2026 FIFA World Cup · 6/11 - 7/19</span>
-    </div>
-    <h1 class="hero-title">
-      <span data-i18n="hero.title.l1">Predict <span class="hl">for free.</span></span><br/>
-      <span data-i18n="hero.title.l2">Earn <span class="gold">for real.</span></span>
-    </h1>
-    <p class="hero-sub" data-i18n="hero.sub">
-      免费预测世界杯每一场比赛。命中赢真金 EDS 奖励 — 无需本金、无需 KYC、无需钱包,30 秒进来开玩。
-    </p>
-
-    <div class="hero-stats">
-      <div class="hero-stat">
-        <strong id="stat-users">12,847</strong>
-        <span data-i18n="hero.stat.users">玩家</span>
-      </div>
-      <div class="hero-stat">
-        <strong id="stat-predictions">38,420</strong>
-        <span data-i18n="hero.stat.predictions">已提交预测</span>
-      </div>
-      <div class="hero-stat">
-        <strong id="stat-eds">245K</strong>
-        <span data-i18n="hero.stat.eds">EDS 已发放</span>
-      </div>
-      <div class="hero-stat">
-        <strong id="stat-acc">99.7%</strong>
-        <span data-i18n="hero.stat.acc">结算正确率</span>
-      </div>
-    </div>
-
-    <div class="hero-cta">
-      <a href="matches.html" class="btn-primary" onclick="trackEvent('hero_cta_play')" data-i18n="hero.cta.play">🎯 立即开始预测</a>
-      <button class="btn-secondary" onclick="triggerLuffaDownload('hero')" data-i18n="hero.cta.download">📲 下载 Luffa 真领 EDS</button>
-    </div>
-  </div>
-</section>
-
-<!-- ====== 今日 / 即将开赛 ====== -->
-<section class="section">
-  <div class="container">
-    <div class="sec-head">
-      <div>
-        <h2 class="sec-title"><span data-i18n="sec.today">今日开赛</span> <span class="text-accent">🔥</span></h2>
-        <p class="sec-sub" data-i18n="sec.today.sub">点击任一场比赛进入预测 · 锁定时间 = 开赛前 5 分钟</p>
-      </div>
-      <a href="matches.html" class="btn-ghost">查看全部 48 场 →</a>
-    </div>
-    <div class="matches-grid" id="today-matches"></div>
-  </div>
-</section>
-
-<!-- ====== KOL 今日预测 ====== -->
-<section class="section">
-  <div class="container">
-    <div class="sec-head">
-      <div>
-        <h2 class="sec-title"><span data-i18n="sec.kol">KOL 今日预测</span> <span class="text-gold">⭐</span></h2>
-        <p class="sec-sub" data-i18n="sec.kol.sub">跟着这些球迷大 V 的判断玩,一键复用他们的预测</p>
-      </div>
-    </div>
-    <div class="kol-grid" id="kol-grid"></div>
-  </div>
-</section>
-
-<!-- ====== 排行榜预览 ====== -->
-<section class="section">
-  <div class="container">
-    <div class="sec-head">
-      <div>
-        <h2 class="sec-title"><span data-i18n="sec.lb">全网战绩榜</span> <span class="text-gold">🏆</span></h2>
-        <p class="sec-sub" data-i18n="sec.lb.sub">7 天滚动榜 · 前 10 名实时更新</p>
-      </div>
-      <a href="leaderboard.html" class="btn-ghost">完整榜单 →</a>
-    </div>
-    <div class="leaderboard-table" id="lb-preview"></div>
-  </div>
-</section>
-
-<!-- ====== How it works ====== -->
-<section class="section" id="how">
-  <div class="container">
-    <div class="sec-head text-center">
-      <div style="margin: 0 auto;">
-        <h2 class="sec-title">怎么玩</h2>
-        <p class="sec-sub">三步上场 · 不押本金 · 不留个人信息</p>
-      </div>
-    </div>
-    <div class="matches-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
-      <div class="match-card">
-        <div style="font-size: 36px;">🎯</div>
-        <h3 style="font-family: Inter; font-size: 18px; font-weight: 800; margin: 12px 0 6px;">1. 选比赛 · 选预测</h3>
-        <p style="color: var(--ink-2); font-size: 13px;">从今日 / 本周比赛中挑一场,选「主队赢 / 平 / 客队赢」 — 无需输入金额、无需下注。</p>
-      </div>
-      <div class="match-card">
-        <div style="font-size: 36px;">⚡</div>
-        <h3 style="font-family: Inter; font-size: 18px; font-weight: 800; margin: 12px 0 6px;">2. 比赛结束 · 自动结算</h3>
-        <p style="color: var(--ink-2); font-size: 13px;">三大权威体育数据源(SofaScore + API-Football + ESPN)对账,5 分钟内结算,不存在主观判断。</p>
-      </div>
-      <div class="match-card">
-        <div style="font-size: 36px;">💎</div>
-        <h3 style="font-family: Inter; font-size: 18px; font-weight: 800; margin: 12px 0 6px;">3. EDS 到账 · 真金奖励</h3>
-        <p style="color: var(--ink-2); font-size: 13px;">命中即得 EDS。下载 Luffa 钱包同步战绩,直接领到链上钱包 — 可转、可换、可花。</p>
-      </div>
-    </div>
-
-    <div class="info-strip">
-      <div class="info-strip-icon">🛡</div>
-      <div class="info-strip-text">
-        <strong>这不是 Polymarket。也不是 bet365。</strong>
-        <small>GoalRush 是 play-money 预测玩法 + Luffa 自有 utility token 奖励。玩家不押本金、不存在赔率/赔付,法律分类与 prediction market / sportsbook 完全不同。Operated within a group holding HK SFC licenses.</small>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ====== Download CTA ====== -->
-<section class="section">
-  <div class="container">
-    <div class="kol-hero" style="text-align: center;">
-      <h2 style="font-family: Inter; font-size: 36px; font-weight: 800; margin-bottom: 12px;">
-        EDS 真金在 Luffa 钱包到账 <span class="text-accent">↓</span>
-      </h2>
-      <p style="color: var(--ink-2); max-width: 540px; margin: 0 auto 24px;">
-        GoalRush 网页版可以免费试玩。链上钱包由 <strong style="color: var(--ink);">Luffa</strong> 提供 —— 下载即同步战绩 + 群组挑战,EDS 直接进钱包。
-      </p>
-      <div class="hero-cta">
-        <button class="btn-primary" onclick="triggerLuffaDownload('bottom_cta')">📲 下载 Luffa App</button>
-        <a href="kol.html?id=lucas_br" class="btn-secondary">🌟 看 KOL 战绩页范例</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div id="footer-slot"></div>
-
-<script src="assets/js/data.js"></script>
-<script src="assets/js/i18n.js"></script>
-<script src="assets/js/app.js"></script>
-<script>
+<!DOCTYPE html> <html lang="zh-CN"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>GoalRush · 2026 World Cup · Predict for free. Earn for real.</title> <meta name="description" content="免费预测 2026 世界杯,赢真金 EDS 奖励。无需本金、无需 KYC,跟你的朋友 + KOL 一起玩。"> <meta property="og:title" content="GoalRush · 2026 World Cup"> <meta property="og:description" content="Predict for free. Earn for real. — 免费预测世界杯,赢真金 EDS。"> <meta property="og:type" content="website"> <meta property="og:image" content="og-image.png"> <meta property="og:url" content="https://goalrush.app"> <meta name="twitter:card" content="summary_large_image"> <meta name="twitter:title" content="GoalRush · 2026 World Cup"> <meta name="twitter:description" content="Predict for free. Earn for real."> <meta name="twitter:image" content="og-image.png"> <link rel="stylesheet" href="assets/css/style.css"> </head> <body> <div id="header-slot"></div> <!-- ====== Hero ====== --> <section class="hero"> <div class="container"> <div class="hero-tag"> <span class="dot"></span> <span data-i18n="hero.tag">LIVE · 2026 FIFA World Cup · 6/11 - 7/19</span> </div> <h1 class="hero-title"> <span data-i18n="hero.title.l1">Predict <span class="hl">for free.</span></span><br/> <span data-i18n="hero.title.l2">Earn <span class="gold">for real.</span></span> </h1> <p class="hero-sub" data-i18n="hero.sub">
+ 免费预测世界杯每一场比赛。命中赢真金 EDS 奖励 — 无需本金、无需 KYC、无需钱包,30 秒进来开玩。
+ </p> <div class="hero-stats"> <div class="hero-stat"> <strong id="stat-users">12,847</strong> <span data-i18n="hero.stat.users">玩家</span> </div> <div class="hero-stat"> <strong id="stat-predictions">38,420</strong> <span data-i18n="hero.stat.predictions">已提交预测</span> </div> <div class="hero-stat"> <strong id="stat-eds">245K</strong> <span data-i18n="hero.stat.eds">EDS 已发放</span> </div> <div class="hero-stat"> <strong id="stat-acc">99.7%</strong> <span data-i18n="hero.stat.acc">结算正确率</span> </div> </div> <div class="hero-cta"> <a href="matches.html" class="btn-primary" onclick="trackEvent('hero_cta_play')" data-i18n="hero.cta.play"> 立即开始预测</a> <button class="btn-secondary" onclick="triggerLuffaDownload('hero')" data-i18n="hero.cta.download"> 下载 Luffa 真领 EDS</button> </div> </div> </section> <!-- ====== 今日 / 即将开赛 ====== --> <section class="section"> <div class="container"> <div class="sec-head"> <div> <h2 class="sec-title"><span data-i18n="sec.today">今日开赛</span> <span class="text-accent"></span></h2> <p class="sec-sub" data-i18n="sec.today.sub">点击任一场比赛进入预测 · 锁定时间 = 开赛前 5 分钟</p> </div> <a href="matches.html" class="btn-ghost">查看全部 48 场 →</a> </div> <div class="matches-grid" id="today-matches"></div> </div> </section> <!-- ====== KOL 今日预测 ====== --> <section class="section"> <div class="container"> <div class="sec-head"> <div> <h2 class="sec-title"><span data-i18n="sec.kol">KOL 今日预测</span> <span class="text-gold">⭐</span></h2> <p class="sec-sub" data-i18n="sec.kol.sub">跟着这些球迷大 V 的判断玩,一键复用他们的预测</p> </div> </div> <div class="kol-grid" id="kol-grid"></div> </div> </section> <!-- ====== 排行榜预览 ====== --> <section class="section"> <div class="container"> <div class="sec-head"> <div> <h2 class="sec-title"><span data-i18n="sec.lb">全网战绩榜</span> <span class="text-gold"></span></h2> <p class="sec-sub" data-i18n="sec.lb.sub">7 天滚动榜 · 前 10 名实时更新</p> </div> <a href="leaderboard.html" class="btn-ghost">完整榜单 →</a> </div> <div class="leaderboard-table" id="lb-preview"></div> </div> </section> <!-- ====== How it works ====== --> <section class="section" id="how"> <div class="container"> <div class="sec-head text-center"> <div style="margin: 0 auto;"> <h2 class="sec-title">怎么玩</h2> <p class="sec-sub">三步上场 · 不押本金 · 不留个人信息</p> </div> </div> <div class="matches-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));"> <div class="match-card"> <div style="font-size: 36px;"></div> <h3 style="font-family: Inter; font-size: 18px; font-weight: 800; margin: 12px 0 6px;">1. 选比赛 · 选预测</h3> <p style="color: var(--ink-2); font-size: 13px;">从今日 / 本周比赛中挑一场,选「主队赢 / 平 / 客队赢」 — 无需输入金额、无需下注。</p> </div> <div class="match-card"> <div style="font-size: 36px;"></div> <h3 style="font-family: Inter; font-size: 18px; font-weight: 800; margin: 12px 0 6px;">2. 比赛结束 · 自动结算</h3> <p style="color: var(--ink-2); font-size: 13px;">三大权威体育数据源(SofaScore + API-Football + ESPN)对账,5 分钟内结算,不存在主观判断。</p> </div> <div class="match-card"> <div style="font-size: 36px;"></div> <h3 style="font-family: Inter; font-size: 18px; font-weight: 800; margin: 12px 0 6px;">3. EDS 到账 · 真金奖励</h3> <p style="color: var(--ink-2); font-size: 13px;">命中即得 EDS。下载 Luffa 钱包同步战绩,直接领到链上钱包 — 可转、可换、可花。</p> </div> </div> <div class="info-strip"> <div class="info-strip-icon"></div> <div class="info-strip-text"> <strong>这不是 Polymarket。也不是 bet365。</strong> <small>GoalRush 是 play-money 预测玩法 + Luffa 自有 utility token 奖励。玩家不押本金、不存在赔率/赔付,法律分类与 prediction market / sportsbook 完全不同。Operated within a group holding HK SFC licenses.</small> </div> </div> </div> </section> <!-- ====== Download CTA ====== --> <section class="section"> <div class="container"> <div class="kol-hero" style="text-align: center;"> <h2 style="font-family: Inter; font-size: 36px; font-weight: 800; margin-bottom: 12px;">
+ EDS 真金在 Luffa 钱包到账 <span class="text-accent">↓</span> </h2> <p style="color: var(--ink-2); max-width: 540px; margin: 0 auto 24px;">
+ GoalRush 网页版可以免费试玩。链上钱包由 <strong style="color: var(--ink);">Luffa</strong> 提供 —— 下载即同步战绩 + 群组挑战,EDS 直接进钱包。
+ </p> <div class="hero-cta"> <button class="btn-primary" onclick="triggerLuffaDownload('bottom_cta')"> 下载 Luffa App</button> <a href="kol.html?id=lucas_br" class="btn-secondary"> 看 KOL 战绩页范例</a> </div> </div> </div> </section> <div id="footer-slot"></div> <script src="assets/js/data.js"></script> <script src="assets/js/i18n.js"></script> <script src="assets/js/app.js"></script> <script>
 bootstrap('home');
 
 // 渲染今日比赛(6/11-6/12)
 function renderTodayMatches() {
-  const grid = document.getElementById('today-matches');
-  const today = MATCHES.slice(0, 4); // 前 4 场
-  grid.innerHTML = today.map(m => {
-    const home = getTeam(m.home), away = getTeam(m.away);
-    const userPick = getPrediction(m.id);
-    return `
-      <a href="match.html?id=${m.id}" class="match-card ${m.highlight ? 'highlight' : ''}" onclick="trackEvent('home_match_click',{match_id:'${m.id}'})">
-        <div class="match-meta">
-          <span>${m.competition}</span>
-          <span class="match-countdown">⏱ ${timeUntilKickoff(m.kickoff)}</span>
-        </div>
-        <div class="match-teams">
-          <div class="team">
-            <div class="team-flag">${home.flag}</div>
-            <div class="team-code">${home.code}</div>
-          </div>
-          <div class="match-vs">VS</div>
-          <div class="team">
-            <div class="team-flag">${away.flag}</div>
-            <div class="team-code">${away.code}</div>
-          </div>
-        </div>
-        <div class="match-actions">
-          <div class="pick-btn ${userPick==='home'?'selected':''}">
-            <span class="lbl">${home.code} 赢</span>
-            <span class="pct">${m.distribution.home}%</span>
-          </div>
-          <div class="pick-btn ${userPick==='draw'?'selected':''}">
-            <span class="lbl">平局</span>
-            <span class="pct">${m.distribution.draw}%</span>
-          </div>
-          <div class="pick-btn ${userPick==='away'?'selected':''}">
-            <span class="lbl">${away.code} 赢</span>
-            <span class="pct">${m.distribution.away}%</span>
-          </div>
-        </div>
-      </a>
-    `;
-  }).join('');
+ const grid = document.getElementById('today-matches');
+ const today = MATCHES.slice(0, 4); // 前 4 场
+ grid.innerHTML = today.map(m => {
+ const home = getTeam(m.home), away = getTeam(m.away);
+ const userPick = getPrediction(m.id);
+ return `
+ <a href="match.html?id=${m.id}" class="match-card ${m.highlight ? 'highlight' : ''}" onclick="trackEvent('home_match_click',{match_id:'${m.id}'})"> <div class="match-meta"> <span>${m.competition}</span> <span class="match-countdown">⏱ ${timeUntilKickoff(m.kickoff)}</span> </div> <div class="match-teams"> <div class="team"> <div class="team-flag">${home.flag}</div> <div class="team-code">${home.code}</div> </div> <div class="match-vs">VS</div> <div class="team"> <div class="team-flag">${away.flag}</div> <div class="team-code">${away.code}</div> </div> </div> <div class="match-actions"> <div class="pick-btn ${userPick==='home'?'selected':''}"> <span class="lbl">${home.code} 赢</span> <span class="pct">${m.distribution.home}%</span> </div> <div class="pick-btn ${userPick==='draw'?'selected':''}"> <span class="lbl">平局</span> <span class="pct">${m.distribution.draw}%</span> </div> <div class="pick-btn ${userPick==='away'?'selected':''}"> <span class="lbl">${away.code} 赢</span> <span class="pct">${m.distribution.away}%</span> </div> </div> </a>
+ `;
+ }).join('');
 }
 
 // 渲染 KOL 网格
 function renderKOLs() {
-  const grid = document.getElementById('kol-grid');
-  grid.innerHTML = KOLS.map(k => `
-    <a href="kol.html?id=${k.id}" class="kol-card" onclick="trackEvent('home_kol_click',{kol_id:'${k.id}'})">
-      <div class="kol-card-head">
-        <div class="kol-card-ava">${k.flag}</div>
-        <div>
-          <div class="name">${k.name} ${k.tier === 'S' ? '<span class="kol-tier" style="font-size:9px;padding:2px 6px;">S</span>' : ''}</div>
-          <div class="handle">${k.handle}</div>
-        </div>
-      </div>
-      <div class="kol-card-stats">
-        <div><strong>${k.stats.hit_rate}%</strong><span>命中率</span></div>
-        <div><strong>${k.stats.eds_earned.toLocaleString()}</strong><span>EDS</span></div>
-        <div><strong>#${k.stats.current_rank}</strong><span>排名</span></div>
-      </div>
-    </a>
-  `).join('');
+ const grid = document.getElementById('kol-grid');
+ grid.innerHTML = KOLS.map(k => `
+ <a href="kol.html?id=${k.id}" class="kol-card" onclick="trackEvent('home_kol_click',{kol_id:'${k.id}'})"> <div class="kol-card-head"> <div class="kol-card-ava">${k.flag}</div> <div> <div class="name">${k.name} ${k.tier === 'S' ? '<span class="kol-tier" style="font-size:9px;padding:2px 6px;">S</span>' : ''}</div> <div class="handle">${k.handle}</div> </div> </div> <div class="kol-card-stats"> <div><strong>${k.stats.hit_rate}%</strong><span>命中率</span></div> <div><strong>${k.stats.eds_earned.toLocaleString()}</strong><span>EDS</span></div> <div><strong>#${k.stats.current_rank}</strong><span>排名</span></div> </div> </a>
+ `).join('');
 }
 
 // 渲染排行榜预览
 function renderLBPreview() {
-  const lb = document.getElementById('lb-preview');
-  const top = LEADERBOARD.slice(0, 10);
-  lb.innerHTML = `
-    <div class="lb-row head">
-      <div>排名</div><div>玩家</div><div>命中率</div><div>EDS</div><div>连胜</div>
-    </div>
-    ${top.map(u => {
-      const rankClass = u.rank===1?'top1':u.rank===2?'top2':u.rank===3?'top3':'';
-      const isKol = !!u.kol;
-      return `
-        <a href="${isKol?`kol.html?id=${u.kol}`:'#'}" class="lb-row" onclick="trackEvent('home_lb_click',{rank:${u.rank}})">
-          <div class="lb-rank ${rankClass}">#${u.rank}</div>
-          <div class="lb-user">
-            <div class="ava">${u.flag}</div>
-            <div class="lb-handle">${u.handle}${isKol?'<span class="lb-kol-badge">KOL</span>':''}</div>
-          </div>
-          <div class="lb-rate">${u.hit_rate}%</div>
-          <div class="lb-eds">${u.eds.toLocaleString()}</div>
-          <div class="lb-streak">${u.streak>0?`🔥 ${u.streak}`:'—'}</div>
-        </a>
-      `;
-    }).join('')}
-  `;
+ const lb = document.getElementById('lb-preview');
+ const top = LEADERBOARD.slice(0, 10);
+ lb.innerHTML = `
+ <div class="lb-row head"> <div>排名</div><div>玩家</div><div>命中率</div><div>EDS</div><div>连胜</div> </div>
+ ${top.map(u => {
+ const rankClass = u.rank===1?'top1':u.rank===2?'top2':u.rank===3?'top3':'';
+ const isKol = !!u.kol;
+ return `
+ <a href="${isKol?`kol.html?id=${u.kol}`:'#'}" class="lb-row" onclick="trackEvent('home_lb_click',{rank:${u.rank}})"> <div class="lb-rank ${rankClass}">#${u.rank}</div> <div class="lb-user"> <div class="ava">${u.flag}</div> <div class="lb-handle">${u.handle}${isKol?'<span class="lb-kol-badge">KOL</span>':''}</div> </div> <div class="lb-rate">${u.hit_rate}%</div> <div class="lb-eds">${u.eds.toLocaleString()}</div> <div class="lb-streak">${u.streak>0?` ${u.streak}`:'—'}</div> </a>
+ `;
+ }).join('')}
+ `;
 }
 
 renderTodayMatches();
 renderKOLs();
 renderLBPreview();
-</script>
-
-</body>
-</html>
+</script> </body> </html>

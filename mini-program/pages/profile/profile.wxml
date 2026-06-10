@@ -1,17 +1,17 @@
 <view class="page">
 
   <!-- ===== 球迷身份卡 ===== -->
-  <view class="card card-deep me-hero">
+  <view class="card me-hero">
     <view class="row row-gap-md" style="align-items: center;">
-      <view class="avatar avatar-xl avatar-ring" style="background: rgba(255,255,255,.25);">
+      <view class="avatar avatar-xl avatar-ring">
         <text>{{myTeamFlag || '⚽'}}</text>
       </view>
       <view class="col" style="flex: 1; gap: 6rpx;">
         <text class="me-name">{{wallet ? wallet.nickname : i18n.prof_guest}}</text>
         <text class="me-handle">{{wallet ? walletShort : i18n.prof_no_wallet}}</text>
         <view class="row row-gap-sm" style="margin-top: 8rpx;">
-          <text class="pill" style="background: rgba(255,255,255,.2); color: #fff;">{{titleEmoji}} {{titleName}}</text>
-          <text class="pill" style="background: rgba(255,255,255,.2); color: #fff;">Lv.{{fanLevel}}</text>
+          <text class="pill pill-teal">{{titleName}}</text>
+          <text class="pill pill-light">Lv.{{fanLevel}}</text>
         </view>
       </view>
     </view>
@@ -37,7 +37,7 @@
   </view>
 
   <!-- ===== Luffa wallet 入口 ===== -->
-  <view wx:if="{{!wallet}}" class="card" style="background: linear-gradient(135deg, #F0EDFF, #FFFFFF);">
+  <view wx:if="{{!wallet}}" class="card" style="background: linear-gradient(135deg, #ECFDF5, #FFFFFF);">
     <view class="col" style="gap: 12rpx; padding: 8rpx 0;">
       <text class="tx-h3">{{i18n.prof_connect_title_card}}</text>
       <text class="tx-body">{{i18n.prof_connect_card_body}}</text>
@@ -53,7 +53,7 @@
       </view>
       <view class="col" style="align-items: flex-end; gap: 6rpx;">
         <text class="tx-small">{{i18n.prof_eds_label}}</text>
-        <text class="tx-h3 tx-purple">{{eds}}</text>
+        <text class="tx-h3 tx-teal">{{eds}}</text>
       </view>
     </view>
   </view>
@@ -68,7 +68,7 @@
     </view>
 
     <view wx:if="{{!myPreds.length}}" class="card" style="text-align: center; color: #9CA3AF; padding: 48rpx;">
-      {{i18n.prof_no_picks}} <text class="tx-purple" bindtap="goMatches">{{i18n.prof_no_picks_cta}}</text>
+      {{i18n.prof_no_picks}} <text class="tx-teal" bindtap="goMatches">{{i18n.prof_no_picks_cta}}</text>
     </view>
 
     <view wx:for="{{myPreds}}" wx:key="id" class="card pred-row" bindtap="goMatch" data-id="{{item.id}}">
@@ -80,7 +80,7 @@
         <view class="avatar avatar-sm"><text>{{item.awayTeam.flag}}</text></view>
       </view>
       <view class="col" style="align-items: flex-end; gap: 4rpx;">
-        <text class="pill pill-purple">{{item.pickLabel}}</text>
+        <text class="pill pill-solid">{{item.pickLabel}}</text>
         <text class="tx-small">{{item.countdown}}</text>
       </view>
     </view>
@@ -113,7 +113,7 @@
       <view wx:for="{{langs}}" wx:key="key" class="lang-row {{item.key === currentLang ? 'active' : ''}}"
         bindtap="onPickLang" data-key="{{item.key}}">
         <text class="lang-row-label">{{item.label}}</text>
-        <text wx:if="{{item.key === currentLang}}" class="tx-purple">✓</text>
+        <text wx:if="{{item.key === currentLang}}" class="tx-teal">✓</text>
       </view>
     </view>
   </view>
