@@ -1,19 +1,12 @@
 import { MATCHES, getTeam, timeToKickoff, formatTime } from '../../utils/mock-data';
+import { getDict, getLang } from '../../utils/i18n';
 
 const app = getApp();
 
-const PICK_LABELS = { home: '主队', draw: '平', away: '客队' };
-
 Page({
   data: {
-    tabs: [
-      { key: 'all', label: '全部' },
-      { key: 'hot', label: '🔥 重磅' },
-      { key: '0611', label: '6月11日' },
-      { key: '0612', label: '6月12日' },
-      { key: '0613', label: '6月13日' },
-      { key: '0614', label: '6月14日' },
-    ],
+    i18n: {},
+    tabs: [],
     currentTab: 'all',
     matches: []
   },
@@ -23,6 +16,16 @@ Page({
   onPullDownRefresh() { this.refresh(); wx.stopPullDownRefresh(); },
 
   refresh() {
+    const lang = getLang();
+    const i18n = getDict(lang);
+    const tabs = [
+      { key: 'all', label: i18n.match_tabs_all },
+      { key: 'hot', label: i18n.match_tabs_hot },
+      { key: '0611', label: i18n.match_tabs_jun11 },
+      { key: '0612', label: i18n.match_tabs_jun12 },
+      { key: '0613', label: i18n.match_tabs_jun13 },
+      { key: '0614', label: i18n.match_tabs_jun14 },
+    ];
     const preds = app.globalData.predictions || {};
     let list = MATCHES;
     const t = this.data.currentTab;
@@ -35,7 +38,6 @@ Page({
     const matches = list.map(m => {
       const home = getTeam(m.home), away = getTeam(m.away);
       const userPick = preds[m.id];
-      const pickLabel = userPick === 'home' ? home.code : userPick === 'away' ? away.code : userPick === 'draw' ? '平局' : '';
       return {
         ...m,
         homeTeam: home,
@@ -43,11 +45,10 @@ Page({
         countdown: timeToKickoff(m.kickoff),
         kickoffTxt: formatTime(m.kickoff),
         userPick,
-        pickLabel,
       };
     });
 
-    this.setData({ matches });
+    this.setData({ i18n, tabs, matches });
   },
 
   onTab(e) {

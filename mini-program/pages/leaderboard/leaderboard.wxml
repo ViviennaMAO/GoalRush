@@ -1,13 +1,11 @@
 <view class="page">
 
-  <!-- ===== Tab 切换 ===== -->
   <scroll-view scroll-x class="tabs" enhanced show-scrollbar="{{false}}">
     <view wx:for="{{tabs}}" wx:key="key" class="tab {{currentTab === item.key ? 'active' : ''}}" bindtap="onTab" data-key="{{item.key}}">
       {{item.label}}
     </view>
   </scroll-view>
 
-  <!-- ===== 榜首颁奖台 ===== -->
   <view wx:if="{{podium.length === 3}}" class="card podium-card">
     <view class="podium-step podium-second">
       <view class="avatar avatar-lg avatar-ring"><text>{{podium[1].flag}}</text></view>
@@ -29,7 +27,6 @@
     </view>
   </view>
 
-  <!-- ===== 完整列表 ===== -->
   <view class="card list-card" style="padding: 0;">
     <view wx:for="{{list}}" wx:key="rank" class="list-row">
       <text class="list-rank">#{{item.rank}}</text>
@@ -47,8 +44,8 @@
   </view>
 
   <view class="legal">
-    <text>多维榜单 · 不同维度展示不同球迷价值</text>
-    <text>命中率 ≠ 球迷忠诚度 · 多榜并存,鼓励多元参与</text>
+    <text>{{i18n.lb_legal_1}}</text>
+    <text>{{i18n.lb_legal_2}}</text>
   </view>
 
 </view>

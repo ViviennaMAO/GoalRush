@@ -7,10 +7,10 @@
         <text>{{myTeamFlag || '⚽'}}</text>
       </view>
       <view class="col" style="flex: 1; gap: 6rpx;">
-        <text class="me-name">{{wallet ? wallet.nickname : '游客'}}</text>
-        <text class="me-handle">{{wallet ? walletShort : '未连接钱包'}}</text>
+        <text class="me-name">{{wallet ? wallet.nickname : i18n.prof_guest}}</text>
+        <text class="me-handle">{{wallet ? walletShort : i18n.prof_no_wallet}}</text>
         <view class="row row-gap-sm" style="margin-top: 8rpx;">
-          <text class="pill" style="background: rgba(255,255,255,.2); color: #fff;">{{title.emoji}} {{title.name}}</text>
+          <text class="pill" style="background: rgba(255,255,255,.2); color: #fff;">{{titleEmoji}} {{titleName}}</text>
           <text class="pill" style="background: rgba(255,255,255,.2); color: #fff;">Lv.{{fanLevel}}</text>
         </view>
       </view>
@@ -19,19 +19,19 @@
     <view class="me-stats">
       <view class="me-stat">
         <text class="me-stat-val">{{predCount}}</text>
-        <text class="me-stat-lbl">已预测</text>
+        <text class="me-stat-lbl">{{i18n.prof_stat_picks}}</text>
       </view>
       <view class="me-stat">
         <text class="me-stat-val">{{hitCount}}</text>
-        <text class="me-stat-lbl">命中</text>
+        <text class="me-stat-lbl">{{i18n.prof_stat_hits}}</text>
       </view>
       <view class="me-stat">
         <text class="me-stat-val">{{eds}}</text>
-        <text class="me-stat-lbl">EDS</text>
+        <text class="me-stat-lbl">{{i18n.prof_stat_eds}}</text>
       </view>
       <view class="me-stat">
         <text class="me-stat-val">{{(follows || []).length}}</text>
-        <text class="me-stat-lbl">关注</text>
+        <text class="me-stat-lbl">{{i18n.prof_stat_follows}}</text>
       </view>
     </view>
   </view>
@@ -39,20 +39,20 @@
   <!-- ===== Luffa wallet 入口 ===== -->
   <view wx:if="{{!wallet}}" class="card" style="background: linear-gradient(135deg, #F0EDFF, #FFFFFF);">
     <view class="col" style="gap: 12rpx; padding: 8rpx 0;">
-      <text class="tx-h3">连接 Luffa 钱包 · 真领 EDS</text>
-      <text class="tx-body">未连接时,你的预测仅本地保存。连接后,EDS 真金直接到 Luffa 钱包。</text>
-      <button class="btn btn-primary" style="margin-top: 12rpx;" bindtap="onConnect">连接 Luffa 钱包</button>
+      <text class="tx-h3">{{i18n.prof_connect_title_card}}</text>
+      <text class="tx-body">{{i18n.prof_connect_card_body}}</text>
+      <button class="btn btn-primary" style="margin-top: 12rpx;" bindtap="onConnect">{{i18n.prof_connect_btn}}</button>
     </view>
   </view>
 
   <view wx:else class="card">
     <view class="row-between">
       <view class="col" style="gap: 6rpx;">
-        <text class="tx-small">Luffa 钱包地址</text>
+        <text class="tx-small">{{i18n.prof_wallet_label}}</text>
         <text class="tx-mono">{{walletShort}}</text>
       </view>
       <view class="col" style="align-items: flex-end; gap: 6rpx;">
-        <text class="tx-small">EDS 余额</text>
+        <text class="tx-small">{{i18n.prof_eds_label}}</text>
         <text class="tx-h3 tx-purple">{{eds}}</text>
       </view>
     </view>
@@ -62,13 +62,13 @@
   <view class="section">
     <view class="section-head">
       <view>
-        <text class="section-title">我的预测</text>
-        <view class="section-sub">{{predCount}} 场 · {{pendingCount}} 待结算</view>
+        <text class="section-title">{{i18n.prof_my_picks}}</text>
+        <view class="section-sub">{{predCount}} · {{pendingCount}} {{i18n.prof_pending_suffix}}</view>
       </view>
     </view>
 
     <view wx:if="{{!myPreds.length}}" class="card" style="text-align: center; color: #9CA3AF; padding: 48rpx;">
-      还没押 · <text class="tx-purple" bindtap="goMatches">去看比赛 →</text>
+      {{i18n.prof_no_picks}} <text class="tx-purple" bindtap="goMatches">{{i18n.prof_no_picks_cta}}</text>
     </view>
 
     <view wx:for="{{myPreds}}" wx:key="id" class="card pred-row" bindtap="goMatch" data-id="{{item.id}}">
@@ -80,7 +80,7 @@
         <view class="avatar avatar-sm"><text>{{item.awayTeam.flag}}</text></view>
       </view>
       <view class="col" style="align-items: flex-end; gap: 4rpx;">
-        <text class="pill pill-purple">押 {{item.pickLabel}}</text>
+        <text class="pill pill-purple">{{item.pickLabel}}</text>
         <text class="tx-small">{{item.countdown}}</text>
       </view>
     </view>
@@ -90,14 +90,30 @@
   <view class="section" wx:if="{{followedKols.length}}">
     <view class="section-head">
       <view>
-        <text class="section-title">关注的 KOL</text>
+        <text class="section-title">{{i18n.prof_followed_title}}</text>
       </view>
     </view>
     <view wx:for="{{followedKols}}" wx:key="id" class="card kol-row">
       <view class="avatar"><text>{{item.flag}}</text></view>
       <view class="col" style="flex: 1; gap: 4rpx;">
         <text class="tx-bold">{{item.name}}</text>
-        <text class="tx-small">命中率 {{item.hit_rate}}% · 当前排 #{{item.current_rank}}</text>
+        <text class="tx-small">{{item.hit_rate}}% · #{{item.current_rank}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- ===== 语言切换 ===== -->
+  <view class="section">
+    <view class="section-head">
+      <view>
+        <text class="section-title">{{i18n.prof_lang}}</text>
+      </view>
+    </view>
+    <view class="card" style="padding: 0;">
+      <view wx:for="{{langs}}" wx:key="key" class="lang-row {{item.key === currentLang ? 'active' : ''}}"
+        bindtap="onPickLang" data-key="{{item.key}}">
+        <text class="lang-row-label">{{item.label}}</text>
+        <text wx:if="{{item.key === currentLang}}" class="tx-purple">✓</text>
       </view>
     </view>
   </view>
@@ -105,14 +121,14 @@
   <!-- ===== 设置 ===== -->
   <view class="section">
     <view class="card menu-row" bindtap="clearLocal">
-      <text>🧹 清空本地数据</text>
+      <text>{{i18n.prof_clear_local}}</text>
       <text class="tx-muted">›</text>
     </view>
   </view>
 
   <view class="legal">
-    <text>GoalRush · Powered by Luffa · Play-money + utility token reward</text>
-    <text>Operated within a group holding HK SFC licenses</text>
+    <text>{{i18n.prof_legal_1}}</text>
+    <text>{{i18n.prof_legal_2}}</text>
   </view>
 
 </view>

@@ -117,8 +117,8 @@ function mountLuffaModal() {
       <div class="luffa-modal-card">
         <button class="luffa-modal-close" onclick="closeLuffaModal()">×</button>
         <div class="luffa-modal-icon">⚡</div>
-        <h2>真领 EDS · 下载 Luffa</h2>
-        <p class="luffa-modal-sub">GoalRush 的链上钱包能力由 Luffa 提供 · 下载后同步战绩 + 群组挑战 + EDS 真金到账</p>
+        <h2>${typeof t === 'function' ? t('prof.connect_msg_title') : 'Get Luffa · Claim real EDS'}</h2>
+        <p class="luffa-modal-sub">${typeof t === 'function' ? t('prof.connect_msg_body') : 'Without connecting, your picks live only on this device. Connect to receive EDS directly.'}</p>
         <div class="luffa-modal-stats">
           <div><strong>${PLATFORM_STATS.total_users.toLocaleString()}</strong><span>玩家</span></div>
           <div><strong>${(PLATFORM_STATS.total_eds_distributed/1000).toFixed(0)}K</strong><span>EDS 已发</span></div>
@@ -166,27 +166,26 @@ function renderHeader(active = '') {
 }
 
 function renderFooter() {
+  const hasI18n = typeof t === 'function';
+  const tagline = hasI18n ? t('brand.tagline') : 'Predict for free. Earn for real.';
+  const l1 = hasI18n ? t('legal.line1') : 'GoalRush · Powered by Luffa · Play-money predictions + utility token reward';
+  const l2 = hasI18n ? t('legal.line2') : 'Operated within a group holding HK SFC licenses · Not a prediction market / sportsbook';
+  const l3 = hasI18n ? t('legal.line3') : 'Geo-restricted in US (retail) / Mainland China / parts of EU (subject to MiCA review)';
   return `
     <footer class="site-footer">
       <div class="footer-inner">
         <div class="footer-brand">
           <span class="logo-mark">⚽</span>
           <strong>GoalRush</strong>
-          <p>Predict for free. Earn for real.</p>
+          <p>${tagline}</p>
         </div>
         <div class="footer-links">
-          <a href="faq.html" onclick="trackEvent('footer_click',{link:'rules'})">结算规则</a>
-          <a href="faq.html" onclick="trackEvent('footer_click',{link:'antifraud'})">反作弊</a>
-          <a href="faq.html" onclick="trackEvent('footer_click',{link:'faq'})">FAQ</a>
-          <a href="poster.html" onclick="trackEvent('footer_click',{link:'poster'})">海报工具</a>
+          <a href="faq.html" onclick="trackEvent('footer_click',{link:'rules'})">FAQ</a>
+          <a href="poster.html" onclick="trackEvent('footer_click',{link:'poster'})">Poster Studio</a>
         </div>
         <div class="footer-legal">
           <small>
-            GoalRush 是免费足球预测体验 · Powered by Luffa(IM-native Web3 social app)。
-            <br/>玩家无需投入本金。EDS 是 Luffa 生态自有的 utility token,作为玩家奖励发放。
-            <br/>不属于 prediction market / sportsbook / betting service。
-            <br/>Operated within a group holding HK SFC licenses.
-            <br/>Geo-restricted in US (retail) / Mainland China / EU (subject to MiCA review).
+            ${l1}<br/>${l2}<br/>${l3}
           </small>
         </div>
       </div>

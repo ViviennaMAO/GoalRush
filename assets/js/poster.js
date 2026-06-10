@@ -2,18 +2,6 @@
 // 4 个模板:KOL 战绩 / 赛前预测 / 赛后战报 / TikTok·Reel(9:16)
 
 const POSTER_I18N = {
-  zh: {
-    brand: 'GOALRUSH', tagline: 'Predict for free. Earn for real.',
-    hit_rate: '命中率', eds_earned: 'EDS 累计', rank: '排名', wins: '场胜', streak: '连胜',
-    pred_for: '我押', win: '赢', draw: '平局',
-    vs: 'VS', kickoff: '开赛时间', final: '终场',
-    kol_sub: '世界杯免费预测 · 跟随 KOL 一键玩',
-    pre_sub: '你押谁?加入免费预测,赢真金 EDS',
-    res_sub: '比赛结束 · EDS 已发放到链上钱包',
-    reel_cta: '免费玩 · 真金奖励 · 0 门槛',
-    download: '下载 Luffa · 真领 EDS',
-    settled: '✓ 三源对账已结算',
-  },
   en: {
     brand: 'GOALRUSH', tagline: 'Predict for free. Earn for real.',
     hit_rate: 'Hit Rate', eds_earned: 'EDS Earned', rank: 'Rank', wins: 'Wins', streak: 'Streak',
@@ -49,6 +37,42 @@ const POSTER_I18N = {
     reel_cta: 'Grátis · Prêmios reais · Sem barreiras',
     download: 'Baixe Luffa · Receba EDS',
     settled: '✓ Liquidado · 3 fontes',
+  },
+  de: {
+    brand: 'GOALRUSH', tagline: 'Kostenlos tippen. Echt gewinnen.',
+    hit_rate: 'Trefferquote', eds_earned: 'EDS gewonnen', rank: 'Rang', wins: 'Siege', streak: 'Serie',
+    pred_for: 'Mein Tipp', win: 'gewinnt', draw: 'Unentsch.',
+    vs: 'VS', kickoff: 'Anpfiff', final: 'Schluss',
+    kol_sub: 'WM-Tipps gratis · Folge dem KOL',
+    pre_sub: 'Wem traust du? Gratis tippen. Echte EDS gewinnen.',
+    res_sub: 'Spiel beendet · EDS on-chain ausgezahlt',
+    reel_cta: 'Gratis · echte Preise · keine Hürden',
+    download: 'Luffa laden · EDS holen',
+    settled: '✓ Per Drei-Quellen-Abgleich',
+  },
+  fr: {
+    brand: 'GOALRUSH', tagline: 'Pronostique gratuit. Gagne pour de vrai.',
+    hit_rate: 'Précision', eds_earned: 'EDS gagnés', rank: 'Rang', wins: 'Victoires', streak: 'Série',
+    pred_for: 'Je pronostique', win: 'gagne', draw: 'Nul',
+    vs: 'VS', kickoff: 'Coup d\'envoi', final: 'Fin',
+    kol_sub: 'Pronos CM gratuits · Suis le KOL',
+    pre_sub: 'Pour qui tu votes ? Gratuit. Gagne de vrais EDS.',
+    res_sub: 'Match terminé · EDS envoyés on-chain',
+    reel_cta: 'Gratuit · vraies récompenses · zéro barrière',
+    download: 'Télécharger Luffa · Récupérer EDS',
+    settled: '✓ Réglé par triple source',
+  },
+  'zh-Hant': {
+    brand: 'GOALRUSH', tagline: '免費預測,真領 EDS。',
+    hit_rate: '命中率', eds_earned: 'EDS 累計', rank: '排名', wins: '場勝', streak: '連勝',
+    pred_for: '我押', win: '贏', draw: '平局',
+    vs: 'VS', kickoff: '開賽時間', final: '終場',
+    kol_sub: '世界盃免費預測 · 跟隨 KOL 一鍵玩',
+    pre_sub: '你押誰?加入免費預測,贏真金 EDS',
+    res_sub: '比賽結束 · EDS 已發放到鏈上錢包',
+    reel_cta: '免費玩 · 真金獎勵 · 0 門檻',
+    download: '下載 Luffa · 真領 EDS',
+    settled: '✓ 三源對賬已結算',
   },
 };
 

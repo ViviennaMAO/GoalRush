@@ -1,25 +1,23 @@
 <view class="page">
 
-  <!-- ===== Team hero ===== -->
   <view class="card team-hero">
     <view class="col-center" style="gap: 16rpx;">
       <view class="avatar avatar-xl avatar-ring" style="width: 180rpx; height: 180rpx; font-size: 96rpx;">
         <text>{{team.flag}}</text>
       </view>
       <text class="tx-h1" style="margin-top: 8rpx;">{{team.name}}</text>
-      <text class="tx-small">{{team.name_en}} · {{team.fans}} 位球迷</text>
+      <text class="tx-small">{{team.name_en}} · {{team.fans}} {{i18n.team_fans}}</text>
 
-      <button wx:if="{{isMyTeam}}" class="btn btn-pill pill-purple" style="margin-top: 16rpx;">✓ 我的阵营</button>
-      <button wx:else class="btn btn-primary" style="margin-top: 16rpx;" bindtap="onJoin">加入 {{team.name}} 阵营</button>
+      <button wx:if="{{isMyTeam}}" class="btn btn-pill pill-purple" style="margin-top: 16rpx;">✓ {{i18n.team_tag_mine}}</button>
+      <button wx:else class="btn btn-primary" style="margin-top: 16rpx;" bindtap="onJoin">{{i18n.cta_join_camp}}</button>
     </view>
   </view>
 
-  <!-- ===== 阵营 KOL ===== -->
   <view class="section" wx:if="{{teamKols.length}}">
     <view class="section-head">
       <view>
-        <text class="section-title">阵营 KOL</text>
-        <view class="section-sub">该队球迷大 V · 跟随他们一起预测</view>
+        <text class="section-title">{{i18n.td_camp_kols_title}}</text>
+        <view class="section-sub">{{i18n.td_camp_kols_sub}}</view>
       </view>
     </view>
 
@@ -30,22 +28,21 @@
           <text class="tx-bold">{{item.name}}</text>
           <text class="pill pill-purple">{{item.tier}}</text>
         </view>
-        <text class="tx-small">{{item.handle}} · {{item.followers}} 粉丝 · 命中 {{item.hit_rate}}%</text>
+        <text class="tx-small">{{item.handle}} · {{item.followers}} · {{item.hit_rate}}%</text>
       </view>
     </view>
   </view>
 
-  <!-- ===== 该队近期比赛 ===== -->
   <view class="section">
     <view class="section-head">
       <view>
-        <text class="section-title">{{team.code}} 的比赛</text>
-        <view class="section-sub">看球 + 押预测 + 和阵营兄弟聊</view>
+        <text class="section-title">{{team.code}}{{i18n.td_matches_title_suffix}}</text>
+        <view class="section-sub">{{i18n.td_matches_sub}}</view>
       </view>
     </view>
 
     <view wx:if="{{!teamMatches.length}}" class="card" style="text-align: center; color: #9CA3AF;">
-      暂无该队比赛
+      {{i18n.td_no_matches}}
     </view>
 
     <view wx:for="{{teamMatches}}" wx:key="id" class="card team-match" bindtap="goMatch" data-id="{{item.id}}">
@@ -64,13 +61,13 @@
           <view class="avatar avatar-sm"><text>{{item.awayTeam.flag}}</text></view>
         </view>
       </view>
-      <view class="tx-small">💬 {{item.discussions}} 球迷在聊</view>
+      <view class="tx-small">💬 {{item.discussions}} {{i18n.mp_fans_chatting}}</view>
     </view>
   </view>
 
   <view class="legal">
-    <text>球迷阵营是社交身份 · 加入即可看阵营专属内容</text>
-    <text>GoalRush · Powered by Luffa</text>
+    <text>{{i18n.td_legal_1}}</text>
+    <text>{{i18n.prof_legal_1}}</text>
   </view>
 
 </view>

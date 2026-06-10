@@ -1,31 +1,28 @@
 <view class="page">
 
-  <!-- ===== Hero ===== -->
   <view class="card card-deep" style="padding: 36rpx 32rpx;">
-    <text class="tx-h2" style="color: #fff; display: block;">选择你的球迷阵营</text>
+    <text class="tx-h2" style="color: #fff; display: block;">{{i18n.team_choose_title}}</text>
     <text style="color: rgba(255,255,255,.85); display: block; margin-top: 8rpx; font-size: 26rpx;">
-      和阵营兄弟一起预测 · 进阵营群 · 加入球迷称号体系
+      {{i18n.team_choose_sub}}
     </text>
   </view>
 
-  <!-- ===== 我的阵营(若已选)===== -->
   <view wx:if="{{myTeamData}}" class="card my-team-card">
     <view class="row row-gap-md">
       <view class="avatar avatar-lg avatar-ring"><text>{{myTeamData.flag}}</text></view>
       <view class="col" style="flex: 1; gap: 6rpx;">
-        <text class="tx-h3">你的阵营 · {{myTeamData.name}}</text>
-        <text class="tx-small">{{myTeamData.fans}} 位球迷 · 你是第 {{myFanIndex}} 位加入</text>
+        <text class="tx-h3">{{i18n.team_your_camp}}{{myTeamData.name}}</text>
+        <text class="tx-small">{{myTeamData.fans}} {{i18n.team_fans_count}}{{myFanIndex}}</text>
       </view>
-      <button class="btn btn-pill btn-ghost" bindtap="goTeam" data-code="{{myTeamData.code}}">进阵营 →</button>
+      <button class="btn btn-pill btn-ghost" bindtap="goTeam" data-code="{{myTeamData.code}}">{{i18n.team_enter_camp}}</button>
     </view>
   </view>
 
-  <!-- ===== 全部球队 grid ===== -->
   <view class="section">
     <view class="section-head">
       <view>
-        <text class="section-title">2026 世界杯 · 32 队</text>
-        <view class="section-sub">点击查看阵营 · 长按设为我支持的</view>
+        <text class="section-title">{{i18n.team_all_title}}</text>
+        <view class="section-sub">{{i18n.team_all_sub}}</view>
       </view>
     </view>
 
@@ -34,15 +31,15 @@
         bindtap="goTeam" data-code="{{item.code}}" bindlongpress="setMine" data-code-mine="{{item.code}}">
         <view class="avatar avatar-lg"><text>{{item.flag}}</text></view>
         <text class="team-card-name">{{item.name}}</text>
-        <text class="tx-small">{{item.fans}} 球迷</text>
-        <text wx:if="{{item.code === myTeam}}" class="pill pill-purple" style="margin-top: 8rpx;">我的阵营</text>
+        <text class="tx-small">{{item.fans}} {{i18n.team_fans}}</text>
+        <text wx:if="{{item.code === myTeam}}" class="pill pill-purple" style="margin-top: 8rpx;">{{i18n.team_tag_mine}}</text>
       </view>
     </view>
   </view>
 
   <view class="legal">
-    <text>球迷阵营 = 社交身份 · 不影响预测命中率计算</text>
-    <text>GoalRush · Powered by Luffa</text>
+    <text>{{i18n.team_legal}}</text>
+    <text>{{i18n.prof_legal_1}}</text>
   </view>
 
 </view>

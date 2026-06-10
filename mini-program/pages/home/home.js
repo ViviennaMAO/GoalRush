@@ -1,10 +1,12 @@
 import { MATCHES, FEED, getTeam, getMatch, getKOL, timeAgo, timeToKickoff } from '../../utils/mock-data';
 import { connectWallet } from '../../utils/luffa';
+import { getDict, getLang } from '../../utils/i18n';
 
 const app = getApp();
 
 Page({
   data: {
+    i18n: {},
     wallet: null,
     myTeam: null,
     myTeamName: '',
@@ -23,6 +25,8 @@ Page({
 
   refresh() {
     const g = app.globalData;
+    const lang = getLang();
+    const i18n = getDict(lang);
     const myTeam = g.myTeam ? getTeam(g.myTeam) : null;
     const predCount = Object.keys(g.predictions || {}).length;
 
@@ -35,7 +39,6 @@ Page({
     }));
 
     // 球迷动态流(关联 kol / match / team 数据)
-    const pickLabels = { home: '主队赢', draw: '平局', away: '客队赢' };
     const feed = FEED.map(f => {
       const out = { ...f, timeAgo: timeAgo(f.ts_min) };
       if (f.type === 'kol_pick') {
@@ -44,7 +47,7 @@ Page({
         if (m) {
           out.matchData = { ...m, homeTeam: getTeam(m.home), awayTeam: getTeam(m.away) };
           const pickTeam = f.pick === 'home' ? out.matchData.homeTeam : out.matchData.awayTeam;
-          out.pickLabel = f.pick === 'draw' ? '平局' : pickTeam.code + ' 赢';
+          out.pickLabel = f.pick === 'draw' ? i18n.pick_draw : pickTeam.code;
         }
       }
       if (f.type === 'group_buzz' && f.match) {
@@ -58,6 +61,7 @@ Page({
     });
 
     this.setData({
+      i18n,
       wallet: g.wallet,
       myTeam: g.myTeam,
       myTeamName: myTeam ? myTeam.name : '',

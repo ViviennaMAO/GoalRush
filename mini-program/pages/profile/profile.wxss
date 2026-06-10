@@ -30,3 +30,13 @@
   padding: 24rpx 28rpx;
   font-size: 28rpx;
 }
+
+.lang-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 24rpx 28rpx;
+  font-size: 28rpx;
+  border-bottom: 2rpx solid #F4F5F7;
+}
+.lang-row:last-child { border-bottom: 0; }
+.lang-row.active { background: #F5F2FF; }
+.lang-row-label { font-weight: 600; color: #1A1A2E; }
