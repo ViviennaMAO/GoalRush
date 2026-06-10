@@ -105,6 +105,17 @@ Page({
     advFirstScorer: '',
     advCards: '',
     judgmentScore: 0,
+    // F-P0-6 victory card state
+    showCard: false,
+    cardType: 'standard',          // 'standard' | 'beat_kol' | 'bold' | 'duel'
+    cardC1: '#14B8A6',
+    cardC2: '#0F766E',
+    cardTextOn: '#FFFFFF',
+    cardScore: '1 - 0',
+    cardMyPick: '',
+    cardKolName: '',
+    cardKolPick: '',
+    cardEdsText: '+150 EDS',
   },
 
   onLoad(opts) {
@@ -696,6 +707,94 @@ Page({
     const scores = ['0 : 0', '1 : 0', '0 : 1', '1 : 1', '2 : 1'];
     const score = scores[Math.floor(Math.random() * scores.length)];
     this.triggerHalftime({ currentScore: score });
+  },
+
+  // ============ F-P0-6 胜利卡 ============
+
+  // 真实环境:结算后 30s 内自动触发(由后端事件推送)
+  // demo 环境:从 hero 下方第三个 demo 按钮触发
+  triggerVictoryCard({ type = 'standard', score = '1 - 0', myPick = '', kolName = '', kolPick = '', eds = 150, teamForColor } = {}) {
+    const tColor = teamForColor || this.data.homeTeam;
+    const i18n = this.data.i18n;
+    const edsTpl = i18n.card_eds_earned || '+{n} EDS earned';
+    this.setData({
+      showCard: true,
+      cardType: type,
+      cardC1: tColor.c1 || '#14B8A6',
+      cardC2: tColor.c2 || '#0F766E',
+      cardTextOn: tColor.textOn || '#FFFFFF',
+      cardScore: score,
+      cardMyPick: myPick,
+      cardKolName: kolName,
+      cardKolPick: kolPick,
+      cardEdsText: edsTpl.replace('{n}', eds),
+    });
+    wx.vibrateLong && wx.vibrateLong({});
+  },
+
+  hideCard() {
+    this.setData({ showCard: false });
+  },
+
+  async shareCard() {
+    const { cardType, cardScore, cardMyPick, cardKolName, cardEdsText } = this.data;
+    const title = cardType === 'beat_kol' ? `I beat ${cardKolName}!`
+                : cardType === 'bold'     ? `Bold Call ×5 hit!`
+                : `Victory · ${cardScore}`;
+    try {
+      const { shareToIM } = require('../../utils/luffa');
+      await shareToIM({
+        title,
+        content: `${cardMyPick} · ${cardEdsText}`,
+        path: `/pages/match-detail/match-detail?id=${this.matchId}`
+      });
+      wx.showToast({ title: '✓', icon: 'success' });
+      this.hideCard();
+    } catch (e) {
+      wx.showToast({ title: '✗', icon: 'none' });
+    }
+  },
+
+  // DEMO 触发器 · 随机一种 type · 智能用本场参赛队 + 主预测
+  demoCard() {
+    const app = getApp();
+    const mainPick = (app.globalData.predictions || {})[this.matchId];
+    const isBold = !!(app.globalData.advancedPredictions || {})[this.matchId]?.isBold;
+
+    // 智能选 type:有 Bold → bold;否则 50% 概率 beat_kol;else standard
+    let type = 'standard';
+    if (isBold) type = 'bold';
+    else if (Math.random() < 0.6) type = 'beat_kol';
+
+    // 选用本场参赛队作为色彩(用户阵营优先)
+    const myCamp = app.globalData.myTeam;
+    let team = this.data.homeTeam;
+    if (myCamp === this.data.awayTeam.code) team = this.data.awayTeam;
+    else if (myCamp === this.data.homeTeam.code) team = this.data.homeTeam;
+    else team = Math.random() < 0.5 ? this.data.homeTeam : this.data.awayTeam;
+
+    const myPickLabel = team.code + ' wins';
+    const otherPickLabel = (team.code === this.data.homeTeam.code ? this.data.awayTeam : this.data.homeTeam).code + ' wins';
+
+    // beat_kol 随机一个 KOL · 命中率高的优先
+    const KOLS = require('../../utils/mock-data').KOLS;
+    const kol = KOLS[Math.floor(Math.random() * KOLS.length)];
+
+    // 模拟比分
+    const score = team.code === this.data.homeTeam.code ? '1 - 0' : '0 - 1';
+
+    // EDS:Bold ×5 / 普通 100-200 / beat_kol 150
+    const eds = type === 'bold' ? 750 : (type === 'beat_kol' ? 150 : (80 + Math.floor(Math.random() * 120)));
+
+    this.triggerVictoryCard({
+      type,
+      score,
+      myPick: myPickLabel,
+      kolName: type === 'beat_kol' ? kol.handle : '',
+      kolPick: type === 'beat_kol' ? otherPickLabel : '',
+      eds,
+      teamForColor: team,
+    });
   },
 
   // DEMO 触发器:随机用主队或客队进球(若用户已选阵营则优先用本方)

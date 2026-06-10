@@ -116,6 +116,159 @@
 }
 
 /* ============================================
+   F-P0-6 胜利卡 overlay(可分享 · Beat KOL)
+   ============================================ */
+.card-overlay {
+  position: fixed; inset: 0;
+  z-index: 9997;
+  background: rgba(0,0,0,.65);
+  backdrop-filter: blur(8rpx);
+  display: flex; align-items: center; justify-content: center;
+  padding: 32rpx;
+  animation: fadeIn .25s ease-out;
+}
+.vcard-frame {
+  background: #FFFFFF;
+  border-radius: 28rpx;
+  padding: 32rpx 28rpx 28rpx;
+  width: 100%;
+  max-width: 640rpx;
+  box-shadow: 0 32rpx 80rpx rgba(0,0,0,.5);
+  animation: htCardIn .35s cubic-bezier(.22,1.4,.36,1) both;
+}
+
+/* Brand row */
+.vcard-head {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 18rpx;
+}
+.vcard-brand-mark {
+  width: 44rpx; height: 44rpx;
+  border-radius: 50%;
+  background: #FFFFFF;
+  border: 3rpx solid #14B8A6;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-family: 'Helvetica Neue'; font-weight: 800; font-size: 22rpx;
+  color: #14B8A6;
+}
+.vcard-brand-tx {
+  font-family: 'Bebas Neue', 'Helvetica Neue', sans-serif;
+  font-size: 30rpx; font-weight: 900;
+  letter-spacing: 3rpx; color: #1F2937;
+}
+.vcard-matchday {
+  font-size: 20rpx; font-weight: 700; letter-spacing: 2rpx;
+  color: #9CA3AF;
+}
+
+/* 类型 badge */
+.vcard-badge {
+  text-align: center;
+  padding: 18rpx 24rpx;
+  border-radius: 16rpx;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 36rpx; font-weight: 900;
+  letter-spacing: 3rpx;
+  margin-bottom: 24rpx;
+}
+.vcard-badge-standard {
+  background: linear-gradient(135deg, #ECFDF5, #FFFFFF);
+  color: #0F766E;
+}
+.vcard-badge-beat_kol {
+  background: linear-gradient(135deg, #6D5BFF, #8B7AFF);
+  color: #FFFFFF;
+  text-shadow: 0 2rpx 8rpx rgba(0,0,0,.2);
+}
+.vcard-badge-bold {
+  background: linear-gradient(135deg, #FFD54A, #F0AB22);
+  color: #1A1A0A;
+}
+.vcard-badge-duel {
+  background: linear-gradient(135deg, #FF6B7D, #FF8FA3);
+  color: #FFFFFF;
+}
+
+/* 球队 + 比分 banner */
+.vcard-score-row {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 32rpx 24rpx;
+  border-radius: 20rpx;
+  margin-bottom: 24rpx;
+  gap: 16rpx;
+  box-shadow: 0 8rpx 24rpx rgba(0,0,0,.12);
+}
+.vcard-flag {
+  font-size: 96rpx;
+  line-height: 1;
+  margin-bottom: 8rpx;
+  filter: drop-shadow(0 4rpx 8rpx rgba(0,0,0,.2));
+}
+.vcard-team-code {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 32rpx; font-weight: 800;
+  letter-spacing: 2rpx;
+  text-shadow: 0 2rpx 6rpx rgba(0,0,0,.2);
+}
+.vcard-score {
+  font-family: 'Helvetica Neue', sans-serif;
+  font-size: 88rpx; font-weight: 900;
+  letter-spacing: -2rpx;
+  text-shadow: 0 4rpx 12rpx rgba(0,0,0,.25);
+}
+
+/* 预测对比 */
+.vcard-picks {
+  padding: 16rpx 24rpx;
+  background: #F4F6F5;
+  border-radius: 14rpx;
+  margin-bottom: 24rpx;
+}
+.vcard-pick-row {
+  display: flex; align-items: center; gap: 14rpx;
+  padding: 6rpx 0;
+}
+.vcard-pick-mark {
+  font-family: 'Helvetica Neue', sans-serif;
+  font-weight: 900;
+  font-size: 32rpx;
+  width: 40rpx; text-align: center;
+}
+.vcard-pick-hit .vcard-pick-mark { color: #14B8A6; }
+.vcard-pick-miss .vcard-pick-mark { color: #FF6B7D; }
+.vcard-pick-tx {
+  font-size: 26rpx; font-weight: 600; color: #1F2937;
+}
+.vcard-pick-miss .vcard-pick-tx { color: #6B7280; text-decoration: line-through; }
+
+/* EDS earned */
+.vcard-eds-block {
+  text-align: center;
+  padding: 24rpx 0;
+  margin-bottom: 16rpx;
+}
+.vcard-eds-tx {
+  font-family: 'Helvetica Neue', sans-serif;
+  font-size: 48rpx; font-weight: 900;
+  color: #14B8A6;
+  letter-spacing: -.5rpx;
+}
+
+.vcard-foot {
+  text-align: center;
+  padding-top: 16rpx;
+  border-top: 2rpx dashed #E5E7EB;
+  margin-bottom: 20rpx;
+}
+
+.vcard-actions {
+  display: flex; gap: 12rpx;
+}
+.vcard-actions .btn { flex: 1; }
+
+/* ============================================
    F-P0-3 半场重押 overlay
    ============================================ */
 .ht-overlay {

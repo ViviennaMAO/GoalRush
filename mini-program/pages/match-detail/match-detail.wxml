@@ -57,6 +57,78 @@
       <view class="demo-trigger" bindtap="demoHalftime">
         <text class="demo-trigger-tx">▶ {{i18n.ht_cta_demo}}</text>
       </view>
+      <view class="demo-trigger" bindtap="demoCard">
+        <text class="demo-trigger-tx">▶ {{i18n.card_demo_trigger}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- ============================================
+       F-P0-6 胜利卡 overlay(Standard / Beat KOL / Bold)
+       触发:命中预测自动 + 分享按钮(真实场景)/ demo 按钮
+       ============================================ -->
+  <view wx:if="{{showCard}}" class="card-overlay" catchtap="hideCard">
+    <view class="vcard-frame" catchtap="noop">
+
+      <!-- 头部 brand row -->
+      <view class="vcard-head">
+        <view class="row row-gap-sm">
+          <view class="vcard-brand-mark">G</view>
+          <text class="vcard-brand-tx">GOALRUSH</text>
+        </view>
+        <text class="vcard-matchday">MATCHDAY</text>
+      </view>
+
+      <!-- 类型 badge -->
+      <view class="vcard-badge vcard-badge-{{cardType}}">
+        <text wx:if="{{cardType === 'beat_kol'}}">{{i18n.card_beat_kol}} {{cardKolName}}</text>
+        <text wx:elif="{{cardType === 'bold'}}">{{i18n.card_bold}}</text>
+        <text wx:elif="{{cardType === 'duel'}}">{{i18n.card_duel}}</text>
+        <text wx:else>VICTORY</text>
+      </view>
+
+      <!-- 比分(球队色 banner)-->
+      <view class="vcard-score-row" style="background: linear-gradient(135deg, {{cardC1}}, {{cardC2}});">
+        <view class="col-center">
+          <text class="vcard-flag">{{homeTeam.flag}}</text>
+          <text class="vcard-team-code" style="color: {{cardTextOn}};">{{homeTeam.code}}</text>
+        </view>
+        <view class="col-center">
+          <text class="vcard-score" style="color: {{cardTextOn}};">{{cardScore}}</text>
+        </view>
+        <view class="col-center">
+          <text class="vcard-flag">{{awayTeam.flag}}</text>
+          <text class="vcard-team-code" style="color: {{cardTextOn}};">{{awayTeam.code}}</text>
+        </view>
+      </view>
+
+      <!-- 预测对比 -->
+      <view class="vcard-picks">
+        <view class="vcard-pick-row vcard-pick-hit">
+          <text class="vcard-pick-mark">✓</text>
+          <text class="vcard-pick-tx">My pick: {{cardMyPick}}</text>
+        </view>
+        <view wx:if="{{cardType === 'beat_kol'}}" class="vcard-pick-row vcard-pick-miss">
+          <text class="vcard-pick-mark">✗</text>
+          <text class="vcard-pick-tx">{{cardKolName}}: {{cardKolPick}}</text>
+        </view>
+      </view>
+
+      <!-- EDS earned -->
+      <view class="vcard-eds-block">
+        <text class="vcard-eds-tx">{{cardEdsText}}</text>
+      </view>
+
+      <!-- footer -->
+      <view class="vcard-foot">
+        <text class="tx-small tx-muted">goalrush.app · Powered by Luffa</text>
+      </view>
+
+      <!-- actions -->
+      <view class="vcard-actions">
+        <button class="btn btn-primary" catchtap="shareCard">{{i18n.card_share}}</button>
+        <button class="btn btn-ghost" catchtap="hideCard">{{i18n.goal_close}}</button>
+      </view>
     </view>
   </view>
 
