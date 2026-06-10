@@ -60,6 +60,79 @@
       <view class="demo-trigger" bindtap="demoCard">
         <text class="demo-trigger-tx">▶ {{i18n.card_demo_trigger}}</text>
       </view>
+      <view class="demo-trigger" bindtap="demoGroupMvp">
+        <text class="demo-trigger-tx">▶ {{i18n.gm_demo_trigger}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- ============================================
+       F-P0-7 群组每场冠军(Group MVP)overlay
+       结算后 30s 内群组自动颁出 · MVP = 命中 + 最早决定 + Bold 加分
+       触发:cron (真实) / demo 按钮(开发)
+       ============================================ -->
+  <view wx:if="{{showGm}}" class="card-overlay" catchtap="hideGm">
+    <view class="gm-frame" catchtap="noop">
+
+      <!-- 头部 + 比赛结果 -->
+      <view class="gm-head">
+        <view class="gm-trophy">
+          <text class="gm-trophy-mark">G</text>
+        </view>
+        <text class="gm-title">{{i18n.gm_title}}</text>
+        <text class="gm-match-line">
+          {{homeTeam.flag}} {{homeTeam.code}} {{gmScore}} {{awayTeam.code}} {{awayTeam.flag}}
+        </text>
+        <text class="gm-settled-tag">{{i18n.gm_match_settled}}</text>
+      </view>
+
+      <!-- MVP 大区块 -->
+      <view class="gm-mvp-block">
+        <view class="gm-mvp-avatar-frame">
+          <view class="gm-mvp-avatar">{{gmMvpFlag}}</view>
+          <view class="gm-mvp-crown">★</view>
+        </view>
+        <text class="gm-mvp-handle">{{gmMvpHandle}}</text>
+        <text class="gm-mvp-group">{{gmGroupName}}</text>
+      </view>
+
+      <!-- MVP 数据条 -->
+      <view class="gm-stats">
+        <view class="gm-stat-row">
+          <text class="gm-stat-lbl">{{i18n.gm_picked}}</text>
+          <text class="gm-stat-val">{{gmMvpPick}}</text>
+        </view>
+        <view class="gm-stat-row">
+          <text class="gm-stat-lbl">{{i18n.adv_judgment_score}}</text>
+          <text class="gm-stat-val">{{gmMvpDecided}}</text>
+        </view>
+        <view class="gm-stat-row gm-stat-eds">
+          <text class="gm-stat-lbl">EDS</text>
+          <text class="gm-stat-val gm-stat-val-big">+{{gmMvpEds}}</text>
+        </view>
+      </view>
+
+      <!-- 其他命中者 -->
+      <view wx:if="{{gmOtherHits.length}}" class="gm-other-hits">
+        <text class="gm-other-title">{{i18n.gm_other_hits}}({{gmHitsCount}} / {{gmTotalMembers}})</text>
+        <view class="gm-other-list">
+          <view wx:for="{{gmOtherHits}}" wx:key="user" class="gm-other-item">
+            <text class="gm-other-flag">{{item.flag}}</text>
+            <text class="gm-other-handle">{{item.user}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view wx:else class="gm-no-winner">
+        <text class="tx-small tx-mid">{{i18n.gm_no_winner}}</text>
+        <text class="tx-small tx-teal">{{i18n.gm_consolation}}</text>
+      </view>
+
+      <!-- actions -->
+      <view class="vcard-actions">
+        <button class="btn btn-primary" catchtap="gmShare">{{i18n.gm_view_group}}</button>
+        <button class="btn btn-ghost" catchtap="hideGm">{{i18n.goal_close}}</button>
+      </view>
     </view>
   </view>
 

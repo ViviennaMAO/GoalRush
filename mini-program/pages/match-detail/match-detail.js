@@ -116,6 +116,18 @@ Page({
     cardKolName: '',
     cardKolPick: '',
     cardEdsText: '+150 EDS',
+    // F-P0-7 group MVP state
+    showGm: false,
+    gmScore: '1 - 0',
+    gmMvpFlag: '',
+    gmMvpHandle: '',
+    gmGroupName: '',
+    gmMvpPick: '',
+    gmMvpDecided: '',
+    gmMvpEds: 0,
+    gmOtherHits: [],
+    gmHitsCount: 0,
+    gmTotalMembers: 0,
   },
 
   onLoad(opts) {
@@ -753,6 +765,105 @@ Page({
     } catch (e) {
       wx.showToast({ title: '✗', icon: 'none' });
     }
+  },
+
+  // ============ F-P0-7 群组每场冠军 ============
+
+  triggerGroupMvp({ score, mvp, otherHits = [], totalMembers = 7, groupName = 'Hermanos del Sur' }) {
+    const i18n = this.data.i18n;
+    this.setData({
+      showGm: true,
+      gmScore: score || '1 - 0',
+      gmMvpFlag: mvp.flag,
+      gmMvpHandle: mvp.handle,
+      gmGroupName: groupName,
+      gmMvpPick: mvp.pick + (mvp.bold ? ' · Bold ×5' : ''),
+      gmMvpDecided: (i18n.gm_decided_in || 'Decided in {n}s').replace('{n}', mvp.decided_in_s),
+      gmMvpEds: mvp.eds,
+      gmOtherHits: otherHits,
+      gmHitsCount: otherHits.length + 1, // MVP + others
+      gmTotalMembers: totalMembers,
+    });
+    wx.vibrateLong && wx.vibrateLong({});
+  },
+
+  hideGm() {
+    this.setData({ showGm: false });
+  },
+
+  async gmShare() {
+    try {
+      const { shareToIM } = require('../../utils/luffa');
+      await shareToIM({
+        title: `${this.data.i18n.gm_title} · ${this.data.gmMvpHandle}`,
+        content: `${this.data.gmGroupName} · ${this.data.gmMvpPick} · +${this.data.gmMvpEds} EDS`,
+        path: `/pages/leaderboard/leaderboard`,
+      });
+      wx.showToast({ title: '✓', icon: 'success' });
+      this.hideGm();
+    } catch (e) {
+      wx.showToast({ title: '✗', icon: 'none' });
+    }
+  },
+
+  demoGroupMvp() {
+    // 从 mock-data 拿真实 KOL / 群组数据
+    const { GROUPS, KOLS, getTeam } = require('../../utils/mock-data');
+    const app = getApp();
+    const myCamp = app.globalData.myTeam;
+    const myWallet = app.globalData.wallet;
+
+    // 30% 概率 MVP 是当前用户(让用户体验「我赢了」感觉)
+    const userIsMvp = Math.random() < 0.3 && myWallet;
+    const team = myCamp ? getTeam(myCamp) : this.data.homeTeam;
+
+    // 选群组
+    const group = GROUPS[Math.floor(Math.random() * GROUPS.length)];
+
+    // 模拟比分(用 home 队赢)
+    const score = '1 - 0';
+    const winPick = this.data.homeTeam.code + ' wins';
+
+    // MVP
+    let mvp;
+    if (userIsMvp) {
+      mvp = {
+        flag: team ? team.flag : '⚽',
+        handle: myWallet.nickname || '@you',
+        pick: winPick,
+        decided_in_s: 25 + Math.floor(Math.random() * 60),
+        bold: Math.random() < 0.4,
+        eds: 100 + Math.floor(Math.random() * 400),
+      };
+    } else {
+      // 从 KOL 池里随机选一个
+      const kol = KOLS[Math.floor(Math.random() * KOLS.length)];
+      mvp = {
+        flag: kol.flag,
+        handle: kol.handle,
+        pick: winPick,
+        decided_in_s: 25 + Math.floor(Math.random() * 60),
+        bold: Math.random() < 0.5,
+        eds: 100 + Math.floor(Math.random() * 400),
+      };
+    }
+
+    // 其他命中者(2-4 个)
+    const otherCount = 2 + Math.floor(Math.random() * 3);
+    const pool = KOLS.filter(k => k.handle !== mvp.handle);
+    const otherHits = pool.slice(0, otherCount).map(k => ({
+      user: k.handle,
+      flag: k.flag,
+    }));
+
+    const totalMembers = group.members > 50 ? 50 : group.members; // mock 上限
+    this.triggerGroupMvp({
+      score,
+      mvp,
+      otherHits,
+      totalMembers,
+      groupName: group.name,
+    });
   },
 
   // DEMO 触发器 · 随机一种 type · 智能用本场参赛队 + 主预测
