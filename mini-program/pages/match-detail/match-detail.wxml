@@ -1,5 +1,31 @@
 <view class="page">
 
+  <!-- ============================================
+       GOAL! 全屏庆祝(F-P0-2 · v2 PRD §3.2)
+       触发后 3 秒自动消失 · 用户点击可提前关闭
+       ============================================ -->
+  <view wx:if="{{showGoal}}" class="goal-overlay" catchtap="hideGoal">
+    <view class="goal-bg-pulse" style="background: linear-gradient(135deg, {{goalC1}} 0%, {{goalC2}} 100%);"></view>
+
+    <!-- 30 颗 confetti(球队色 + 中性色 mix) -->
+    <view wx:for="{{confetti}}" wx:key="i" wx:for-item="c" class="confetti"
+          style="left: {{c.x}}%; background: {{c.color}}; animation-delay: {{c.delay}}s; animation-duration: {{c.dur}}s; width: {{c.w}}rpx; height: {{c.h}}rpx;"></view>
+
+    <view class="goal-content" catchtap="noop">
+      <view class="goal-flag-row">
+        <text class="goal-flag-big">{{goalTeamFlag}}</text>
+      </view>
+      <text class="goal-text" style="color: {{goalTextOn}};">{{i18n.goal_text}}</text>
+      <text class="goal-team" style="color: {{goalTextOn}}; opacity: .92;">{{goalScoreLabel}}</text>
+      <text wx:if="{{goalScorer}}" class="goal-scorer" style="color: {{goalTextOn}}; opacity: .7;">{{i18n.goal_scorer_label}} · {{goalScorer}}</text>
+
+      <view class="goal-actions">
+        <button class="btn btn-primary" catchtap="shareGoal">{{i18n.goal_share}}</button>
+        <button class="btn btn-ghost" style="background: rgba(255,255,255,.18); color: #fff;" catchtap="hideGoal">{{i18n.goal_close}}</button>
+      </view>
+    </view>
+  </view>
+
   <!-- ===== 顶部 vs(白底 · 大比分式 hero) ===== -->
   <view class="card detail-hero">
     <view class="detail-comp">{{match.competition}}</view>
@@ -22,6 +48,11 @@
     </view>
     <view class="pitch-mini"></view>
     <view class="hero-venue">{{match.venue}}</view>
+
+    <!-- DEMO · 模拟进球触发器(生产环境去掉 · 真实由 SofaScore polling 驱动) -->
+    <view class="demo-trigger" bindtap="demoGoal">
+      <text class="demo-trigger-tx">▶ {{i18n.goal_demo_trigger}}</text>
+    </view>
   </view>
 
   <!-- ===== 我的预测 ===== -->

@@ -5,6 +5,22 @@ import { getDict, getLang } from '../../utils/i18n';
 
 const app = getApp();
 
+// F-P0-2 confetti 颜色池(中性 + 球队色会动态加入)
+const CONFETTI_COLORS_BASE = ['#FFD54A', '#14B8A6', '#FF6B7D', '#5EEAD4', '#FFFFFF', '#F0AB22'];
+
+function buildConfetti(teamC1, teamC2, count = 36) {
+  const colors = [...CONFETTI_COLORS_BASE, teamC1, teamC2];
+  return Array.from({ length: count }, (_, i) => ({
+    i,
+    x: Math.random() * 100,             // left % of viewport
+    color: colors[Math.floor(Math.random() * colors.length)],
+    delay: (Math.random() * 0.9).toFixed(2),
+    dur:   (1.6 + Math.random() * 1.4).toFixed(2),
+    w: 16 + Math.floor(Math.random() * 14),
+    h: 22 + Math.floor(Math.random() * 18),
+  }));
+}
+
 Page({
   data: {
     i18n: {},
@@ -17,7 +33,17 @@ Page({
     userPick: null,
     pickLabel: '',
     kols: [],
-    discussions: []
+    discussions: [],
+    // F-P0-2 GOAL! moment state
+    showGoal: false,
+    goalC1: '#14B8A6',
+    goalC2: '#0F766E',
+    goalTextOn: '#FFFFFF',
+    goalTeamFlag: '',
+    goalScoreLabel: '',
+    goalScorer: '',
+    confetti: [],
+    _goalTimer: null,
   },
 
   onLoad(opts) {
@@ -117,5 +143,87 @@ Page({
       title: `${homeTeam.flag} ${homeTeam.code} vs ${awayTeam.code} ${awayTeam.flag} · GoalRush`,
       path: `/pages/match-detail/match-detail?id=${this.matchId}`
     };
+  },
+
+  // ============ F-P0-2 GOAL! moment ============
+  // 真实环境:由 SofaScore goal event polling 触发(5s 内推送)
+  // 此处提供 demo handler · 让 IDE 预览和 KOL 演示直接看到效果
+  triggerGoal({ team, scorer, score }) {
+    const t = team || this.data.homeTeam;
+    const app = getApp();
+    const myCamp = app.globalData.myTeam;
+
+    // 仅当本方进球时触发 confetti(对方进球不打扰,见 PRD §3.2 验收 + §10.2 Q3)
+    if (myCamp && t.code !== myCamp) {
+      wx.showToast({ title: 'Opposing goal · no confetti for you', icon: 'none', duration: 1500 });
+      return;
+    }
+
+    // 清除可能存在的上次 timer
+    if (this.data._goalTimer) clearTimeout(this.data._goalTimer);
+
+    this.setData({
+      showGoal: true,
+      goalC1: t.c1 || '#14B8A6',
+      goalC2: t.c2 || '#0F766E',
+      goalTextOn: t.textOn || '#FFFFFF',
+      goalTeamFlag: t.flag,
+      goalScoreLabel: `${t.code} ${score || '1-0'}`,
+      goalScorer: scorer || '',
+      confetti: buildConfetti(t.c1, t.c2),
+    });
+
+    // 震动 · 让用户「身体」感受到进球
+    wx.vibrateLong && wx.vibrateLong({});
+
+    // 3.5 秒后自动关闭
+    const timer = setTimeout(() => this.hideGoal(), 3500);
+    this.data._goalTimer = timer;
+  },
+
+  hideGoal() {
+    if (this.data._goalTimer) {
+      clearTimeout(this.data._goalTimer);
+      this.data._goalTimer = null;
+    }
+    this.setData({ showGoal: false });
+  },
+
+  noop() {/* catchtap 内层点击不冒泡到外层 hideGoal */},
+
+  async shareGoal() {
+    const { goalTeamFlag, goalScoreLabel, goalScorer } = this.data;
+    try {
+      const { shareToIM } = require('../../utils/luffa');
+      await shareToIM({
+        title: 'GOAL! ' + goalScoreLabel,
+        content: `${goalTeamFlag} ${goalScoreLabel}${goalScorer ? ' · ' + goalScorer : ''}`,
+        path: `/pages/match-detail/match-detail?id=${this.matchId}`
+      });
+      wx.showToast({ title: '✓', icon: 'success' });
+      this.hideGoal();
+    } catch (e) {
+      wx.showToast({ title: '✗', icon: 'none' });
+    }
+  },
+
+  // DEMO 触发器:随机用主队或客队进球(若用户已选阵营则优先用本方)
+  demoGoal() {
+    const app = getApp();
+    const myCamp = app.globalData.myTeam;
+    let team = this.data.homeTeam;
+    if (myCamp === this.data.awayTeam.code) team = this.data.awayTeam;
+    else if (Math.random() < 0.5 && !myCamp) team = this.data.awayTeam;
+
+    const minute = 20 + Math.floor(Math.random() * 75);
+    const scorers = {
+      ESP: 'Pedri', BRA: 'Vinícius', ARG: 'Messi', FRA: 'Mbappé',
+      ENG: 'Bellingham', GER: 'Wirtz', ITA: 'Chiesa', POR: 'Ronaldo',
+      MEX: 'Lozano', USA: 'Pulisic', NED: 'Gakpo', COL: 'James',
+      URU: 'Núñez', CHI: 'Sánchez', JPN: 'Mitoma', KOR: 'Son',
+    };
+    const scorer = (scorers[team.code] || 'Anonymous') + ' · ' + minute + "'";
+
+    this.triggerGoal({ team, scorer, score: '1-0' });
   }
 });
