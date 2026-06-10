@@ -1,0 +1,179 @@
+<view class="page">
+
+  <!-- ===== Hero · 球迷身份卡 ===== -->
+  <view class="card card-deep hero-card">
+    <view class="row-between">
+      <view class="col" style="gap: 6rpx;">
+        <text class="hero-greet">嗨{{wallet ? '·' + wallet.nickname : ''}} 👋</text>
+        <text class="hero-sub">你是 {{myTeamName ? myTeamName + ' ' + myTeamFlag : '哪国'}} 阵营的球迷</text>
+      </view>
+      <view class="row row-gap-sm">
+        <view class="avatar avatar-ring" style="background: rgba(255,255,255,.25);">
+          <text style="color: #fff;">{{myTeamFlag || '⚽'}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="row-between hero-stat-row">
+      <view class="hero-stat">
+        <text class="hero-stat-val">{{fanLevel}}</text>
+        <text class="hero-stat-lbl">球迷等级</text>
+      </view>
+      <view class="hero-stat">
+        <text class="hero-stat-val">{{predCount}}</text>
+        <text class="hero-stat-lbl">已预测</text>
+      </view>
+      <view class="hero-stat">
+        <text class="hero-stat-val">{{eds}}</text>
+        <text class="hero-stat-lbl">EDS</text>
+      </view>
+      <view class="hero-stat">
+        <text class="hero-stat-val">{{followCount}}</text>
+        <text class="hero-stat-lbl">关注</text>
+      </view>
+    </view>
+
+    <view wx:if="{{!wallet}}" class="hero-cta">
+      <button class="btn btn-ghost" style="background: #fff; color: #6D5BFF;" bindtap="onConnect">连接 Luffa 钱包 · 真领 EDS</button>
+    </view>
+    <view wx:elif="{{!myTeam}}" class="hero-cta">
+      <button class="btn btn-ghost" style="background: #fff; color: #6D5BFF;" bindtap="onPickTeam">选择我支持的球队 →</button>
+    </view>
+  </view>
+
+  <!-- ===== 今日重磅比赛 ===== -->
+  <view class="section">
+    <view class="section-head">
+      <view>
+        <text class="section-title">今日重磅 🔥</text>
+        <view class="section-sub">点击进入实时讨论</view>
+      </view>
+      <text class="section-link" bindtap="goMatches">全部 →</text>
+    </view>
+
+    <view wx:for="{{todayMatches}}" wx:key="id" class="card match-card" bindtap="goMatch" data-id="{{item.id}}">
+      <view class="row-between match-top">
+        <text class="pill pill-light">{{item.competition}}</text>
+        <text class="match-countdown">⏱ {{item.countdown}}</text>
+      </view>
+      <view class="row-between match-teams">
+        <view class="col-center">
+          <view class="avatar avatar-lg"><text>{{item.homeTeam.flag}}</text></view>
+          <text class="team-name">{{item.homeTeam.code}}</text>
+        </view>
+        <text class="match-vs">VS</text>
+        <view class="col-center">
+          <view class="avatar avatar-lg"><text>{{item.awayTeam.flag}}</text></view>
+          <text class="team-name">{{item.awayTeam.code}}</text>
+        </view>
+      </view>
+      <view class="bar-track match-bar">
+        <view class="bar-seg home" style="width: {{item.distribution.home}}%;"></view>
+        <view class="bar-seg draw" style="width: {{item.distribution.draw}}%;"></view>
+        <view class="bar-seg away" style="width: {{item.distribution.away}}%;"></view>
+      </view>
+      <view class="row-between match-foot">
+        <text class="tx-small">💬 {{item.discussions}} 球迷在聊</text>
+        <text class="tx-small">玩家分布 · 不构成赔率</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- ===== 球迷动态流 · 社交向核心 ===== -->
+  <view class="section">
+    <view class="section-head">
+      <view>
+        <text class="section-title">球迷动态</text>
+        <view class="section-sub">关注的 KOL · 你的群组 · 阵营事件</view>
+      </view>
+    </view>
+
+    <view wx:for="{{feed}}" wx:key="id" class="card feed-item">
+
+      <!-- 1. KOL pick -->
+      <block wx:if="{{item.type === 'kol_pick'}}">
+        <view class="row row-gap-md" style="margin-bottom: 16rpx;">
+          <view class="avatar"><text>{{item.kolData.flag}}</text></view>
+          <view class="col" style="flex: 1; gap: 4rpx;">
+            <view class="row row-gap-sm">
+              <text class="tx-bold">{{item.kolData.name}}</text>
+              <text class="pill pill-purple">{{item.kolData.tier}}</text>
+            </view>
+            <text class="tx-small">{{item.kolData.handle}} · {{item.timeAgo}}</text>
+          </view>
+        </view>
+        <view class="feed-text">{{item.text}}</view>
+        <view class="feed-pick" bindtap="goMatch" data-id="{{item.match}}">
+          <text class="tx-small">押 →</text>
+          <text class="tx-bold tx-purple">
+            {{item.matchData.homeTeam.flag}} {{item.matchData.homeTeam.code}}
+            <text class="tx-mid"> vs </text>
+            {{item.matchData.awayTeam.flag}} {{item.matchData.awayTeam.code}}
+          </text>
+          <text class="pill pill-light">{{item.pickLabel}}</text>
+        </view>
+        <view class="row row-gap-lg feed-actions">
+          <text class="feed-action">❤ {{item.likes}}</text>
+          <text class="feed-action">💬 {{item.replies}}</text>
+          <text class="feed-action" bindtap="goMatch" data-id="{{item.match}}">跟随预测 →</text>
+        </view>
+      </block>
+
+      <!-- 2. group_buzz -->
+      <block wx:elif="{{item.type === 'group_buzz'}}">
+        <view class="row row-gap-md" style="margin-bottom: 12rpx;">
+          <view class="avatar" style="background: #F0EDFF;"><text>👥</text></view>
+          <view class="col" style="flex: 1; gap: 4rpx;">
+            <text class="tx-bold">{{item.group}}</text>
+            <text class="tx-small">{{item.members}} 位成员 · {{item.timeAgo}}</text>
+          </view>
+          <text class="pill pill-light">群组</text>
+        </view>
+        <view class="feed-text">{{item.text}}</view>
+        <view class="row row-gap-lg feed-actions">
+          <text class="feed-action">❤ {{item.likes || 0}}</text>
+          <text class="feed-action" bindtap="goMatch" data-id="{{item.match}}">进群预测 →</text>
+        </view>
+      </block>
+
+      <!-- 3. team_event -->
+      <block wx:elif="{{item.type === 'team_event'}}">
+        <view class="row row-gap-md" style="margin-bottom: 12rpx;">
+          <view class="avatar"><text>{{item.teamData.flag}}</text></view>
+          <view class="col" style="flex: 1; gap: 4rpx;">
+            <text class="tx-bold">{{item.teamData.name}} 球迷阵营</text>
+            <text class="tx-small">{{item.timeAgo}}</text>
+          </view>
+        </view>
+        <view class="feed-text">{{item.text}}</view>
+        <view class="row row-gap-lg feed-actions">
+          <text class="feed-action" bindtap="goTeam" data-code="{{item.team}}">进阵营 →</text>
+        </view>
+      </block>
+
+      <!-- 4. milestone -->
+      <block wx:elif="{{item.type === 'milestone'}}">
+        <view class="row row-gap-md" style="margin-bottom: 0;">
+          <view class="avatar" style="background: #FFF4D6;"><text>🏆</text></view>
+          <view class="col" style="flex: 1; gap: 4rpx;">
+            <text class="tx-bold">里程碑</text>
+            <text class="tx-small">{{item.timeAgo}}</text>
+          </view>
+        </view>
+        <view class="feed-text" style="margin-top: 12rpx;">{{item.text}}</view>
+      </block>
+
+    </view>
+
+    <view class="card-flat card empty-cta" bindtap="goMatches" wx:if="{{feed.length}}">
+      <text class="tx-purple tx-bold">看更多比赛 + 加入更多群 →</text>
+    </view>
+  </view>
+
+  <!-- ===== Legal footer ===== -->
+  <view class="legal">
+    <text>GoalRush · Powered by Luffa · Play-money 预测玩法 + utility token reward</text>
+    <text>Operated within a group holding HK SFC licenses · 不属于 prediction market / sportsbook</text>
+  </view>
+
+</view>

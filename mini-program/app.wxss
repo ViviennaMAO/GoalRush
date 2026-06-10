@@ -1,0 +1,145 @@
+/* GoalRush · 全局设计系统
+   米白 + 紫色 + 浮动卡 · 真球迷社交向 */
+
+page {
+  background: #F7F7F9;
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "PingFang SC", "Microsoft YaHei", sans-serif;
+  color: #1A1A2E;
+  font-size: 28rpx;
+  line-height: 1.5;
+}
+
+/* === 通用容器 === */
+.page {
+  min-height: 100vh;
+  padding: 24rpx 32rpx 120rpx;
+  box-sizing: border-box;
+}
+
+.section { margin: 40rpx 0 24rpx; }
+.section-head {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 20rpx; padding: 0 8rpx;
+}
+.section-title { font-size: 36rpx; font-weight: 700; color: #1A1A2E; letter-spacing: -.5rpx; }
+.section-sub { font-size: 22rpx; color: #9CA3AF; margin-top: 4rpx; }
+.section-link { font-size: 24rpx; color: #6D5BFF; font-weight: 600; }
+
+/* === 浮动卡片(无边框 · 软阴影)=== */
+.card {
+  background: #FFFFFF;
+  border-radius: 28rpx;
+  padding: 32rpx;
+  margin-bottom: 24rpx;
+  box-shadow: 0 4rpx 20rpx rgba(109,91,255,0.06), 0 1rpx 0 rgba(255,255,255,0.5) inset;
+  position: relative;
+}
+.card-tight { padding: 24rpx; border-radius: 24rpx; }
+.card-flat { background: #F0EDFF; }
+.card-deep {
+  background: linear-gradient(135deg, #6D5BFF 0%, #8B7AFF 100%);
+  color: #FFFFFF;
+}
+
+/* === 按钮 === */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  height: 80rpx; padding: 0 32rpx;
+  border-radius: 40rpx;
+  font-size: 28rpx; font-weight: 600;
+  transition: opacity .15s;
+}
+.btn-primary {
+  background: linear-gradient(135deg, #6D5BFF, #8B7AFF);
+  color: #FFFFFF;
+  box-shadow: 0 8rpx 24rpx rgba(109,91,255,0.3);
+}
+.btn-primary[disabled] { opacity: 0.4; box-shadow: none; }
+.btn-ghost {
+  background: #F0EDFF;
+  color: #6D5BFF;
+}
+.btn-pill {
+  height: 56rpx; padding: 0 24rpx;
+  border-radius: 28rpx;
+  font-size: 24rpx;
+}
+.btn-block { width: 100%; }
+
+/* === Avatar(圆形球员头像 / 国旗)=== */
+.avatar {
+  width: 88rpx; height: 88rpx;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #F0EDFF, #FFFFFF);
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 44rpx;
+  flex-shrink: 0;
+  box-shadow: 0 4rpx 12rpx rgba(109,91,255,0.1);
+}
+.avatar-sm { width: 64rpx; height: 64rpx; font-size: 32rpx; }
+.avatar-lg { width: 128rpx; height: 128rpx; font-size: 64rpx; }
+.avatar-xl { width: 160rpx; height: 160rpx; font-size: 80rpx; }
+.avatar-ring { border: 4rpx solid #6D5BFF; padding: 4rpx; box-sizing: border-box; }
+
+/* === Pills · 国家旗帜小框 / 称号 === */
+.pill {
+  display: inline-flex; align-items: center;
+  height: 44rpx; padding: 0 18rpx;
+  border-radius: 22rpx;
+  font-size: 22rpx; font-weight: 600;
+  background: #F0EDFF; color: #6D5BFF;
+}
+.pill-light { background: #F4F5F7; color: #6B7280; }
+.pill-gold { background: #FFF4D6; color: #B8860B; }
+.pill-purple { background: #6D5BFF; color: #FFFFFF; }
+
+/* === Text utils === */
+.tx-h1 { font-size: 52rpx; font-weight: 800; letter-spacing: -1rpx; line-height: 1.2; }
+.tx-h2 { font-size: 40rpx; font-weight: 700; letter-spacing: -.5rpx; }
+.tx-h3 { font-size: 32rpx; font-weight: 700; }
+.tx-body { font-size: 28rpx; color: #4B5563; }
+.tx-small { font-size: 22rpx; color: #9CA3AF; }
+.tx-mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+.tx-purple { color: #6D5BFF; }
+.tx-bold { font-weight: 700; }
+.tx-muted { color: #9CA3AF; }
+.tx-mid { color: #6B7280; }
+
+/* === Flex helpers === */
+.row { display: flex; align-items: center; }
+.row-between { display: flex; align-items: center; justify-content: space-between; }
+.row-gap-sm { gap: 12rpx; }
+.row-gap-md { gap: 20rpx; }
+.row-gap-lg { gap: 32rpx; }
+.col { display: flex; flex-direction: column; gap: 12rpx; }
+.col-center { display: flex; flex-direction: column; align-items: center; }
+
+/* === Progress bar(社交分布,不构成赔率)=== */
+.bar-track {
+  width: 100%; height: 16rpx;
+  background: #F4F5F7;
+  border-radius: 8rpx; overflow: hidden;
+  display: flex;
+}
+.bar-seg { height: 100%; transition: width .3s; }
+.bar-seg.home { background: linear-gradient(90deg, #6D5BFF, #8B7AFF); }
+.bar-seg.draw { background: #FFD54A; }
+.bar-seg.away { background: #FF8FA3; }
+
+/* === Stat block === */
+.stat { display: flex; flex-direction: column; gap: 6rpx; }
+.stat .val { font-size: 40rpx; font-weight: 800; color: #1A1A2E; }
+.stat .lbl { font-size: 20rpx; color: #9CA3AF; text-transform: uppercase; letter-spacing: 1rpx; }
+.stat .val.tx-purple { color: #6D5BFF; }
+
+/* === Legal footer(每页 fix on bottom safe area)=== */
+.legal {
+  margin: 40rpx 0 20rpx;
+  padding: 24rpx 32rpx;
+  background: transparent;
+  font-size: 20rpx;
+  color: #9CA3AF;
+  line-height: 1.6;
+  text-align: center;
+}
+.legal text { display: block; }

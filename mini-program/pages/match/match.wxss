@@ -1,0 +1,40 @@
+.tabs {
+  display: flex;
+  white-space: nowrap;
+  margin-bottom: 24rpx;
+  padding: 4rpx 0;
+}
+.tab {
+  display: inline-flex;
+  align-items: center;
+  height: 64rpx;
+  padding: 0 28rpx;
+  margin-right: 12rpx;
+  border-radius: 32rpx;
+  font-size: 26rpx;
+  font-weight: 600;
+  background: #FFFFFF;
+  color: #6B7280;
+  box-shadow: 0 2rpx 8rpx rgba(0,0,0,.04);
+}
+.tab.active {
+  background: linear-gradient(135deg, #6D5BFF, #8B7AFF);
+  color: #FFFFFF;
+  box-shadow: 0 6rpx 18rpx rgba(109,91,255,.25);
+}
+
+.match-card { padding: 28rpx; margin-bottom: 24rpx; }
+.match-card.is-highlight {
+  background: linear-gradient(180deg, #FFFFFF, #FAF7FF);
+}
+.match-top { margin-bottom: 16rpx; }
+.match-countdown { font-size: 22rpx; color: #6D5BFF; font-weight: 700; flex-shrink: 0; }
+.match-teams {
+  padding: 20rpx 24rpx;
+  background: #FAFAFC;
+  border-radius: 20rpx;
+  margin-bottom: 20rpx;
+}
+.team-name { margin-top: 8rpx; font-size: 28rpx; font-weight: 800; color: #1A1A2E; }
+.match-vs { font-size: 32rpx; font-weight: 800; color: #6D5BFF; letter-spacing: 2rpx; }
+.match-foot { font-size: 22rpx; color: #9CA3AF; }

@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "比赛",
+  "navigationBarBackgroundColor": "#FFFFFF",
+  "navigationBarTextStyle": "black",
+  "backgroundColor": "#F7F7F9",
+  "enablePullDownRefresh": true
+}

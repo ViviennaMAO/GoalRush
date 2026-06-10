@@ -1,0 +1,16 @@
+.team-hero {
+  padding: 48rpx 32rpx 40rpx;
+  background: linear-gradient(180deg, #FFFFFF, #F5F2FF);
+  text-align: center;
+}
+.kol-row {
+  display: flex; align-items: center; gap: 16rpx;
+  padding: 20rpx 24rpx;
+}
+.team-match { padding: 24rpx 28rpx; }
+.team-match-row {
+  margin: 16rpx 0 12rpx;
+  padding: 16rpx 20rpx;
+  background: #FAFAFC;
+  border-radius: 16rpx;
+}

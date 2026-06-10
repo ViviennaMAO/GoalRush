@@ -1,0 +1,54 @@
+<view class="page">
+
+  <!-- ===== Tab 切换 ===== -->
+  <scroll-view scroll-x class="tabs" enhanced show-scrollbar="{{false}}">
+    <view wx:for="{{tabs}}" wx:key="key" class="tab {{currentTab === item.key ? 'active' : ''}}" bindtap="onTab" data-key="{{item.key}}">
+      {{item.label}}
+    </view>
+  </scroll-view>
+
+  <!-- ===== 榜首颁奖台 ===== -->
+  <view wx:if="{{podium.length === 3}}" class="card podium-card">
+    <view class="podium-step podium-second">
+      <view class="avatar avatar-lg avatar-ring"><text>{{podium[1].flag}}</text></view>
+      <text class="podium-rank">🥈</text>
+      <text class="podium-handle">{{podium[1].handle}}</text>
+      <text class="podium-stat">{{podium[1].statLabel}}</text>
+    </view>
+    <view class="podium-step podium-first">
+      <view class="avatar avatar-xl avatar-ring" style="border-color: #FFD54A;"><text>{{podium[0].flag}}</text></view>
+      <text class="podium-rank podium-rank-1">🥇</text>
+      <text class="podium-handle">{{podium[0].handle}}</text>
+      <text class="podium-stat">{{podium[0].statLabel}}</text>
+    </view>
+    <view class="podium-step podium-third">
+      <view class="avatar avatar-lg avatar-ring"><text>{{podium[2].flag}}</text></view>
+      <text class="podium-rank">🥉</text>
+      <text class="podium-handle">{{podium[2].handle}}</text>
+      <text class="podium-stat">{{podium[2].statLabel}}</text>
+    </view>
+  </view>
+
+  <!-- ===== 完整列表 ===== -->
+  <view class="card list-card" style="padding: 0;">
+    <view wx:for="{{list}}" wx:key="rank" class="list-row">
+      <text class="list-rank">#{{item.rank}}</text>
+      <view class="avatar avatar-sm"><text>{{item.flag}}</text></view>
+      <view class="col" style="flex: 1; gap: 4rpx; min-width: 0;">
+        <view class="row row-gap-sm">
+          <text class="tx-bold list-handle">{{item.handle}}</text>
+          <text wx:if="{{item.kol}}" class="pill pill-purple" style="font-size: 18rpx; height: 32rpx; padding: 0 12rpx;">KOL</text>
+          <text wx:if="{{item.title}}" class="pill pill-gold" style="font-size: 18rpx; height: 32rpx; padding: 0 12rpx;">{{item.title}}</text>
+        </view>
+        <text class="tx-small">{{item.sub}}</text>
+      </view>
+      <text class="list-val">{{item.statLabel}}</text>
+    </view>
+  </view>
+
+  <view class="legal">
+    <text>多维榜单 · 不同维度展示不同球迷价值</text>
+    <text>命中率 ≠ 球迷忠诚度 · 多榜并存,鼓励多元参与</text>
+  </view>
+
+</view>

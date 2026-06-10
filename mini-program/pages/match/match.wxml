@@ -1,0 +1,58 @@
+<view class="page">
+
+  <!-- ===== Tabs ===== -->
+  <scroll-view scroll-x class="tabs" enhanced show-scrollbar="{{false}}">
+    <view wx:for="{{tabs}}" wx:key="key" class="tab {{currentTab === item.key ? 'active' : ''}}" bindtap="onTab" data-key="{{item.key}}">
+      {{item.label}}
+    </view>
+  </scroll-view>
+
+  <!-- ===== Match list ===== -->
+  <view wx:for="{{matches}}" wx:key="id" class="card match-card {{item.highlight ? 'is-highlight' : ''}}" bindtap="goMatch" data-id="{{item.id}}">
+    <view class="row-between match-top">
+      <view class="row row-gap-sm" style="flex: 1; min-width: 0;">
+        <text class="pill pill-light">{{item.competition}}</text>
+        <text wx:if="{{item.highlight}}" class="pill pill-gold">🔥 重磅</text>
+      </view>
+      <text class="match-countdown">⏱ {{item.countdown}}</text>
+    </view>
+
+    <view class="row-between match-teams">
+      <view class="col-center" style="flex: 1;">
+        <view class="avatar avatar-lg"><text>{{item.homeTeam.flag}}</text></view>
+        <text class="team-name">{{item.homeTeam.code}}</text>
+        <text class="tx-small">{{item.homeTeam.name}}</text>
+      </view>
+      <view class="col-center">
+        <text class="match-vs">VS</text>
+        <text class="tx-small" style="margin-top: 8rpx;">{{item.kickoffTxt}}</text>
+      </view>
+      <view class="col-center" style="flex: 1;">
+        <view class="avatar avatar-lg"><text>{{item.awayTeam.flag}}</text></view>
+        <text class="team-name">{{item.awayTeam.code}}</text>
+        <text class="tx-small">{{item.awayTeam.name}}</text>
+      </view>
+    </view>
+
+    <view class="bar-track" style="margin-bottom: 14rpx;">
+      <view class="bar-seg home" style="width: {{item.distribution.home}}%;"></view>
+      <view class="bar-seg draw" style="width: {{item.distribution.draw}}%;"></view>
+      <view class="bar-seg away" style="width: {{item.distribution.away}}%;"></view>
+    </view>
+
+    <view class="row-between match-foot">
+      <view class="row row-gap-sm">
+        <text class="tx-small">💬 {{item.discussions}} 球迷</text>
+        <text class="tx-small">·</text>
+        <text class="tx-small">{{item.venue}}</text>
+      </view>
+      <text wx:if="{{item.userPick}}" class="pill pill-purple">已押 {{item.pickLabel}}</text>
+    </view>
+  </view>
+
+  <view class="legal">
+    <text>玩家分布数字 ≠ 赔率 · 仅展示当前预测玩家选择</text>
+    <text>GoalRush · Powered by Luffa · Play-money + EDS utility token reward</text>
+  </view>
+
+</view>

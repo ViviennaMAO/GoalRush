@@ -1,0 +1,95 @@
+.detail-hero {
+  padding: 40rpx 32rpx 32rpx;
+  border-radius: 32rpx;
+  margin-bottom: 32rpx;
+}
+.detail-hero .pill { margin-bottom: 28rpx; }
+.hero-vs-row {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16rpx;
+}
+.hero-team {
+  flex: 1; display: flex; flex-direction: column; align-items: center; gap: 12rpx;
+}
+.hero-team-name { font-size: 24rpx; color: rgba(255,255,255,.85); font-weight: 600; }
+.hero-team-code {
+  font-size: 40rpx; font-weight: 800; color: #fff; letter-spacing: 2rpx;
+}
+.hero-vs-meta { display: flex; flex-direction: column; align-items: center; gap: 8rpx; }
+.hero-vs-tx { font-size: 48rpx; font-weight: 800; color: #FFD54A; letter-spacing: 4rpx; }
+.hero-countdown {
+  font-size: 28rpx; font-weight: 700; color: #fff;
+  background: rgba(255,255,255,.18);
+  padding: 6rpx 16rpx; border-radius: 12rpx;
+  font-family: ui-monospace, Menlo, monospace;
+}
+.hero-kickoff { font-size: 20rpx; color: rgba(255,255,255,.7); }
+.hero-venue {
+  margin-top: 24rpx;
+  font-size: 22rpx;
+  color: rgba(255,255,255,.75);
+  text-align: center;
+}
+
+/* ===== Pick row ===== */
+.pick-row {
+  display: flex; flex-direction: row; gap: 16rpx;
+}
+.pick {
+  flex: 1;
+  background: #FFFFFF;
+  border-radius: 24rpx;
+  padding: 28rpx 16rpx;
+  display: flex; flex-direction: column; align-items: center; gap: 12rpx;
+  box-shadow: 0 4rpx 16rpx rgba(109,91,255,.06);
+  border: 4rpx solid transparent;
+  transition: all .15s;
+}
+.pick.selected {
+  border-color: #6D5BFF;
+  background: linear-gradient(180deg, #FFFFFF, #F5F2FF);
+  box-shadow: 0 8rpx 24rpx rgba(109,91,255,.18);
+}
+.pick-team {
+  font-size: 28rpx; font-weight: 800; color: #1A1A2E;
+  margin-top: 4rpx;
+}
+.pick.selected .pick-team { color: #6D5BFF; }
+.pick-pct { font-size: 20rpx; color: #9CA3AF; }
+
+.confirm-banner {
+  background: linear-gradient(135deg, #6D5BFF, #8B7AFF);
+  color: #fff;
+  display: flex; align-items: center; justify-content: space-between; gap: 16rpx;
+  padding: 20rpx 28rpx;
+  margin-top: 24rpx;
+}
+.confirm-banner .tx-purple { color: #fff; }
+
+/* ===== KOL row ===== */
+.kol-row {
+  display: flex; align-items: center; gap: 16rpx;
+  padding: 20rpx 24rpx;
+}
+.kol-pick-pill {
+  background: #F0EDFF;
+  padding: 14rpx 22rpx;
+  border-radius: 28rpx;
+}
+
+/* ===== Discussions ===== */
+.discuss-row {
+  display: flex; gap: 16rpx;
+  padding: 20rpx 24rpx;
+  margin-bottom: 16rpx;
+}
+.discuss-text {
+  font-size: 26rpx; color: #1A1A2E; line-height: 1.5;
+}
+.empty-discuss {
+  background: #F0EDFF;
+  border-radius: 24rpx;
+  padding: 32rpx;
+  display: flex; flex-direction: column; align-items: center;
+  text-align: center;
+}

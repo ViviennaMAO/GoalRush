@@ -1,0 +1,48 @@
+{
+  "miniprogramRoot": "./",
+  "compileType": "miniprogram",
+  "TCMPPappid": "REPLACE_WITH_YOUR_APPID",
+  "projectname": "GoalRush",
+  "description": "GoalRush · 球迷社交向世界杯小程序 · Powered by Luffa",
+  "libVersion": "1.5.0",
+  "setting": {
+    "es6": true,
+    "postcss": true,
+    "minified": true,
+    "uglifyFileName": true,
+    "urlCheck": false,
+    "ignoreUploadUnusedFiles": true
+  },
+  "condition": {
+    "miniprogram": {
+      "current": 0,
+      "list": [
+        {
+          "id": 0,
+          "name": "home",
+          "pathName": "pages/home/home",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": 1,
+          "name": "match-detail (ESP vs BRA)",
+          "pathName": "pages/match-detail/match-detail",
+          "query": "id=m003",
+          "scene": null
+        },
+        {
+          "id": 2,
+          "name": "team-detail (Brazil)",
+          "pathName": "pages/team-detail/team-detail",
+          "query": "code=BRA",
+          "scene": null
+        }
+      ]
+    }
+  },
+  "mockConfig": {
+    "globalOpen": false,
+    "rules": []
+  }
+}

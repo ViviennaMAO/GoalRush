@@ -1,0 +1,4 @@
+{
+  "desc": "GoalRush · sitemap",
+  "rules": [{ "action": "allow", "page": "*" }]
+}

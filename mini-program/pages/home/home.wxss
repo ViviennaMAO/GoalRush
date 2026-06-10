@@ -1,0 +1,80 @@
+/* === Hero · 球迷身份卡 === */
+.hero-card {
+  padding: 40rpx 36rpx 32rpx;
+  border-radius: 32rpx;
+  margin-bottom: 32rpx;
+  box-shadow: 0 12rpx 36rpx rgba(109,91,255,0.2);
+}
+.hero-greet {
+  font-size: 40rpx; font-weight: 800; color: #fff; letter-spacing: -.5rpx;
+}
+.hero-sub {
+  font-size: 24rpx; color: rgba(255,255,255,0.85);
+}
+.hero-stat-row {
+  margin-top: 32rpx;
+  padding-top: 24rpx;
+  border-top: 2rpx solid rgba(255,255,255,0.15);
+}
+.hero-stat { display: flex; flex-direction: column; gap: 4rpx; align-items: flex-start; }
+.hero-stat-val { font-size: 36rpx; font-weight: 800; color: #fff; }
+.hero-stat-lbl { font-size: 20rpx; color: rgba(255,255,255,0.7); }
+.hero-cta { margin-top: 24rpx; }
+.hero-cta .btn { width: 100%; box-shadow: 0 6rpx 18rpx rgba(0,0,0,0.12); }
+
+/* === 比赛卡 === */
+.match-card { padding: 28rpx; }
+.match-top { margin-bottom: 16rpx; }
+.match-countdown { font-size: 22rpx; color: #6D5BFF; font-weight: 700; }
+.match-teams {
+  padding: 16rpx 32rpx;
+  background: #FAFAFC;
+  border-radius: 20rpx;
+  margin-bottom: 20rpx;
+}
+.team-name {
+  margin-top: 8rpx;
+  font-size: 28rpx; font-weight: 800;
+  color: #1A1A2E;
+  letter-spacing: .5rpx;
+}
+.match-vs {
+  font-size: 28rpx; font-weight: 800;
+  color: #6D5BFF; letter-spacing: 2rpx;
+}
+.match-bar { margin: 8rpx 0 16rpx; }
+.match-foot {
+  font-size: 22rpx;
+  color: #9CA3AF;
+}
+
+/* === Feed item === */
+.feed-item { padding: 24rpx 28rpx; }
+.feed-text {
+  font-size: 28rpx;
+  color: #4B5563;
+  line-height: 1.55;
+  margin-bottom: 12rpx;
+}
+.feed-pick {
+  display: flex; align-items: center; gap: 12rpx;
+  padding: 16rpx 20rpx;
+  background: #F4F5F7;
+  border-radius: 16rpx;
+  margin: 12rpx 0;
+  flex-wrap: wrap;
+}
+.feed-actions {
+  padding-top: 12rpx;
+  border-top: 2rpx solid #F4F5F7;
+}
+.feed-action {
+  font-size: 22rpx; color: #9CA3AF;
+}
+.feed-action.tx-purple { color: #6D5BFF; }
+
+.empty-cta {
+  text-align: center;
+  padding: 28rpx;
+  margin-top: 8rpx;
+}
