@@ -8,7 +8,8 @@ App({
     myTeam: null,        // 我支持的球队 code,例如 'BRA'
     fanLevel: 1,         // 球迷等级(本地累积:1=路人 / 2=粉丝 / 3=老粉 / 4=元老)
     eds: 0,              // EDS 余额(显示用,真值在 Luffa 钱包)
-    predictions: {},     // { match_id: 'home' | 'draw' | 'away' }
+    predictions: {},     // { match_id: 'home' | 'draw' | 'away' } · v1 主预测
+    halftimePredictions: {}, // F-P0-3 · { match_id: { pick, decided_in_ms, status, potential_eds } }
     follows: [],         // 关注的 KOL ids
   },
 
@@ -67,6 +68,7 @@ App({
         fanLevel: this.globalData.fanLevel,
         eds: this.globalData.eds,
         predictions: this.globalData.predictions,
+        halftimePredictions: this.globalData.halftimePredictions,
         follows: this.globalData.follows,
       });
     } catch (e) {}

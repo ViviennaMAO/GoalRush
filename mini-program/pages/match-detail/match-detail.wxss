@@ -99,8 +99,11 @@
 }
 
 /* DEMO 触发按钮(开发期可见 · 生产环境隐藏)*/
-.demo-trigger {
+.demo-triggers {
+  display: flex; flex-direction: column; gap: 10rpx;
   margin-top: 20rpx;
+}
+.demo-trigger {
   padding: 14rpx 20rpx;
   background: rgba(20, 184, 166, .08);
   border: 2rpx dashed rgba(20, 184, 166, .4);
@@ -110,6 +113,127 @@
 .demo-trigger-tx {
   font-size: 22rpx; color: #0F766E; font-weight: 600;
   letter-spacing: .5rpx;
+}
+
+/* ============================================
+   F-P0-3 半场重押 overlay
+   ============================================ */
+.ht-overlay {
+  position: fixed; inset: 0;
+  z-index: 9998;
+  background: rgba(0,0,0,.6);
+  backdrop-filter: blur(8rpx);
+  display: flex; align-items: center; justify-content: center;
+  padding: 32rpx;
+  animation: fadeIn .25s ease-out;
+}
+.ht-card {
+  background: #FFFFFF;
+  border-radius: 32rpx;
+  padding: 40rpx 36rpx 32rpx;
+  width: 100%;
+  max-width: 640rpx;
+  box-shadow: 0 24rpx 64rpx rgba(0,0,0,.3);
+  animation: htCardIn .35s cubic-bezier(.22,1.4,.36,1) both;
+}
+@keyframes htCardIn {
+  0%   { transform: translateY(40rpx) scale(.96); opacity: 0; }
+  100% { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+.ht-head {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 8rpx;
+}
+.ht-title {
+  font-family: 'Bebas Neue', 'Helvetica Neue', sans-serif;
+  font-size: 44rpx; font-weight: 900;
+  color: #14B8A6; letter-spacing: 2rpx;
+}
+.ht-meta {
+  font-size: 26rpx; font-weight: 700; color: #1F2937;
+  font-family: 'Helvetica Neue', sans-serif;
+}
+.ht-subtitle {
+  font-size: 24rpx; color: #6B7280;
+  display: block;
+  margin-bottom: 24rpx;
+}
+
+/* 倒计时 */
+.ht-countdown-row {
+  display: flex; align-items: center; gap: 16rpx;
+  margin-bottom: 28rpx;
+}
+.ht-countdown-bar {
+  flex: 1; height: 12rpx;
+  background: #F3F4F6;
+  border-radius: 6rpx; overflow: hidden;
+}
+.ht-countdown-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #14B8A6, #5EEAD4);
+  transition: width .98s linear;
+  border-radius: 6rpx;
+}
+.ht-countdown-sec {
+  font-family: 'JetBrains Mono', ui-monospace, Menlo, monospace;
+  font-size: 28rpx; font-weight: 800; color: #14B8A6;
+  min-width: 60rpx; text-align: right;
+}
+
+/* 5 个比分选项 */
+.ht-options {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14rpx;
+  margin-bottom: 20rpx;
+}
+.ht-opt {
+  position: relative;
+  background: #F4F6F5;
+  border: 4rpx solid transparent;
+  border-radius: 18rpx;
+  padding: 24rpx 0;
+  text-align: center;
+  transition: all .15s;
+}
+.ht-opt.selected {
+  background: #ECFDF5;
+  border-color: #14B8A6;
+  box-shadow: 0 6rpx 18rpx rgba(20, 184, 166, .2);
+}
+.ht-opt-label {
+  font-family: 'Helvetica Neue', sans-serif;
+  font-size: 36rpx; font-weight: 800;
+  color: #1F2937;
+  letter-spacing: -.5rpx;
+}
+.ht-opt.selected .ht-opt-label {
+  color: #0F766E;
+}
+.ht-opt-friends {
+  position: absolute; top: 6rpx; right: 10rpx;
+  font-size: 18rpx; font-weight: 700; color: #14B8A6;
+  background: rgba(20, 184, 166, .12);
+  padding: 2rpx 8rpx; border-radius: 8rpx;
+  font-family: ui-monospace, Menlo, monospace;
+}
+
+/* 社交反馈 */
+.ht-social {
+  text-align: center;
+  padding: 12rpx 0;
+}
+
+/* Actions */
+.ht-actions {
+  display: flex; gap: 12rpx;
+  margin-top: 12rpx;
+}
+.ht-actions .btn { flex: 1; }
+.ht-actions .btn.is-disabled {
+  opacity: 0.45; box-shadow: none;
 }
 
 /* 比赛详情 · 大比分 hero(参考截图 3:Brazil 2 : 4 Italy)*/

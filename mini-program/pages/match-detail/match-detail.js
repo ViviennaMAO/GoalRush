@@ -14,6 +14,18 @@ const RATE_LIMIT_MAX = 3;              // 窗口内最多发条数
 let _msgIdSeq = 0;
 function nextMsgId() { return 'm_' + Date.now() + '_' + (++_msgIdSeq); }
 
+// F-P0-3 半场重押配置
+const HT_WINDOW_MS = 60 * 1000;        // 60 秒决策窗口
+const HT_PROGRESS_TICK_MS = 1000;      // 进度条 tick
+const HT_EDS_REWARD = 30;
+const HT_OPTIONS_DEF = [
+  { key: '0-0' },
+  { key: '1-0' },
+  { key: '1-1' },
+  { key: '2-1' },
+  { key: '2-0' },
+];
+
 // F-P0-2 confetti 颜色池(中性 + 球队色会动态加入)
 const CONFETTI_COLORS_BASE = ['#FFD54A', '#14B8A6', '#FF6B7D', '#5EEAD4', '#FFFFFF', '#F0AB22'];
 
@@ -64,6 +76,16 @@ Page({
     myCampCode: '',
     _chatTimer: null,
     _sendTimestamps: [],  // 用于速率限制窗口
+    // F-P0-3 halftime state
+    showHt: false,
+    htOptions: [],
+    htPick: '',
+    htSecondsLeft: 60,
+    htProgress: 100,
+    htCurrentScore: '0 : 0',
+    htSocialText: '',
+    _htCountdownTimer: null,
+    _htAutoCloseTimer: null,
   },
 
   onLoad(opts) {
@@ -72,7 +94,12 @@ Page({
     this.startChatMock();
   },
   onShow() { this.refresh(); },
-  onUnload() { this.stopChatMock(); if (this.data._goalTimer) clearTimeout(this.data._goalTimer); },
+  onUnload() {
+    this.stopChatMock();
+    if (this.data._goalTimer) clearTimeout(this.data._goalTimer);
+    if (this.data._htCountdownTimer) clearInterval(this.data._htCountdownTimer);
+    if (this.data._htAutoCloseTimer) clearTimeout(this.data._htAutoCloseTimer);
+  },
 
   refresh() {
     const lang = getLang();
@@ -405,6 +432,139 @@ Page({
 
   onPickTeam() {
     wx.switchTab({ url: '/pages/teams/teams' });
+  },
+
+  // ============ F-P0-3 半场重押 ============
+
+  // 真实环境:由 cron 检测到 halftime status 推送给当前 active 用户
+  // demo 环境:从 hero 下方 demoHalftime() 按钮触发
+  triggerHalftime({ currentScore = '0 : 0' } = {}) {
+    const app = getApp();
+    // 防套利:必须押过主预测才开放半场重押(PRD §3.3 验收)
+    const mainPick = (app.globalData.predictions || {})[this.matchId];
+    if (!mainPick) {
+      wx.showToast({
+        title: this.data.i18n.ht_first_half_required,
+        icon: 'none', duration: 2000
+      });
+      return;
+    }
+
+    // 已押过半场重押 → 显示锁定 toast,不重弹
+    const htAll = app.globalData.halftimePredictions || {};
+    if (htAll[this.matchId]) {
+      const pick = htAll[this.matchId].pick;
+      wx.showToast({
+        title: (this.data.i18n.ht_locked || '').replace('{pick}', pick),
+        icon: 'none', duration: 2000
+      });
+      return;
+    }
+
+    // 生成 5 个选项 + 群友 mock 同押数据(社交反馈)
+    const options = HT_OPTIONS_DEF.map(o => ({
+      key: o.key,
+      label: o.key,
+      friendCount: Math.floor(Math.random() * 4), // 0-3 群友
+    }));
+    // 至少 1 个选项有群友(保证社交反馈有内容可显示)
+    if (!options.some(o => o.friendCount > 0)) {
+      options[Math.floor(Math.random() * options.length)].friendCount = 2;
+    }
+
+    // 清旧 timer
+    if (this.data._htCountdownTimer) clearInterval(this.data._htCountdownTimer);
+    if (this.data._htAutoCloseTimer) clearTimeout(this.data._htAutoCloseTimer);
+
+    this.setData({
+      showHt: true,
+      htOptions: options,
+      htPick: '',
+      htSecondsLeft: 60,
+      htProgress: 100,
+      htCurrentScore: currentScore,
+      htSocialText: '',
+    });
+    wx.vibrateLong && wx.vibrateLong({});
+
+    // 启动 1Hz 倒计时
+    const startTs = Date.now();
+    const tick = () => {
+      const elapsed = Date.now() - startTs;
+      const left = Math.max(0, Math.ceil((HT_WINDOW_MS - elapsed) / 1000));
+      const progress = Math.max(0, 100 - (elapsed / HT_WINDOW_MS) * 100);
+      this.setData({ htSecondsLeft: left, htProgress: progress });
+      if (left <= 0) {
+        clearInterval(this.data._htCountdownTimer);
+        // 时间到:若有 pick 自动 confirm,否则 skip
+        if (this.data.htPick) this.htConfirm({ auto: true });
+        else this.htSkip({ auto: true });
+      }
+    };
+    this.data._htCountdownTimer = setInterval(tick, HT_PROGRESS_TICK_MS);
+  },
+
+  htPickOption(e) {
+    const key = e.currentTarget.dataset.key;
+    const opt = this.data.htOptions.find(o => o.key === key);
+    if (!opt) return;
+    // 社交反馈文案
+    let socialText = '';
+    if (opt.friendCount > 0) {
+      const tmpl = this.data.i18n.ht_social_friends || 'Your group · {n}/{m} picked {pick}';
+      socialText = tmpl
+        .replace('{n}', opt.friendCount)
+        .replace('{m}', 7)
+        .replace('{pick}', key);
+    }
+    this.setData({ htPick: key, htSocialText: socialText });
+    wx.vibrateShort && wx.vibrateShort({ type: 'light' });
+  },
+
+  htConfirm(arg) {
+    const auto = arg && arg.auto;
+    const pick = this.data.htPick;
+    if (!pick) return;
+
+    const app = getApp();
+    app.globalData.halftimePredictions = app.globalData.halftimePredictions || {};
+    app.globalData.halftimePredictions[this.matchId] = {
+      pick,
+      decided_in_ms: (60 - this.data.htSecondsLeft) * 1000,
+      timestamp: new Date().toISOString(),
+      status: 'pending',
+      potential_eds: HT_EDS_REWARD,
+    };
+    if (app.persist) app.persist();
+
+    this._htCloseOverlay();
+    wx.showToast({
+      title: `${pick} · +${HT_EDS_REWARD} EDS pending`,
+      icon: 'success', duration: 1800
+    });
+  },
+
+  htSkip() {
+    this._htCloseOverlay();
+  },
+
+  _htCloseOverlay() {
+    if (this.data._htCountdownTimer) {
+      clearInterval(this.data._htCountdownTimer);
+      this.data._htCountdownTimer = null;
+    }
+    if (this.data._htAutoCloseTimer) {
+      clearTimeout(this.data._htAutoCloseTimer);
+      this.data._htAutoCloseTimer = null;
+    }
+    this.setData({ showHt: false, htPick: '', htSocialText: '' });
+  },
+
+  // DEMO 触发器
+  demoHalftime() {
+    const scores = ['0 : 0', '1 : 0', '0 : 1', '1 : 1', '2 : 1'];
+    const score = scores[Math.floor(Math.random() * scores.length)];
+    this.triggerHalftime({ currentScore: score });
   },
 
   // DEMO 触发器:随机用主队或客队进球(若用户已选阵营则优先用本方)

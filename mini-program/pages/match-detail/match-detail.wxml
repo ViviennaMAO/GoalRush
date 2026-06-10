@@ -49,9 +49,59 @@
     <view class="pitch-mini"></view>
     <view class="hero-venue">{{match.venue}}</view>
 
-    <!-- DEMO · 模拟进球触发器(生产环境去掉 · 真实由 SofaScore polling 驱动) -->
-    <view class="demo-trigger" bindtap="demoGoal">
-      <text class="demo-trigger-tx">▶ {{i18n.goal_demo_trigger}}</text>
+    <!-- DEMO 触发器组(生产环境去掉 · 真实由 SofaScore polling 驱动) -->
+    <view class="demo-triggers">
+      <view class="demo-trigger" bindtap="demoGoal">
+        <text class="demo-trigger-tx">▶ {{i18n.goal_demo_trigger}}</text>
+      </view>
+      <view class="demo-trigger" bindtap="demoHalftime">
+        <text class="demo-trigger-tx">▶ {{i18n.ht_cta_demo}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- ============================================
+       F-P0-3 半场重押 overlay(60 秒 / 30 EDS)
+       触发:half-time 检测(真实) / demo 按钮(开发)
+       约束:必须押过主预测才开放(防套利)
+       ============================================ -->
+  <view wx:if="{{showHt}}" class="ht-overlay">
+    <view class="ht-card">
+      <view class="ht-head">
+        <text class="ht-title">{{i18n.ht_title}}</text>
+        <text class="ht-meta">{{homeTeam.code}} {{htCurrentScore}} {{awayTeam.code}}</text>
+      </view>
+
+      <text class="ht-subtitle">{{i18n.ht_subtitle}}</text>
+
+      <!-- 60s 倒计时进度条 -->
+      <view class="ht-countdown-row">
+        <view class="ht-countdown-bar">
+          <view class="ht-countdown-fill" style="width: {{htProgress}}%;"></view>
+        </view>
+        <text class="ht-countdown-sec">{{htSecondsLeft}}s</text>
+      </view>
+
+      <!-- 5 个比分选项 -->
+      <view class="ht-options">
+        <view wx:for="{{htOptions}}" wx:key="key"
+              class="ht-opt {{htPick === item.key ? 'selected' : ''}}"
+              bindtap="htPickOption" data-key="{{item.key}}">
+          <text class="ht-opt-label">{{item.label}}</text>
+          <text wx:if="{{item.friendCount}}" class="ht-opt-friends">{{item.friendCount}}</text>
+        </view>
+      </view>
+
+      <!-- 群友同押社交反馈 -->
+      <view wx:if="{{htSocialText}}" class="ht-social">
+        <text class="tx-small tx-mid">{{htSocialText}}</text>
+      </view>
+
+      <view class="ht-actions">
+        <button class="btn btn-ghost" bindtap="htSkip">{{i18n.ht_cta_skip}}</button>
+        <button class="btn btn-primary {{!htPick ? 'is-disabled' : ''}}"
+                disabled="{{!htPick}}" bindtap="htConfirm">{{i18n.ht_cta_confirm}}</button>
+      </view>
     </view>
   </view>
 
