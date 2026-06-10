@@ -79,7 +79,38 @@ export const LEADERBOARD_LOYALTY = [
   { rank: 5, handle: '@DiegoSportsES', flag: '🇪🇸', kol: 'diego_es', team: 'ESP', cups: 3, days: 1280, title: '资深球迷' },
 ];
 
-// 单场比赛实时讨论(弹幕)mock
+// 实时聊天模拟池(F-P0-1)· 用于 mock 每 8-12s 推一条
+// 真实场景:Ken 后端 WebSocket 推送 · 这是开发期 + 演示用
+export const CHAT_MOCK_POOL = [
+  { user: '@valencia_fan',     flag: '🇪🇸', camp: 'ESP', text: 'VAMOS ESPAÑA!!!' },
+  { user: '@samba_predicts',   flag: '🇧🇷', camp: 'BRA', text: 'Vinícius está em chamas hoje' },
+  { user: '@futbolero_pablo',  flag: '🇦🇷', camp: 'ARG', text: 'Messi siempre Messi' },
+  { user: '@LucasBR_Fut',      flag: '🇧🇷', camp: 'BRA', text: '高位逼抢的效果出来了 · 西班牙这一波防得很好', kol: 'lucas_br' },
+  { user: '@aztecaFan',        flag: '🇲🇽', camp: 'MEX', text: 'Que partidazo!' },
+  { user: '@madrid_predicts',  flag: '🇪🇸', camp: 'ESP', text: 'Pedri lleva el partido' },
+  { user: '@rio_carioca',      flag: '🇧🇷', camp: 'BRA', text: 'Esse árbitro tá favorecendo o adversário' },
+  { user: '@DiegoSportsES',    flag: '🇪🇸', camp: 'ESP', text: '场面控制得不错 · 但需要更直接的传球', kol: 'diego_es' },
+  { user: '@MarianaPicks',     flag: '🇦🇷', camp: 'ARG', text: 'Llamando al penal!', kol: 'mariana_ar' },
+  { user: '@diego_clasico',    flag: '🇪🇸', camp: 'ESP', text: '👏👏👏' },
+  { user: '@bogota_picks',     flag: '🇨🇴', camp: 'COL', text: 'GOOOOAAALLL si entra!' },
+  { user: '@oranje_fan',       flag: '🇳🇱', camp: 'NED', text: 'This referee...' },
+  { user: '@porto_fan',        flag: '🇵🇹', camp: 'POR', text: 'Próximo é Portugal vs França · vai ser épico' },
+  { user: '@montevideo_fc',    flag: '🇺🇾', camp: 'URU', text: 'Garra charrúa hasta el final' },
+  { user: '@samurai_blue',     flag: '🇯🇵', camp: 'JPN', text: 'がんばれ!' },
+  { user: '@les_bleus_24',     flag: '🇫🇷', camp: 'FRA', text: 'Mbappé doit accélérer' },
+  { user: '@goal_keeper99',    flag: '🇩🇪', camp: 'GER', text: 'Druck machen!' },
+  { user: '@viking_predicts',  flag: '🇬🇧', camp: 'ENG', text: 'England all the way' },
+  { user: '@tigerstars',       flag: '🇰🇷', camp: 'KOR', text: 'Son이 폭발할 시간!' },
+  { user: '@CarlosPredictor',  flag: '🇲🇽', camp: 'MEX', text: '战术变化已经出现 · 看下半场', kol: 'carlos_mx' },
+  // 反应类(emoji-only)
+  { user: '@valencia_fan',     flag: '🇪🇸', camp: 'ESP', text: '🔥🔥🔥' },
+  { user: '@samba_predicts',   flag: '🇧🇷', camp: 'BRA', text: '😱' },
+  { user: '@futbolero_pablo',  flag: '🇦🇷', camp: 'ARG', text: '⚽⚽⚽' },
+  { user: '@madrid_predicts',  flag: '🇪🇸', camp: 'ESP', text: '❤️' },
+  { user: '@LucasBR_Fut',      flag: '🇧🇷', camp: 'BRA', text: '👍', kol: 'lucas_br' },
+];
+
+// 单场比赛实时讨论(弹幕)mock(v1 静态版 · v2 上线后将弃用)
 export const DISCUSSIONS_BY_MATCH = {
   m003: [
     { user: '@valencia_fan', flag: '🇪🇸', text: '西班牙锋线无敌 · 必胜!', team: 'ESP', ts_min: 3 },

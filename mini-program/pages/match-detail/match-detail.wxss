@@ -207,19 +207,150 @@
   border-radius: 26rpx;
 }
 
-/* ===== Discussions ===== */
-.discuss-row {
-  display: flex; gap: 14rpx;
-  padding: 18rpx 22rpx;
-  margin-bottom: 14rpx;
+/* ============================================
+   F-P0-1 实时聊天室
+   ============================================ */
+.chat-section { margin-top: 36rpx; }
+
+/* LIVE dot pulse · 红色实时感 */
+.live-dot {
+  display: inline-block;
+  width: 12rpx; height: 12rpx;
+  border-radius: 50%;
+  background: #FF6B7D;
+  margin-right: 8rpx;
+  animation: liveDot 1.4s ease-in-out infinite;
+  box-shadow: 0 0 8rpx #FF6B7D;
+  vertical-align: 2rpx;
 }
-.discuss-text {
-  font-size: 26rpx; color: #1F2937; line-height: 1.5;
+@keyframes liveDot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: 0.4; transform: scale(0.85); }
 }
-.empty-discuss {
+
+/* 聊天滚动区 · 固定高度 + 内滚动 */
+.chat-scroll {
+  background: #FFFFFF;
+  border-radius: 24rpx;
+  padding: 16rpx 12rpx;
+  height: 720rpx;
+  margin-bottom: 16rpx;
+  box-shadow: 0 2rpx 12rpx rgba(15, 23, 42, .04);
+}
+.chat-empty {
+  height: 100%;
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* 单条 bubble */
+.chat-bubble {
+  display: flex; align-items: flex-start; gap: 12rpx;
+  padding: 10rpx 14rpx;
+  margin-bottom: 8rpx;
+  animation: bubbleIn .3s ease-out;
+}
+@keyframes bubbleIn {
+  0%   { opacity: 0; transform: translateY(8rpx); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.chat-bubble.is-mine {
+  flex-direction: row-reverse;
+}
+
+.chat-bubble-body {
+  flex: 1; min-width: 0;
+  background: #F4F6F5;
+  border-radius: 16rpx;
+  padding: 12rpx 16rpx;
+  border-left: 4rpx solid transparent;
+  max-width: 78%;
+}
+
+.chat-bubble.is-mine .chat-bubble-body {
+  background: #14B8A6;
+  color: #FFFFFF;
+  border-left: 0;
+  border-right: 4rpx solid rgba(255,255,255,.4);
+}
+
+.chat-bubble.is-my-camp .chat-bubble-body {
   background: #ECFDF5;
-  border-radius: 20rpx;
-  padding: 28rpx;
-  display: flex; flex-direction: column; align-items: center;
-  text-align: center;
+}
+
+.chat-bubble.is-opponent .chat-bubble-body {
+  background: #FFF1F2;
+}
+
+.chat-user-name {
+  font-size: 22rpx; font-weight: 700; color: #1F2937;
+}
+.chat-bubble.is-mine .chat-user-name { color: #FFFFFF; }
+
+.chat-text {
+  display: block;
+  font-size: 26rpx; color: #1F2937;
+  line-height: 1.45;
+  word-break: break-word;
+}
+.chat-bubble.is-mine .chat-text { color: #FFFFFF; }
+
+/* Reaction bar */
+.chat-reactions {
+  display: flex; gap: 10rpx;
+  padding: 12rpx 0;
+  overflow-x: auto;
+}
+.reaction-btn {
+  flex-shrink: 0;
+  width: 76rpx; height: 76rpx;
+  border-radius: 50%;
+  background: #FFFFFF;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 36rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0,0,0,.04);
+  transition: transform .12s;
+}
+.reaction-btn:active {
+  transform: scale(.88);
+  background: #ECFDF5;
+}
+
+/* 输入栏 */
+.chat-input-row {
+  display: flex; gap: 12rpx; align-items: center;
+  background: #FFFFFF;
+  border-radius: 28rpx;
+  padding: 8rpx 8rpx 8rpx 24rpx;
+  box-shadow: 0 2rpx 10rpx rgba(15, 23, 42, .05);
+}
+.chat-input {
+  flex: 1;
+  min-height: 56rpx;
+  font-size: 26rpx;
+  color: #1F2937;
+  background: transparent;
+}
+.chat-input-locked {
+  padding: 14rpx 16rpx;
+}
+.chat-send-btn {
+  flex-shrink: 0;
+  min-width: 100rpx;
+  height: 56rpx;
+  border-radius: 28rpx;
+  padding: 0 22rpx;
+  background: #E5E7EB;
+  color: #9CA3AF;
+  font-size: 24rpx;
+  font-weight: 700;
+  border: 0;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.chat-send-btn.is-ready {
+  background: #14B8A6;
+  color: #FFFFFF;
+}
+.chat-send-btn[disabled] {
+  opacity: 1; /* 我们自定 disabled 样式不要默认半透明 */
 }

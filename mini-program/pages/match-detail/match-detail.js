@@ -1,9 +1,18 @@
-import { getMatch, getTeam, KOLS, DISCUSSIONS_BY_MATCH, timeAgo, timeToKickoff, formatTime } from '../../utils/mock-data';
+import { getMatch, getTeam, KOLS, DISCUSSIONS_BY_MATCH, CHAT_MOCK_POOL, timeAgo, timeToKickoff, formatTime } from '../../utils/mock-data';
 import { shareToIM } from '../../utils/luffa';
 import { submitPrediction } from '../../utils/api';
 import { getDict, getLang } from '../../utils/i18n';
 
 const app = getApp();
+
+// F-P0-1 实时聊天配置
+const REACTIONS = ['👍', '🔥', '😱', '⚽', '❤️', '😭'];
+const MOCK_PUSH_INTERVAL_MIN = 8000;   // 真实 WS 推送间隔下限 (ms)
+const MOCK_PUSH_INTERVAL_MAX = 14000;  // 上限
+const RATE_LIMIT_WINDOW_MS = 10000;    // 防刷屏窗口
+const RATE_LIMIT_MAX = 3;              // 窗口内最多发条数
+let _msgIdSeq = 0;
+function nextMsgId() { return 'm_' + Date.now() + '_' + (++_msgIdSeq); }
 
 // F-P0-2 confetti 颜色池(中性 + 球队色会动态加入)
 const CONFETTI_COLORS_BASE = ['#FFD54A', '#14B8A6', '#FF6B7D', '#5EEAD4', '#FFFFFF', '#F0AB22'];
@@ -44,13 +53,26 @@ Page({
     goalScorer: '',
     confetti: [],
     _goalTimer: null,
+    // F-P0-1 chat state
+    chatMessages: [],
+    chatDraft: '',
+    lastMessageId: '',
+    watching: 0,
+    reactions: REACTIONS,
+    hasCamp: false,
+    myFlag: '',
+    myCampCode: '',
+    _chatTimer: null,
+    _sendTimestamps: [],  // 用于速率限制窗口
   },
 
   onLoad(opts) {
     this.matchId = opts.id || 'm003';
     this.refresh();
+    this.startChatMock();
   },
   onShow() { this.refresh(); },
+  onUnload() { this.stopChatMock(); if (this.data._goalTimer) clearTimeout(this.data._goalTimer); },
 
   refresh() {
     const lang = getLang();
@@ -80,6 +102,22 @@ Page({
       ago: timeAgo(d.ts_min)
     }));
 
+    // === F-P0-1 chat 初始化 ===
+    const app = getApp();
+    const myCamp = app.globalData.myTeam;
+    const myCampData = myCamp ? getTeam(myCamp) : null;
+
+    // 首次进入:种 4 条 mock 历史消息(用本场参赛队的球迷优先)
+    let chatMessages = this.data.chatMessages;
+    if (chatMessages.length === 0) {
+      const matchTeams = [match.home, match.away];
+      const seedPool = CHAT_MOCK_POOL.filter(m => matchTeams.includes(m.camp));
+      const seed = (seedPool.length >= 4 ? seedPool : CHAT_MOCK_POOL).slice(0, 4);
+      chatMessages = seed.map((m, idx) =>
+        this._buildIncomingMsg(m, myCamp, match, /*minutesAgo*/ 4 - idx)
+      );
+    }
+
     this.setData({
       i18n,
       matchId: this.matchId,
@@ -92,6 +130,13 @@ Page({
       pickLabel,
       kols,
       discussions,
+      hasCamp: !!myCamp,
+      myCampCode: myCamp || '',
+      myFlag: myCampData ? myCampData.flag : '',
+      chatMessages,
+      // mock 在线观众数 + 随机波动
+      watching: 8000 + Math.floor(Math.random() * 6000),
+      lastMessageId: chatMessages.length ? chatMessages[chatMessages.length - 1].scrollAnchor : '',
     });
   },
 
@@ -205,6 +250,161 @@ Page({
     } catch (e) {
       wx.showToast({ title: '✗', icon: 'none' });
     }
+  },
+
+  // ============ F-P0-1 聊天室 ============
+
+  // 构建一条进站消息(应用阵营染色 + 时间戳 + scroll anchor)
+  _buildIncomingMsg(raw, myCamp, match, minutesAgo) {
+    const isMyCamp = myCamp && raw.camp === myCamp;
+    const isOpponent = myCamp && (raw.camp === match.home || raw.camp === match.away) && raw.camp !== myCamp;
+    const teamData = getTeam(raw.camp);
+    const id = nextMsgId();
+    return {
+      id,
+      scrollAnchor: 'msg-' + id,
+      user: raw.user,
+      flag: raw.flag,
+      camp: raw.camp,
+      campCode: raw.camp,
+      campColor: teamData ? teamData.c1 : 'transparent',
+      kol: raw.kol || null,
+      text: raw.text,
+      isMine: false,
+      isMyCamp: !!isMyCamp,
+      isOpponent: !!isOpponent,
+      timeTxt: minutesAgo === 0 ? 'now' : minutesAgo + 'm',
+    };
+  },
+
+  startChatMock() {
+    if (this.data._chatTimer) return;
+    const tick = () => {
+      if (this.isDestroyed) return;
+      this._injectMockMessage();
+      const next = MOCK_PUSH_INTERVAL_MIN + Math.random() * (MOCK_PUSH_INTERVAL_MAX - MOCK_PUSH_INTERVAL_MIN);
+      this.data._chatTimer = setTimeout(tick, next);
+    };
+    // 首次延迟 5s,给用户看到初始消息后再开始注入
+    this.data._chatTimer = setTimeout(tick, 5000);
+  },
+
+  stopChatMock() {
+    this.isDestroyed = true;
+    if (this.data._chatTimer) {
+      clearTimeout(this.data._chatTimer);
+      this.data._chatTimer = null;
+    }
+  },
+
+  _injectMockMessage() {
+    const app = getApp();
+    const myCamp = app.globalData.myTeam;
+    const match = this.data.match;
+    if (!match) return;
+    const matchTeams = [match.home, match.away];
+    // 70% 概率拉本场参赛队球迷的发言(让聊天更相关)
+    const pool = Math.random() < 0.7
+      ? CHAT_MOCK_POOL.filter(m => matchTeams.includes(m.camp))
+      : CHAT_MOCK_POOL;
+    const picked = pool[Math.floor(Math.random() * pool.length)];
+    const newMsg = this._buildIncomingMsg(picked, myCamp, match, 0);
+    const messages = [...this.data.chatMessages, newMsg].slice(-50); // 保留最近 50 条
+    this.setData({
+      chatMessages: messages,
+      lastMessageId: newMsg.scrollAnchor,
+      watching: this.data.watching + Math.floor(Math.random() * 3) - 1, // 微波动
+    });
+  },
+
+  onDraftInput(e) {
+    this.setData({ chatDraft: e.detail.value });
+  },
+
+  sendMessage() {
+    const text = (this.data.chatDraft || '').trim();
+    if (!text) return;
+    if (!this.data.hasCamp) {
+      wx.showToast({ title: this.data.i18n.chat_camp_required, icon: 'none' });
+      return;
+    }
+    // 速率限制:窗口内 ≤ 3 条
+    const now = Date.now();
+    const recent = (this.data._sendTimestamps || []).filter(t => now - t < RATE_LIMIT_WINDOW_MS);
+    if (recent.length >= RATE_LIMIT_MAX) {
+      wx.showToast({ title: this.data.i18n.chat_rate_limited, icon: 'none' });
+      return;
+    }
+    const app = getApp();
+    const myCampData = getTeam(this.data.myCampCode);
+    const id = nextMsgId();
+    const myMsg = {
+      id,
+      scrollAnchor: 'msg-' + id,
+      user: (app.globalData.wallet && app.globalData.wallet.nickname) || 'You',
+      flag: myCampData ? myCampData.flag : '⚽',
+      camp: this.data.myCampCode,
+      campCode: this.data.myCampCode,
+      campColor: myCampData ? myCampData.c1 : 'transparent',
+      kol: null,
+      text,
+      isMine: true,
+      isMyCamp: true,
+      isOpponent: false,
+      timeTxt: 'now',
+    };
+    recent.push(now);
+    this.setData({
+      chatMessages: [...this.data.chatMessages, myMsg].slice(-50),
+      chatDraft: '',
+      lastMessageId: myMsg.scrollAnchor,
+      _sendTimestamps: recent,
+    });
+    wx.vibrateShort && wx.vibrateShort({ type: 'light' });
+  },
+
+  sendReaction(e) {
+    const r = e.currentTarget.dataset.r;
+    if (!this.data.hasCamp) {
+      wx.showToast({ title: this.data.i18n.chat_camp_required, icon: 'none' });
+      return;
+    }
+    // 速率限制同 sendMessage
+    const now = Date.now();
+    const recent = (this.data._sendTimestamps || []).filter(t => now - t < RATE_LIMIT_WINDOW_MS);
+    if (recent.length >= RATE_LIMIT_MAX) {
+      wx.showToast({ title: this.data.i18n.chat_rate_limited, icon: 'none' });
+      return;
+    }
+    const app = getApp();
+    const myCampData = getTeam(this.data.myCampCode);
+    const id = nextMsgId();
+    const myMsg = {
+      id,
+      scrollAnchor: 'msg-' + id,
+      user: (app.globalData.wallet && app.globalData.wallet.nickname) || 'You',
+      flag: myCampData ? myCampData.flag : '⚽',
+      camp: this.data.myCampCode,
+      campCode: this.data.myCampCode,
+      campColor: myCampData ? myCampData.c1 : 'transparent',
+      kol: null,
+      text: r,
+      isMine: true,
+      isMyCamp: true,
+      isOpponent: false,
+      timeTxt: 'now',
+    };
+    recent.push(now);
+    this.setData({
+      chatMessages: [...this.data.chatMessages, myMsg].slice(-50),
+      lastMessageId: myMsg.scrollAnchor,
+      _sendTimestamps: recent,
+    });
+    wx.vibrateShort && wx.vibrateShort({ type: 'light' });
+  },
+
+  onPickTeam() {
+    wx.switchTab({ url: '/pages/teams/teams' });
   },
 
   // DEMO 触发器:随机用主队或客队进球(若用户已选阵营则优先用本方)

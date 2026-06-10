@@ -112,31 +112,68 @@
     </view>
   </view>
 
-  <!-- ===== 实时讨论 · 弹幕 ===== -->
-  <view class="section">
+  <!-- ============================================
+       F-P0-1 实时聊天室 + 阵营色识别
+       前端 mock 真实场景:Ken 后端 WebSocket 推送
+       Mock 模拟:每 8-12s 从 CHAT_MOCK_POOL 注入一条
+       ============================================ -->
+  <view class="section chat-section">
     <view class="section-head">
       <view>
         <text class="section-title">{{i18n.md_chat_title}}</text>
-        <view class="section-sub">{{match.discussions}} {{i18n.md_chat_sub_n}}</view>
+        <view class="section-sub">
+          <text class="live-dot"></text>
+          {{watching}} {{i18n.chat_watching}}
+        </view>
       </view>
       <text class="section-link" bindtap="onShare">{{i18n.cta_share}}</text>
     </view>
 
-    <view wx:for="{{discussions}}" wx:key="ts_min" class="card discuss-row">
-      <view class="avatar avatar-sm"><text>{{item.flag}}</text></view>
-      <view class="col" style="flex: 1; gap: 6rpx;">
-        <view class="row row-gap-sm">
-          <text class="tx-bold" style="font-size: 26rpx;">{{item.user}}</text>
-          <text wx:if="{{item.kol}}" class="pill pill-teal" style="font-size: 18rpx; height: 32rpx; padding: 0 12rpx;">KOL</text>
-          <text class="tx-small">· {{item.ago}}</text>
+    <scroll-view class="chat-scroll" scroll-y scroll-into-view="{{lastMessageId}}" scroll-with-animation>
+      <view wx:if="{{!chatMessages.length}}" class="chat-empty">
+        <text class="tx-muted">{{i18n.chat_no_messages}}</text>
+      </view>
+
+      <view wx:for="{{chatMessages}}" wx:key="id" id="{{item.scrollAnchor}}"
+            class="chat-bubble {{item.isMine ? 'is-mine' : ''}} {{item.isMyCamp ? 'is-my-camp' : ''}} {{item.isOpponent ? 'is-opponent' : ''}}">
+        <view wx:if="{{!item.isMine}}" class="avatar avatar-sm"><text>{{item.flag}}</text></view>
+        <view class="chat-bubble-body" style="border-left-color: {{item.campColor || 'transparent'}};">
+          <view wx:if="{{!item.isMine}}" class="row row-gap-sm" style="margin-bottom: 4rpx;">
+            <text class="chat-user-name">{{item.user}}</text>
+            <text wx:if="{{item.kol}}" class="pill pill-teal" style="font-size: 18rpx; height: 28rpx; padding: 0 10rpx;">{{i18n.chat_kol_tag}}</text>
+            <text wx:if="{{item.campCode && !item.isMine}}" class="tx-small">· {{item.campCode}}</text>
+            <text class="tx-small">· {{item.timeTxt}}</text>
+          </view>
+          <text class="chat-text">{{item.text}}</text>
         </view>
-        <text class="discuss-text">{{item.text}}</text>
+        <view wx:if="{{item.isMine}}" class="avatar avatar-sm"><text>{{myFlag || '⚽'}}</text></view>
+      </view>
+    </scroll-view>
+
+    <!-- Reaction bar(快速反应)-->
+    <view class="chat-reactions">
+      <view wx:for="{{reactions}}" wx:key="*this" wx:for-item="r" class="reaction-btn" bindtap="sendReaction" data-r="{{r}}">
+        <text>{{r}}</text>
       </view>
     </view>
 
-    <view class="empty-discuss" bindtap="onShare">
-      <text class="tx-teal tx-bold">{{i18n.md_chat_join_cta}}</text>
-      <text class="tx-small" style="margin-top: 8rpx;">{{i18n.md_chat_join_sub}}</text>
+    <!-- 输入栏 -->
+    <view class="chat-input-row">
+      <view wx:if="{{!hasCamp}}" class="chat-input chat-input-locked" bindtap="onPickTeam">
+        <text class="tx-muted">{{i18n.chat_camp_required}} →</text>
+      </view>
+      <block wx:else>
+        <input class="chat-input"
+               value="{{chatDraft}}"
+               placeholder="{{i18n.chat_placeholder}}"
+               bindinput="onDraftInput"
+               confirm-type="send"
+               bindconfirm="sendMessage"
+               maxlength="120" />
+        <button class="chat-send-btn {{chatDraft ? 'is-ready' : ''}}" bindtap="sendMessage" disabled="{{!chatDraft}}">
+          {{i18n.chat_send}}
+        </button>
+      </block>
     </view>
   </view>
 
