@@ -1,0 +1,20 @@
+{
+  "name": "luffa-predict-server",
+  "version": "0.1.0",
+  "description": "Luffa Predict — Plan B 自研后端 MVP · 多源对账 + 自动结算 + EDS 发放",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js",
+    "settle": "node settle-cron.js",
+    "seed": "node seed.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "cors": "^2.8.5"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

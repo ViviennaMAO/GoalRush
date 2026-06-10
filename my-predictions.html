@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>我的预测 · GoalRush</title>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<div id="header-slot"></div>
+
+<section class="page-header">
+  <div class="container">
+    <h1>我的预测</h1>
+    <p>本地保存,不上链 · 下载 Luffa 同步战绩 + 真领 EDS</p>
+  </div>
+</section>
+
+<section class="page-section">
+  <div class="container">
+
+    <!-- 个人统计卡 -->
+    <div class="kol-hero" style="margin-bottom: 32px;">
+      <div style="display: grid; grid-template-columns: auto 1fr; gap: 20px; align-items: center;">
+        <div class="kol-avatar" style="width:72px;height:72px;font-size:32px;">🎯</div>
+        <div style="flex:1; min-width: 0;">
+          <h2 style="font-family: Inter; font-size: 22px; font-weight: 800;" id="me-handle">@Guest</h2>
+          <div style="font-size: 12px; color: var(--ink-3); margin-top: 4px;">本地访客 · <span id="me-since"></span></div>
+        </div>
+      </div>
+      <div class="kol-stats" style="margin-top: 24px;">
+        <div class="kol-stat">
+          <div class="lbl">已提交</div>
+          <div class="val" id="me-total">0</div>
+        </div>
+        <div class="kol-stat">
+          <div class="lbl">待结算</div>
+          <div class="val accent" id="me-pending">0</div>
+        </div>
+        <div class="kol-stat">
+          <div class="lbl">EDS 余额</div>
+          <div class="val gold" id="me-eds">0</div>
+        </div>
+        <div class="kol-stat">
+          <div class="lbl">命中率</div>
+          <div class="val" id="me-rate">—</div>
+        </div>
+      </div>
+      <div class="kol-actions">
+        <button class="btn-primary" onclick="triggerLuffaDownload('my_predictions')">📲 下载 Luffa 同步战绩</button>
+        <button class="btn-ghost" onclick="resetMe()">清空本地数据</button>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab active" data-f="all" onclick="filterPreds('all', this)">全部</button>
+      <button class="tab" data-f="pending" onclick="filterPreds('pending', this)">待结算</button>
+      <button class="tab" data-f="locked" onclick="filterPreds('locked', this)">即将锁定</button>
+    </div>
+
+    <div id="pred-list"></div>
+
+    <!-- 空状态 -->
+    <div id="empty-state" style="display:none; text-align:center; padding: 64px 20px;">
+      <div style="font-size: 56px; margin-bottom: 16px;">⚽</div>
+      <h3 style="font-family: Inter; font-size: 22px; font-weight: 800; margin-bottom: 8px;">你还没提交预测</h3>
+      <p style="color: var(--ink-2); margin-bottom: 24px;">去比赛列表挑一场,3 秒提交完。</p>
+      <a href="matches.html" class="btn-primary">看今日比赛</a>
+    </div>
+
+  </div>
+</section>
+
+<div id="footer-slot"></div>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/i18n.js"></script>
+<script src="assets/js/app.js"></script>
+<script>
+bootstrap('mypred');
+
+function getMyPreds() {
+  return Object.keys(STATE.predictions).map(matchId => {
+    const m = getMatch(matchId);
+    if (!m) return null;
+    return { match: m, pick: STATE.predictions[matchId] };
+  }).filter(Boolean);
+}
+
+function renderHeader() {
+  const me = getMyStats();
+  document.getElementById('me-handle').textContent = me.handle;
+  document.getElementById('me-total').textContent = me.total_predictions;
+  document.getElementById('me-pending').textContent = me.total_predictions;
+  document.getElementById('me-eds').textContent = me.eds.toLocaleString();
+  document.getElementById('me-rate').textContent = me.total_predictions > 0 ? me.hit_rate + '%' : '—';
+  if (STATE.joined_at) {
+    const d = new Date(STATE.joined_at);
+    document.getElementById('me-since').textContent = '加入于 ' + d.toLocaleDateString('zh-CN', { month: 'numeric', day: 'numeric' });
+  }
+}
+
+function renderList(filter = 'all') {
+  const all = getMyPreds();
+  const list = document.getElementById('pred-list');
+  const empty = document.getElementById('empty-state');
+
+  if (all.length === 0) {
+    list.style.display = 'none';
+    empty.style.display = 'block';
+    return;
+  }
+  list.style.display = '';
+  empty.style.display = 'none';
+
+  let filtered = all;
+  if (filter === 'locked') {
+    // 距开赛 < 1h
+    filtered = all.filter(p => {
+      const diff = new Date(p.match.kickoff) - new Date();
+      return diff > 0 && diff < 3600000;
+    });
+  }
+  if (filter === 'pending') filtered = all; // mock 全部 pending
+
+  if (filtered.length === 0) {
+    list.innerHTML = `<p style="color: var(--ink-3); text-align: center; padding: 32px;">这个 tab 暂时没有比赛 · <a href="matches.html" class="text-accent">看全部比赛 →</a></p>`;
+    return;
+  }
+
+  list.innerHTML = `
+    <div class="matches-grid">
+      ${filtered.map(({ match: m, pick }) => {
+        const home = getTeam(m.home), away = getTeam(m.away);
+        const pickLabel = pick === 'home' ? home.code + ' 赢' : pick === 'draw' ? '平局' : away.code + ' 赢';
+        const pickFlag = pick === 'home' ? home.flag : pick === 'draw' ? '🤝' : away.flag;
+        return `
+          <a href="match.html?id=${m.id}" class="match-card">
+            <div class="match-meta">
+              <span>${m.competition}</span>
+              <span class="match-countdown">⏱ ${timeUntilKickoff(m.kickoff)}</span>
+            </div>
+            <div class="match-teams">
+              <div class="team"><div class="team-flag">${home.flag}</div><div class="team-code">${home.code}</div></div>
+              <div class="match-vs">VS</div>
+              <div class="team"><div class="team-flag">${away.flag}</div><div class="team-code">${away.code}</div></div>
+            </div>
+            <div style="margin-top: 12px; padding: 12px; background: rgba(0,255,136,.08); border: 1px solid rgba(0,255,136,.2); border-radius: 10px; text-align: center;">
+              <div style="font-size: 11px; color: var(--ink-3); text-transform: uppercase; letter-spacing: .06em;">你押</div>
+              <div style="font-family:'Bebas Neue'; font-size: 22px; color: var(--accent); margin-top: 4px;">
+                ${pickFlag} ${pickLabel}
+              </div>
+            </div>
+            <div style="margin-top: 8px; text-align: center; font-size: 11px; color: var(--ink-3);">
+              比赛结束 5 分钟内结算 · ${formatKickoff(m.kickoff)}
+            </div>
+          </a>
+        `;
+      }).join('')}
+    </div>
+  `;
+}
+
+function filterPreds(f, btn) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  trackEvent('mypred_filter', { f });
+  renderList(f);
+}
+
+function resetMe() {
+  if (confirm('清空本地预测数据?(不可恢复)')) {
+    localStorage.removeItem(STORAGE_KEY);
+    location.reload();
+  }
+}
+
+renderHeader();
+renderList();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>OG Image — GoalRush</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@600;800&family=Bebas+Neue&display=swap');
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #222; font-family: Inter, sans-serif; }
+.og {
+  width: 1200px; height: 630px;
+  background: linear-gradient(180deg, #11161f, #060810);
+  position: relative; overflow: hidden;
+  padding: 56px 64px;
+  display: flex; flex-direction: column; justify-content: space-between;
+  color: #f0f6fc;
+}
+.og::before {
+  content: '';
+  position: absolute; top: -180px; left: -180px;
+  width: 700px; height: 700px;
+  background: radial-gradient(circle, rgba(94,234,212,.28), transparent 60%);
+}
+.og::after {
+  content: '';
+  position: absolute; bottom: -200px; right: -200px;
+  width: 700px; height: 700px;
+  background: radial-gradient(circle, rgba(255,213,74,.22), transparent 60%);
+}
+/* 球场中圈 */
+.pitch {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 60%, transparent 159px, rgba(255,255,255,.06) 160px, rgba(255,255,255,.06) 162px, transparent 163px),
+    linear-gradient(90deg, transparent calc(50% - 1px), rgba(255,255,255,.04) 50%, transparent calc(50% + 1px));
+  pointer-events: none;
+}
+.head { display: flex; align-items: center; gap: 16px; z-index: 2; position: relative; }
+.mark {
+  width: 64px; height: 64px;
+  background: radial-gradient(circle at 30% 30%, #1d2538, #0a0e14);
+  border: 3px solid #5EEAD4;
+  border-radius: 50%; display: grid; place-items: center;
+  font-size: 28px;
+  box-shadow: 0 0 0 4px rgba(94,234,212,.15);
+}
+.brand { font-size: 36px; font-weight: 800; letter-spacing: -.02em; }
+.brand em { color: #5EEAD4; font-style: normal; }
+.pill {
+  margin-left: auto;
+  background: rgba(94,234,212,.12); border: 1px solid rgba(94,234,212,.4);
+  padding: 8px 18px; border-radius: 999px;
+  color: #5EEAD4; font-size: 14px; font-weight: 700; letter-spacing: .04em;
+}
+.title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 140px; line-height: .95;
+  z-index: 2; position: relative;
+  letter-spacing: .01em;
+}
+.title .hl { color: #5EEAD4; }
+.title .gold { background: linear-gradient(135deg, #FFD54A, #F0AB22); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.foot {
+  display: flex; justify-content: space-between; align-items: end;
+  z-index: 2; position: relative;
+}
+.foot-left strong {
+  display: block; font-size: 20px; font-weight: 800; margin-bottom: 4px;
+}
+.foot-left small { color: #95a5b8; font-size: 14px; }
+.flags { font-size: 64px; letter-spacing: 4px; }
+</style>
+</head>
+<body>
+<div class="og" id="og">
+  <div class="pitch"></div>
+  <div class="head">
+    <div class="mark">⚽</div>
+    <div class="brand">Goal<em>Rush</em></div>
+    <div class="pill">FIFA WC 2026</div>
+  </div>
+  <div class="title">
+    Predict <span class="hl">for free.</span><br/>
+    Earn <span class="gold">for real.</span>
+  </div>
+  <div class="foot">
+    <div class="foot-left">
+      <strong>Free World Cup predictions · Win real EDS</strong>
+      <small>No stake · No KYC · No wallet · Play in 30 seconds</small>
+    </div>
+    <div class="flags">🇪🇸 🇧🇷 🇦🇷 🇲🇽</div>
+  </div>
+</div>
+<div style="position:fixed;bottom:8px;right:8px;background:#000;color:#fff;padding:8px 12px;font:12px monospace;border-radius:6px;z-index:9;">
+  📸 Render at 1200×630 · 用 Chrome DevTools 设备模式 / Puppeteer / @vercel/og 截图为 og-image.png
+</div>
+</body>
+</html>

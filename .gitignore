@@ -1,0 +1,35 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Persistence (regenerate via `npm run seed`)
+server/db.json
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editors
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+
+# Env
+.env
+.env.local
+
+# Build / dist
+dist/
+build/
+.next/
+.vercel/
+.netlify/
+
+# Claude session
+.claude/

@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Disallow internal content tools from indexing
+Disallow: /poster.html
+Disallow: /og-image.html
+
+Sitemap: https://luffa.predict/sitemap.xml

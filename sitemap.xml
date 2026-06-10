@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://luffa.predict/</loc><priority>1.0</priority><changefreq>hourly</changefreq></url>
+  <url><loc>https://luffa.predict/matches.html</loc><priority>0.9</priority><changefreq>hourly</changefreq></url>
+  <url><loc>https://luffa.predict/leaderboard.html</loc><priority>0.8</priority><changefreq>hourly</changefreq></url>
+  <url><loc>https://luffa.predict/groups.html</loc><priority>0.7</priority><changefreq>daily</changefreq></url>
+  <url><loc>https://luffa.predict/my-predictions.html</loc><priority>0.6</priority><changefreq>daily</changefreq></url>
+  <url><loc>https://luffa.predict/faq.html</loc><priority>0.5</priority><changefreq>weekly</changefreq></url>
+  <url><loc>https://luffa.predict/kol.html?id=lucas_br</loc><priority>0.8</priority><changefreq>daily</changefreq></url>
+  <url><loc>https://luffa.predict/kol.html?id=mariana_ar</loc><priority>0.8</priority><changefreq>daily</changefreq></url>
+  <url><loc>https://luffa.predict/kol.html?id=diego_es</loc><priority>0.8</priority><changefreq>daily</changefreq></url>
+  <url><loc>https://luffa.predict/kol.html?id=carlos_mx</loc><priority>0.8</priority><changefreq>daily</changefreq></url>
+</urlset>

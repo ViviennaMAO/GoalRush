@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>开群挑战 · GoalRush</title>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<div id="header-slot"></div>
+
+<section class="page-header">
+  <div class="container">
+    <h1>开群挑战</h1>
+    <p>拉群和兄弟一起预测 · 邀 5 友 = 500 EDS + 群主皮肤 · K-factor 主引擎</p>
+  </div>
+</section>
+
+<section class="page-section">
+  <div class="container">
+
+    <!-- 邀请引擎 -->
+    <div class="kol-hero">
+      <div style="display: grid; grid-template-columns: auto 1fr auto; gap: 24px; align-items: center; flex-wrap: wrap;">
+        <div style="font-size: 56px;">👥</div>
+        <div>
+          <h2 style="font-family: Inter; font-size: 28px; font-weight: 800; margin-bottom: 6px;">建你自己的群组</h2>
+          <p style="color: var(--ink-2); font-size: 14px;">下载 Luffa,在 IM 里开一个群组挑战。前 5 位接受邀请的群友 = <strong class="text-gold">500 EDS + 群主头像挂件</strong>。本周 Top 3 群组还能拿 5000 / 2500 / 1000 EDS。</p>
+        </div>
+        <button class="btn-primary" onclick="triggerLuffaDownload('groups_top')">📲 下载 Luffa 开群</button>
+      </div>
+    </div>
+
+    <!-- 周机制说明 -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-top: 32px;">
+      <div class="match-card text-center">
+        <div style="font-size: 28px;">🎯</div>
+        <h3 style="font-family: Inter; font-size: 16px; font-weight: 800; margin: 8px 0 6px;">建群门槛</h3>
+        <p style="color: var(--ink-2); font-size: 13px; margin: 0;">≥ 10 人,可参与群组周榜</p>
+      </div>
+      <div class="match-card text-center">
+        <div style="font-size: 28px;">💎</div>
+        <h3 style="font-family: Inter; font-size: 16px; font-weight: 800; margin: 8px 0 6px;">邀请奖励</h3>
+        <p style="color: var(--ink-2); font-size: 13px; margin: 0;">5 友进群 = 500 EDS,每周上限 5000 EDS</p>
+      </div>
+      <div class="match-card text-center">
+        <div style="font-size: 28px;">🏆</div>
+        <h3 style="font-family: Inter; font-size: 16px; font-weight: 800; margin: 8px 0 6px;">群主皮肤</h3>
+        <p style="color: var(--ink-2); font-size: 13px; margin: 0;">解锁世界杯专属头像挂件</p>
+      </div>
+      <div class="match-card text-center">
+        <div style="font-size: 28px;">⚡</div>
+        <h3 style="font-family: Inter; font-size: 16px; font-weight: 800; margin: 8px 0 6px;">周榜大奖</h3>
+        <p style="color: var(--ink-2); font-size: 13px; margin: 0;">Top 3 群组:5000 / 2500 / 1000 EDS</p>
+      </div>
+    </div>
+
+    <!-- 顶尖群组 -->
+    <div class="sec-head" style="margin-top: 48px;">
+      <div>
+        <h2 class="sec-title">本周顶尖群组 <span class="text-gold">🏆</span></h2>
+        <p class="sec-sub">滚动 7 天积分榜 · 周日 24:00 UTC 结算</p>
+      </div>
+    </div>
+    <div class="group-grid" id="group-list"></div>
+
+    <!-- 反作弊提示 -->
+    <div class="info-strip" style="margin-top: 32px;">
+      <div class="info-strip-icon">🛡</div>
+      <div class="info-strip-text">
+        <strong>反作弊机制</strong>
+        <small>
+          被邀请的群友必须使用<strong>独立设备 + 独立手机号</strong>。同 IP / 同设备指纹注册不计入奖励。
+          单账号邀请上限 5000 EDS / 周。群组成员 24h 内活跃预测率 &lt; 30% → 群组奖励降权。
+        </small>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div id="footer-slot"></div>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/i18n.js"></script>
+<script src="assets/js/app.js"></script>
+<script>
+bootstrap('groups');
+
+function renderGroups() {
+  const grid = document.getElementById('group-list');
+  grid.innerHTML = GROUPS.map((g, i) => {
+    const rankEmoji = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : '#' + (i+1);
+    return `
+      <div class="group-card">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 8px;">
+          <div class="group-name">${g.name}</div>
+          <div style="font-family:'Bebas Neue'; font-size: 22px; color: var(--gold);">${rankEmoji}</div>
+        </div>
+        <div class="group-meta">
+          <span>${g.members} 位成员</span>
+          <span>本周</span>
+        </div>
+        <div class="group-eds">${g.total_eds.toLocaleString()} EDS</div>
+        <div style="font-size: 11px; color: var(--ink-3); margin-top: 8px;">👑 群主:${g.top_handle}</div>
+        <button class="btn-ghost" style="width:100%; margin-top: 12px;" onclick="triggerLuffaDownload('group_card_${g.id}')">在 Luffa 加入群组</button>
+      </div>
+    `;
+  }).join('') + `
+    <div class="group-card" style="border-style:dashed;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;">
+      <div style="font-size:48px;margin-bottom:8px;">➕</div>
+      <div style="font-weight:700;margin-bottom:4px;">开你自己的群</div>
+      <div style="font-size:12px;color:var(--ink-3);margin-bottom:16px;">邀 5 友 = 500 EDS + 群主皮肤</div>
+      <button class="btn-primary" onclick="triggerLuffaDownload('create_group')">下载 Luffa 开群</button>
+    </div>
+  `;
+}
+
+renderGroups();
+</script>
+
+</body>
+</html>
