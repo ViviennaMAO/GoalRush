@@ -53,3 +53,25 @@ export async function shareToIM(payload) {
 export async function navigateToMini(appid, path = '') {
   return await luffa('navigateToMiniProgram', { appId: appid, path });
 }
+
+// 跳外部 URL(KOL 真实 X / YouTube / Instagram 主页)
+// 真实场景:用 luffa('openUrl') 走 Luffa 内置 webview
+// 降级:剪贴板复制 + toast(让用户手动打开)
+export async function openExternalUrl(url) {
+  if (!url) return;
+  if (isLuffaAvailable()) {
+    try {
+      return await luffa('openUrl', { url });
+    } catch (e) {
+      // 用户取消或 webview 限制 · 降级到剪贴板
+    }
+  }
+  try {
+    await new Promise((resolve, reject) => {
+      wx.setClipboardData({ data: url, success: resolve, fail: reject });
+    });
+    wx.showToast({ title: 'URL 已复制 · 浏览器打开', icon: 'none', duration: 2000 });
+  } catch (e) {
+    console.log('[openExternalUrl mock]', url);
+  }
+}
