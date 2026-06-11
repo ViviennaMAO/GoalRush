@@ -204,17 +204,21 @@ page {
 .stat .lbl { font-size: 20rpx; color: #9CA3AF; text-transform: uppercase; letter-spacing: 1rpx; }
 .stat .val.tx-teal { color: #14B8A6; }
 
-/* === Legal footer === */
+/* === Legal footer · 紧凑版 ·  · 压在最底部 ·  · 不抢视线 === */
 .legal {
-  margin: 36rpx 0 16rpx;
-  padding: 20rpx 24rpx;
+  margin: 24rpx 0 0;
+  padding: 12rpx 16rpx 8rpx;
   background: transparent;
-  font-size: 20rpx;
-  color: #9CA3AF;
-  line-height: 1.6;
+  font-size: 16rpx;
+  color: #B5BBC4;
+  line-height: 1.35;
   text-align: center;
+  letter-spacing: .2rpx;
 }
-.legal text { display: block; }
+.legal text {
+  display: block;
+  word-break: break-word;
+}
 
 /* === Football pitch line drawing(细节背景)=== */
 .pitch-mini {
