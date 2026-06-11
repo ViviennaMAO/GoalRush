@@ -28,7 +28,7 @@
   </view>
 
   <view class="card list-card" style="padding: 0;">
-    <view wx:for="{{list}}" wx:key="rank" class="list-row">
+    <view wx:for="{{list}}" wx:key="rank" class="list-row" bindtap="goKol" data-id="{{item.kol}}">
       <text class="list-rank">#{{item.rank}}</text>
       <view class="avatar avatar-sm"><text>{{item.flag}}</text></view>
       <view class="col" style="flex: 1; gap: 4rpx; min-width: 0;">

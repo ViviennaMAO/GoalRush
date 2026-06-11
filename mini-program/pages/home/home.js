@@ -103,5 +103,10 @@ Page({
   goTeam(e) {
     const code = e.currentTarget.dataset.code;
     wx.navigateTo({ url: '/pages/team-detail/team-detail?code=' + code });
+  },
+  goKol(e) {
+    const id = e.currentTarget.dataset.id;
+    if (!id) return;
+    wx.navigateTo({ url: '/pages/kol-detail/kol-detail?id=' + id });
   }
 });

@@ -1,0 +1,158 @@
+<view class="page">
+
+  <!-- ============================================
+       KOL Hero · 球队色渐变 + 真人 KOL 标识
+       ============================================ -->
+  <view class="kd-hero" style="background: linear-gradient(135deg, {{teamC1}} 0%, {{teamC2}} 100%);">
+    <view class="kd-hero-stripe"></view>
+
+    <view class="kd-hero-content">
+      <view class="kd-avatar-frame">
+        <view class="kd-avatar" style="color: {{textOn}};">
+          <text>{{kol.flag}}</text>
+        </view>
+        <view class="kd-tier-badge">{{kol.tier}}</view>
+      </view>
+
+      <text class="kd-name" style="color: {{textOn}};">{{kol.name}}</text>
+      <text wx:if="{{kol.real_name && kol.real_name !== kol.name}}" class="kd-real-name" style="color: {{textOn}}; opacity: .8;">{{kol.real_name}}</text>
+      <text class="kd-handle" style="color: {{textOn}};">{{kol.handle}}</text>
+
+      <view class="kd-meta-row" style="color: {{textOn}};">
+        <text class="kd-meta-pill" style="background: rgba(255,255,255,.22);">{{kol.market}}</text>
+        <text class="kd-meta-pill" style="background: rgba(255,255,255,.22);">{{kol.followers}} 粉丝</text>
+      </view>
+
+      <view class="kd-bio" style="color: {{textOn}}; opacity: .9;">{{kol.bio}}</view>
+    </view>
+  </view>
+
+  <!-- ============================================
+       战绩 stats(签约后从后端实结算)
+       ============================================ -->
+  <view class="kd-stats">
+    <view class="kd-stat">
+      <text class="kd-stat-val">{{kol.hit_rate}}%</text>
+      <text class="kd-stat-lbl">{{i18n.kd_hit_rate}}</text>
+    </view>
+    <view class="kd-stat-divider"></view>
+    <view class="kd-stat">
+      <text class="kd-stat-val">{{kol.eds_earned}}</text>
+      <text class="kd-stat-lbl">{{i18n.kd_eds_earned}}</text>
+    </view>
+    <view class="kd-stat-divider"></view>
+    <view class="kd-stat">
+      <text class="kd-stat-val">#{{kol.current_rank}}</text>
+      <text class="kd-stat-lbl">{{i18n.kd_rank}}</text>
+    </view>
+    <view class="kd-stat-divider"></view>
+    <view class="kd-stat">
+      <text class="kd-stat-val">{{kol.fans}}</text>
+      <text class="kd-stat-lbl">{{i18n.kd_followers}}</text>
+    </view>
+  </view>
+
+  <!-- ============================================
+       Action buttons
+       ============================================ -->
+  <view class="kd-actions">
+    <button wx:if="{{isFollowing}}" class="btn btn-outline btn-block" bindtap="toggleFollow">
+      ✓ {{i18n.kd_following}}
+    </button>
+    <button wx:else class="btn btn-primary btn-block" bindtap="toggleFollow">
+      + {{i18n.kd_follow}}
+    </button>
+  </view>
+
+  <!-- ============================================
+       External platforms · 真实跳转(luffa openUrl)
+       这是合法引流的核心 · 用户离开 GoalRush → KOL 主平台
+       ============================================ -->
+  <view class="section">
+    <view class="section-head">
+      <view>
+        <text class="section-title">{{i18n.kd_external_title}}</text>
+        <view class="section-sub">{{i18n.kd_external_sub}}</view>
+      </view>
+    </view>
+
+    <view wx:for="{{externalLinks}}" wx:key="key" class="card kd-link-row" bindtap="openExt" data-url="{{item.url}}">
+      <view class="kd-link-icon {{item.key}}">{{item.icon}}</view>
+      <view class="col" style="flex:1; gap: 4rpx; min-width: 0;">
+        <text class="kd-link-platform">{{item.platform}}</text>
+        <text class="kd-link-url">{{item.display}}</text>
+      </view>
+      <text class="kd-link-arrow">›</text>
+    </view>
+  </view>
+
+  <!-- ============================================
+       Recent quotes · 真实公开发文(fair use)
+       内容运营录入 URL · 后端 oEmbed 拉元数据 · 前端渲染
+       Tap → openUrl 跳原帖 / 原视频(对齐 5.策略.md §3)
+       ============================================ -->
+  <view class="section">
+    <view class="section-head">
+      <view>
+        <text class="section-title">{{i18n.kd_quotes_title}}</text>
+        <view class="section-sub">{{i18n.kd_quotes_sub}}</view>
+      </view>
+    </view>
+
+    <view wx:if="{{!quotes.length}}" class="card kd-empty">
+      <text class="tx-muted">{{i18n.kd_quotes_empty}}</text>
+    </view>
+
+    <view wx:for="{{quotes}}" wx:key="url" class="card kd-quote" bindtap="openExt" data-url="{{item.url}}">
+      <view class="kd-quote-mark">"</view>
+      <text class="kd-quote-text">{{item.text}}</text>
+      <view class="kd-quote-foot">
+        <text class="kd-quote-source">— {{item.source}}</text>
+        <text class="kd-quote-time">{{item.posted_at}}</text>
+      </view>
+      <view class="kd-quote-cta">
+        <text class="tx-teal tx-bold">{{i18n.kd_view_on}} {{item.platform_name}} ›</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- ============================================
+       Recent picks · KOL 在本届的预测列表
+       ============================================ -->
+  <view class="section" wx:if="{{recentPicks.length}}">
+    <view class="section-head">
+      <view>
+        <text class="section-title">{{i18n.kd_picks_title}}</text>
+        <view class="section-sub">{{i18n.kd_picks_sub}}</view>
+      </view>
+    </view>
+
+    <view wx:for="{{recentPicks}}" wx:key="id" class="card kd-pick-row" bindtap="goMatch" data-id="{{item.id}}">
+      <view class="row-between" style="margin-bottom: 12rpx;">
+        <text class="pill pill-light">{{item.competition}}</text>
+        <text class="tx-small tx-teal">{{item.countdown}}</text>
+      </view>
+      <view class="row" style="gap: 12rpx;">
+        <view class="avatar avatar-sm"><text>{{item.homeTeam.flag}}</text></view>
+        <text class="tx-bold">{{item.homeTeam.code}}</text>
+        <text class="tx-muted">vs</text>
+        <text class="tx-bold">{{item.awayTeam.code}}</text>
+        <view class="avatar avatar-sm"><text>{{item.awayTeam.flag}}</text></view>
+        <view style="flex:1;"></view>
+        <text class="pill pill-teal">{{item.pickLabel}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- Outreach 状态(开发期可见 · 给 PM 看 · 生产删)-->
+  <view wx:if="{{kol.outreach_status}}" class="kd-outreach">
+    <text class="tx-small tx-muted">Outreach status: {{kol.outreach_status}}</text>
+    <text wx:if="{{kol.email}}" class="tx-small tx-muted">{{kol.email}}</text>
+  </view>
+
+  <view class="legal">
+    <text>{{i18n.kd_fair_use_note}}</text>
+    <text>{{i18n.prof_legal_1}}</text>
+  </view>
+
+</view>

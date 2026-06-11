@@ -116,7 +116,7 @@
     <view wx:for="{{feed}}" wx:key="id" class="card feed-item">
 
       <block wx:if="{{item.type === 'kol_pick'}}">
-        <view class="row row-gap-md" style="margin-bottom: 14rpx;">
+        <view class="row row-gap-md kol-tap" style="margin-bottom: 14rpx;" bindtap="goKol" data-id="{{item.kol}}">
           <view class="avatar avatar-md"><text>{{item.kolData.flag}}</text></view>
           <view class="col" style="flex: 1; gap: 4rpx;">
             <view class="row row-gap-sm">
@@ -125,6 +125,7 @@
             </view>
             <text class="tx-small">{{item.kolData.handle}} · {{item.timeAgo}}</text>
           </view>
+          <text class="tx-muted">›</text>
         </view>
         <view class="feed-text">{{item.text}}</view>
         <view class="feed-pick" bindtap="goMatch" data-id="{{item.match}}">

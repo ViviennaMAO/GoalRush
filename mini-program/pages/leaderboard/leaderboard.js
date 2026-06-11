@@ -67,5 +67,11 @@ Page({
 
   onTab(e) {
     this.setData({ currentTab: e.currentTarget.dataset.key }, () => this.refresh());
+  },
+
+  goKol(e) {
+    const id = e.currentTarget.dataset.id;
+    if (!id) return; // 非 KOL 行(普通玩家)不跳转
+    wx.navigateTo({ url: '/pages/kol-detail/kol-detail?id=' + id });
   }
 });

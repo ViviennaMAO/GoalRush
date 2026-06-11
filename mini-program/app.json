@@ -6,7 +6,8 @@
     "pages/leaderboard/leaderboard",
     "pages/profile/profile",
     "pages/match-detail/match-detail",
-    "pages/team-detail/team-detail"
+    "pages/team-detail/team-detail",
+    "pages/kol-detail/kol-detail"
   ],
   "window": {
     "backgroundTextStyle": "light",

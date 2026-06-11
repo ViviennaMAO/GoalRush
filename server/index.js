@@ -16,12 +16,16 @@ import cors from 'cors';
 import { store } from './store.js';
 import { reconcile } from './reconcile.js';
 import { settleMatch, settleAllFinal } from './settlement.js';
+import { mountOembedRoutes } from './oembed.js';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 
 app.use(cors());
 app.use(express.json());
+
+// === 真实 KOL 内容 oEmbed 代理(对齐 5.Luffa_KOL_真实内容引流策略.md 方案 B)===
+mountOembedRoutes(app);
 
 // === 比赛 ===
 app.get('/api/matches', (req, res) => {

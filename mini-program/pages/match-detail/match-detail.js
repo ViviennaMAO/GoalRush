@@ -355,7 +355,11 @@ Page({
     this.refresh();
   },
 
-  goKol() { wx.showToast({ title: 'KOL', icon: 'none' }); },
+  goKol(e) {
+    const id = e.currentTarget.dataset.id;
+    if (!id) return;
+    wx.navigateTo({ url: '/pages/kol-detail/kol-detail?id=' + id });
+  },
 
   async onShare() {
     const { homeTeam, awayTeam, pickLabel } = this.data;
