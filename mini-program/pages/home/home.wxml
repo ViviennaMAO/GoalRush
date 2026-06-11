@@ -20,8 +20,7 @@
 
   <view wx:else class="fan-banner banner-empty">
     <view class="fan-banner-stripe"></view>
-    <text class="fan-cheer fan-cheer-empty">{{i18n.hp_pick_side}}</text>
-    <text class="fan-sub fan-sub-dark">{{i18n.hp_which_flag}}</text>
+    <text class="fan-cheer fan-cheer-empty">{{i18n.cta_join_camp}}</text>
 
     <view class="quick-pick-row">
       <view wx:for="{{quickTeams}}" wx:key="code" class="quick-pick" bindtap="quickPick" data-code="{{item.code}}">
