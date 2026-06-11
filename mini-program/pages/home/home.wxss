@@ -1,5 +1,6 @@
 /* ============================================
-   FAN BANNER · 球迷应援(看台 vibe · 球队色)
+   FAN BANNER · 球迷应援(看台 vibe · 俏皮 magazine 风)
+   参考 App Store FIFA WC 26 头图:halftone + 飘带 + 大球
    ============================================ */
 .fan-banner {
   position: relative;
@@ -10,11 +11,18 @@
   box-shadow: 0 8rpx 28rpx rgba(15, 23, 42, .12);
 }
 
-/* 横向「球场条纹」叠加(若隐若现的 stadium 感)*/
+/* 多层装饰叠加 · halftone 点阵 + 流动彩带 + 巨大足球 */
 .fan-banner-stripe {
   position: absolute; inset: 0;
   pointer-events: none;
   background:
+    /* halftone 点阵(磁带 / pop art 感)*/
+    radial-gradient(circle, rgba(255,255,255,.22) 2rpx, transparent 3rpx) 0 0 / 18rpx 18rpx,
+    /* 斜向彩带 1 */
+    linear-gradient(118deg, transparent 0%, transparent 38%, rgba(255,255,255,.12) 38%, rgba(255,255,255,.12) 46%, transparent 46%),
+    /* 斜向彩带 2 */
+    linear-gradient(98deg, transparent 0%, transparent 62%, rgba(0,0,0,.08) 62%, rgba(0,0,0,.08) 68%, transparent 68%),
+    /* 原球场细斜条 */
     repeating-linear-gradient(
       135deg,
       transparent 0,
@@ -24,12 +32,26 @@
     );
 }
 
+/* 角落里若隐若现的「足球」装饰(halftone 大圆 + 点)*/
+.fan-banner::after {
+  content: '⚽';
+  position: absolute;
+  right: -40rpx; bottom: -50rpx;
+  font-size: 280rpx;
+  line-height: 1;
+  opacity: .12;
+  transform: rotate(-18deg);
+  pointer-events: none;
+  filter: grayscale(.5) brightness(1.2);
+}
+
 .fan-banner-row {
   position: relative; z-index: 1;
   display: flex; align-items: center; gap: 24rpx;
 }
 
 .fan-flag-big {
+  position: relative;
   font-size: 96rpx;
   width: 140rpx; height: 140rpx;
   display: inline-flex; align-items: center; justify-content: center;
@@ -39,81 +61,137 @@
   flex-shrink: 0;
   box-shadow: 0 8rpx 20rpx rgba(0,0,0,.15);
   line-height: 1;
+  transform: rotate(-6deg);
+  animation: flagSwing 3.5s ease-in-out infinite;
+}
+@keyframes flagSwing {
+  0%, 100% { transform: rotate(-6deg); }
+  50%      { transform: rotate(4deg); }
 }
 
 /* === Cheer 应援大字 === */
 .fan-cheer {
   display: block;
-  font-family: 'Helvetica Neue', 'Inter', sans-serif;
-  font-size: 48rpx;
+  font-family: 'Bebas Neue', 'Helvetica Neue', 'Inter', sans-serif;
+  font-size: 54rpx;
   font-weight: 900;
-  letter-spacing: -1rpx;
-  line-height: 1.05;
+  letter-spacing: 2rpx;
+  line-height: 1;
   text-transform: uppercase;
-  text-shadow: 0 2rpx 8rpx rgba(0,0,0,.18);
+  text-shadow:
+    0 2rpx 0 rgba(0,0,0,.12),
+    0 4rpx 12rpx rgba(0,0,0,.2);
+  transform: rotate(-1deg);
 }
 .fan-cheer-empty {
-  font-size: 56rpx;
+  font-size: 64rpx;
   color: #14B8A6;
   letter-spacing: -1.5rpx;
-  text-shadow: none;
+  text-shadow:
+    3rpx 3rpx 0 #FFD54A,
+    6rpx 6rpx 0 rgba(20,184,166,.2);
+  transform: rotate(-1.5deg);
 }
 
 .fan-sub {
   display: block;
   font-size: 24rpx;
   font-weight: 500;
-  margin-top: 4rpx;
+  margin-top: 8rpx;
   letter-spacing: .5rpx;
 }
 .fan-sub-dark {
   color: #6B7280;
-  margin-top: 6rpx;
+  margin-top: 10rpx;
 }
 
-/* === 未选阵营 · 空状态 === */
+/* === 未选阵营 · 空状态 · 俏皮 magazine 风 === */
 .banner-empty {
-  background: linear-gradient(135deg, #FFFFFF 0%, #F0FDFA 100%);
-  border: 2rpx solid rgba(20, 184, 166, .15);
+  background:
+    /* 顶部右上彩色光晕 */
+    radial-gradient(circle at 90% 0%, rgba(255,107,125,.18) 0%, transparent 40%),
+    /* 顶部左上金色光晕 */
+    radial-gradient(circle at 0% 30%, rgba(255,213,74,.18) 0%, transparent 40%),
+    /* 底部 emerald 光晕 */
+    radial-gradient(circle at 50% 100%, rgba(20,184,166,.15) 0%, transparent 50%),
+    linear-gradient(135deg, #FFFFFF 0%, #F0FDFA 100%);
+  border: 2rpx solid rgba(20, 184, 166, .2);
   text-align: left;
 }
+.banner-empty .fan-banner-stripe {
+  /* 空状态用浅色 halftone */
+  background:
+    radial-gradient(circle, rgba(20,184,166,.15) 2rpx, transparent 3rpx) 0 0 / 20rpx 20rpx,
+    linear-gradient(118deg, transparent 0%, transparent 60%, rgba(255,213,74,.18) 60%, rgba(255,213,74,.18) 68%, transparent 68%);
+}
+.banner-empty::after {
+  /* 空状态足球更彩 · 不灰度 */
+  opacity: .18;
+  filter: none;
+  font-size: 240rpx;
+  right: -30rpx; bottom: -40rpx;
+}
 
-/* === 快速选阵营 === */
+/* === 快速选阵营 · 俏皮 bounce 动效 === */
 .quick-pick-row {
-  display: flex; gap: 16rpx;
-  margin-top: 28rpx;
+  display: flex; gap: 18rpx;
+  margin-top: 32rpx;
   overflow-x: auto;
-  padding-bottom: 4rpx;
+  padding: 8rpx 4rpx 12rpx;
+  position: relative; z-index: 1;
 }
 .quick-pick {
   flex-shrink: 0;
-  display: flex; flex-direction: column; align-items: center; gap: 8rpx;
+  display: flex; flex-direction: column; align-items: center; gap: 10rpx;
   cursor: pointer;
+  animation: pickBounce .6s ease-out both;
+}
+.quick-pick:nth-child(1) { animation-delay: 0s; }
+.quick-pick:nth-child(2) { animation-delay: .08s; }
+.quick-pick:nth-child(3) { animation-delay: .16s; }
+.quick-pick:nth-child(4) { animation-delay: .24s; }
+.quick-pick:nth-child(5) { animation-delay: .32s; }
+.quick-pick:nth-child(6) { animation-delay: .40s; }
+@keyframes pickBounce {
+  0%   { transform: translateY(20rpx) scale(.7); opacity: 0; }
+  60%  { transform: translateY(-4rpx) scale(1.08); opacity: 1; }
+  100% { transform: translateY(0) scale(1); }
 }
 .quick-pick-circle {
-  width: 88rpx; height: 88rpx;
+  width: 96rpx; height: 96rpx;
   border-radius: 50%;
   display: inline-flex; align-items: center; justify-content: center;
-  border: 3rpx solid rgba(255,255,255,.6);
-  box-shadow: 0 4rpx 14rpx rgba(15, 23, 42, .12);
-  transition: transform .15s;
+  border: 4rpx solid #FFFFFF;
+  box-shadow:
+    0 0 0 3rpx rgba(20, 184, 166, .12),
+    0 6rpx 18rpx rgba(15, 23, 42, .18);
+  transition: transform .2s cubic-bezier(.34, 1.7, .64, 1);
+  position: relative;
 }
-.quick-pick:active .quick-pick-circle { transform: scale(.94); }
+.quick-pick:active .quick-pick-circle { transform: scale(.86) rotate(-6deg); }
 .quick-pick-flag {
-  font-size: 44rpx;
+  font-size: 50rpx;
   line-height: 1;
-  filter: drop-shadow(0 2rpx 4rpx rgba(0,0,0,.15));
+  filter: drop-shadow(0 2rpx 4rpx rgba(0,0,0,.2));
+  transform: rotate(-4deg);
 }
+.quick-pick:nth-child(even) .quick-pick-flag { transform: rotate(4deg); }
 .quick-pick-more {
-  background: #ECFDF5;
-  border-color: rgba(20, 184, 166, .3);
+  background: #FFFFFF;
+  border-color: #14B8A6;
+  border-style: dashed;
+  box-shadow:
+    0 0 0 3rpx rgba(20, 184, 166, .15),
+    0 6rpx 18rpx rgba(15, 23, 42, .12);
 }
 .quick-pick-more-tx {
-  font-size: 48rpx; font-weight: 300; color: #14B8A6;
+  font-size: 56rpx; font-weight: 300; color: #14B8A6;
+  line-height: 1;
 }
 .quick-pick-code {
-  font-size: 20rpx; font-weight: 700; color: #4B5563;
-  letter-spacing: .5rpx;
+  font-size: 20rpx; font-weight: 800; color: #4B5563;
+  letter-spacing: 1rpx;
+  text-transform: uppercase;
 }
 
 /* ============================================

@@ -19,6 +19,7 @@
   </view>
 
   <view wx:else class="fan-banner banner-empty">
+    <view class="fan-banner-stripe"></view>
     <text class="fan-cheer fan-cheer-empty">{{i18n.hp_pick_side}}</text>
     <text class="fan-sub fan-sub-dark">{{i18n.hp_which_flag}}</text>
 
