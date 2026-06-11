@@ -179,7 +179,8 @@ Page({
     }));
 
     // === F-P0-1 chat 初始化 ===
-    const app = getApp();
+    // 注意:不在此处再声明 const app · 顶层 line 6 已声明,重复 const 会导致 TDZ bug
+    // (refresh() 函数体里 line 163 的 app.globalData.predictions 会因块级遮蔽报 undefined)
     const myCamp = app.globalData.myTeam;
     const myCampData = myCamp ? getTeam(myCamp) : null;
 
